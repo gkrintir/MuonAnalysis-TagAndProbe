@@ -12,12 +12,12 @@ PDFName = "VoigtExp"
 
 process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
     # IO parameters:
-    InputFileNames = cms.vstring("file:/afs/cern.ch/work/o/okukral/TnP_pPb/Data/PASingleMuon_PARun2016C-PromptReco-v1TnpTress_Pbpv1CentralityInfo.root"),
-    InputDirectoryName = cms.string("tpTree"),
+    InputFileNames = cms.vstring("file:/afs/cern.ch/user/s/stuli/stuliWork/public/TnP_run2/Current/InputFiles/MC_PbP/merged.root"),
+    InputDirectoryName = cms.string("tpTreeSta"),
     InputTreeName = cms.string("fitter_tree"),
-    OutputFileName = cms.string("tnp_Ana_RD_MuonID_pPb.root"),
+    OutputFileName = cms.string("tnp_Ana_MC_RecoTrackingGlbOnly_Pbp.root"),
     #numbrer of CPUs to use for fitting
-    NumCPU = cms.uint32(16),
+    NumCPU = cms.uint32(25),
     # specifies whether to save the RooWorkspace containing the data for each bin and
     # the pdf object with the initial and final state snapshots
     binnedFit = cms.bool(False),
@@ -27,15 +27,19 @@ process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
     
     # defines all the real variables of the probes available in the input tree and intended for use in the efficiencies
     Variables = cms.PSet(
-                         mass             = cms.vstring("Tag-Probe Mass", "60.0", "120.0", "GeV/c^{2}"), # mass range syst: 2.8-3.4
+                         mass             = cms.vstring("Tag-Probe Mass", "30.0", "150.0", "GeV/c^{2}"), # mass range syst: 2.8-3.4
                          pt               = cms.vstring("Probe p_{T}", "0.0", "1000", "GeV/c"),
                          eta              = cms.vstring("Probe #eta", "-2.4", "2.4", ""),
                          abseta           = cms.vstring("Probe |#eta|", "0", "2.5", ""),
-                         tag_hiNtracks    = cms.vstring("N Tracks", "0", "400", ""),
+#                         tag_hiNtracks    = cms.vstring("N Tracks", "0", "400", ""),
+#			 staValidStations = cms.vstring("Valid stations in muon system", "-2", "10", "cm"),
+#			 Glb		  = cms.vstring("Probe Global", "0.0", "2.0", ""),
     ),
     # defines all the discrete variables of the probes available in the input tree and intended for use in the efficiency calculations
     Categories = cms.PSet(
-                        Tight2012 = cms.vstring("Tight2012", "dummy[true=1,false=0]"),
+			 # MuIDForOutsideInTk = cms.vstring("OITK Seed", "dummy[pass=1,fail=0]"),
+			  Glb = cms.vstring("Glb", "dummy[true=1,false=0]"),
+                        #Tight2012 = cms.vstring("Tight2012", "dummy[true=1,false=0]"),
                           #HybridSoftHI = cms.vstring("HybridSoftHI", "dummy[true=1,false=0]"),
                           #L1Filter  = cms.vstring("L1Filter", "dummy[true=1,false=0]"),
                           #L1Seed    = cms.vstring("L1Seed", "dummy[true=1,false=0]"),
@@ -49,7 +53,7 @@ process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
     # each pdf needs to define "signal", "backgroundPass", "backgroundFail" pdfs, "efficiency[0.9,0,1]" and "signalFractionInPassing[0.9]" are used for initial values  
     PDFs = cms.PSet(
 	VoigtExp = cms.vstring(
-		"Voigtian::signal(mass, mean[91,85,95], width[3,1,10], sigma[3,1,10])",
+		"Voigtian::signal(mass, mean[91,80,100], width[3,-5,15], sigma[3,-5,15])",
 		"Exponential::backgroundPass(mass, lp[0,-5,5])",
 		"Exponential::backgroundFail(mass, lf[0,-5,5])",
 		"efficiency[0.9,0,1]",
@@ -105,94 +109,116 @@ process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
     # defines a set of efficiency calculations, what PDF to use for fitting and how to bin the data;
     # there will be a separate output directory for each calculation that includes a simultaneous fit, side band subtraction and counting. 
     Efficiencies = cms.PSet(
-        MuId_1bin = cms.PSet(
-            EfficiencyCategoryAndState = cms.vstring("Tight2012","true"),
+        Glb_1bin = cms.PSet(
+#	    EfficiencyCategoryAndState = cms.vstring("MuIDForOutsideInTk","pass"),
+            EfficiencyCategoryAndState = cms.vstring("Glb","true"),
             UnbinnedVariables = cms.vstring("mass"),
             BinnedVariables = cms.PSet(
-                pt = cms.vdouble(1.8, 1000),
+                pt = cms.vdouble(15, 200),
                 eta = cms.vdouble(-2.4, 2.4),
             ),
             BinToPDFmap = cms.vstring(PDFName)
         ),
         
-       MuId_pt = cms.PSet(
-           EfficiencyCategoryAndState = cms.vstring("Tight2012","true"),
+       Glb_pt = cms.PSet(
+#           EfficiencyCategoryAndState = cms.vstring("MuIDForOutsideInTk","pass"),
+           EfficiencyCategoryAndState = cms.vstring("Glb","true"),
            UnbinnedVariables = cms.vstring("mass"),
            BinnedVariables = cms.PSet(
-               pt = cms.vdouble(1.8, 10, 20, 30, 40, 50, 60, 70, 80, 100, 200),
+               pt = cms.vdouble(15, 30, 50, 80, 200),
                eta = cms.vdouble(-2.4,2.4),
            ),
            BinToPDFmap = cms.vstring(PDFName)
        ),
 
-        MuId_abseta00_12 = cms.PSet(
-            EfficiencyCategoryAndState = cms.vstring("Tight2012","true"),
+        Glb_abseta00_09 = cms.PSet(
+#            EfficiencyCategoryAndState = cms.vstring("MuIDForOutsideInTk","pass"),
+            EfficiencyCategoryAndState = cms.vstring("Glb","true"),
             UnbinnedVariables = cms.vstring("mass"),
             BinnedVariables = cms.PSet(
-                pt = cms.vdouble(3.5, 5, 10, 20, 40, 80, 200, 1000),
-                abseta = cms.vdouble(0, 1.2),
+                pt = cms.vdouble(15, 30, 50, 80, 200),
+                abseta = cms.vdouble(0, 0.9),
             ),
             BinToPDFmap = cms.vstring(PDFName)
         ),
 
               
-         MuId_abseta12_18 = cms.PSet(
-             EfficiencyCategoryAndState = cms.vstring("Tight2012","true"),
+         Glb_abseta09_12 = cms.PSet(
+#           EfficiencyCategoryAndState = cms.vstring("MuIDForOutsideInTk","pass"),
+             EfficiencyCategoryAndState = cms.vstring("Glb","true"),
              UnbinnedVariables = cms.vstring("mass"),
              BinnedVariables = cms.PSet(
-                pt = cms.vdouble(3.5, 5, 10, 20, 40, 80, 200, 1000),
-                 abseta = cms.vdouble(1.2,1.8),
+                pt = cms.vdouble(15, 30, 50, 80, 200),
+                 abseta = cms.vdouble(0.9,1.2),
              ),
              BinToPDFmap = cms.vstring(PDFName)
          ),
          
-         MuId_abseta18_21 = cms.PSet(
-             EfficiencyCategoryAndState = cms.vstring("Tight2012","true"),
+         Glb_abseta12_16 = cms.PSet(
+#            EfficiencyCategoryAndState = cms.vstring("MuIDForOutsideInTk","pass"),
+             EfficiencyCategoryAndState = cms.vstring("Glb","true"),
              UnbinnedVariables = cms.vstring("mass"),
              BinnedVariables = cms.PSet(
-                pt = cms.vdouble(3.5, 5, 10, 20, 40, 80, 200, 1000),
-                 abseta = cms.vdouble(1.8,2.1),
+                pt = cms.vdouble(15, 30, 50, 80, 200),
+                 abseta = cms.vdouble(1.2, 1.6),
              ),
              BinToPDFmap = cms.vstring(PDFName)
          ),
-         
-         MuId_abseta21_24 = cms.PSet(
-             EfficiencyCategoryAndState = cms.vstring("Tight2012","true"),
+
+         Glb_abseta16_21 = cms.PSet(
+#            EfficiencyCategoryAndState = cms.vstring("MuIDForOutsideInTk","pass"),
+             EfficiencyCategoryAndState = cms.vstring("Glb","true"),
              UnbinnedVariables = cms.vstring("mass"),
              BinnedVariables = cms.PSet(
-                pt = cms.vdouble(3.5, 5, 10, 20, 40, 80, 200, 1000),
+                pt = cms.vdouble(15, 30, 50, 80, 200),
+                 abseta = cms.vdouble(1.6, 2.1),
+             ),
+             BinToPDFmap = cms.vstring(PDFName)
+         ),
+
+         
+         Glb_abseta21_24 = cms.PSet(
+#             EfficiencyCategoryAndState = cms.vstring("MuIDForOutsideInTk","pass"),
+             EfficiencyCategoryAndState = cms.vstring("Glb","true"),
+             UnbinnedVariables = cms.vstring("mass"),
+             BinnedVariables = cms.PSet(
+                pt = cms.vdouble(15, 30, 50, 80, 200),
                  abseta = cms.vdouble(2.1,2.4),
              ),
              BinToPDFmap = cms.vstring(PDFName)
          ),
-          MuId_absetadep = cms.PSet(
-             EfficiencyCategoryAndState = cms.vstring("Tight2012","true"),
+          Glb_absetadep = cms.PSet(
+#             EfficiencyCategoryAndState = cms.vstring("MuIDForOutsideInTk","pass"),
+             EfficiencyCategoryAndState = cms.vstring("Glb","true"),
              UnbinnedVariables = cms.vstring("mass"),
              BinnedVariables = cms.PSet(
-                 pt = cms.vdouble(1.8, 1000),
-                 abseta = cms.vdouble(0,1.2,1.8,2.1,2.4),
+                 pt = cms.vdouble(15, 200),
+                 abseta = cms.vdouble(0,0.9,1.2,1.6,2.1,2.4),
              ),
              BinToPDFmap = cms.vstring(PDFName)
          ),        
-         MuId_etadep = cms.PSet(
-             EfficiencyCategoryAndState = cms.vstring("Tight2012","true"),
+         Glb_etadep = cms.PSet(
+#             EfficiencyCategoryAndState = cms.vstring("MuIDForOutsideInTk","pass"),
+             EfficiencyCategoryAndState = cms.vstring("Glb","true"),
              UnbinnedVariables = cms.vstring("mass"),
              BinnedVariables = cms.PSet(
-                 pt = cms.vdouble(1.8, 1000),
-                 eta = cms.vdouble(-2.4,-2.1,-1.6,-1.2,-0.9,-0.6,-0.3,0,0.3,0.6,0.9,1.2,1.6,2.1,2.4),
+                 pt = cms.vdouble(15, 200),
+                 eta = cms.vdouble(-2.4,-2.1,-1.6,-1.2,-0.9,0,0.9,1.2,1.6,2.1,2.4),
              ),
              BinToPDFmap = cms.vstring(PDFName)
          ),
-         MuId_centdep = cms.PSet(
-                EfficiencyCategoryAndState = cms.vstring("Tight2012","true"),
-                UnbinnedVariables = cms.vstring("mass"),
-                BinnedVariables = cms.PSet(
-                    pt = cms.vdouble(1.8, 1000),
-                    eta = cms.vdouble(-2.4,2.4),
-                    tag_hiNtracks = cms.vdouble(0,30,50,75,100,125,150,175,400),
-                ),
-                BinToPDFmap = cms.vstring(PDFName)
-            ),
+
+#         Glb_centdep = cms.PSet(
+#                EfficiencyCategoryAndState = cms.vstring("MuIDForOutsideInTk","pass"),
+#                EfficiencyCategoryAndState = cms.vstring("Glb","true"),
+#                UnbinnedVariables = cms.vstring("mass"),
+#                BinnedVariables = cms.PSet(
+#                    pt = cms.vdouble(15, 200),
+#                    eta = cms.vdouble(-2.4,2.4),
+#                    tag_hiNtracks = cms.vdouble(0,30,50,75,100,125,150,175,400),
+#                ),
+#                BinToPDFmap = cms.vstring(PDFName)
+#            ),
      )
 )
 
