@@ -31,6 +31,7 @@ process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
                          pt               = cms.vstring("Probe p_{T}", "0.0", "1000", "GeV/c"),
                          eta              = cms.vstring("Probe #eta", "-2.4", "2.4", ""),
                          abseta           = cms.vstring("Probe |#eta|", "0", "2.5", ""),
+			 tag_nVertices    = cms.vstring("Number of Primary Vertices", "0", "4", ""),
 #                         tag_hiNtracks    = cms.vstring("N Tracks", "0", "400", ""),
 #			 staValidStations = cms.vstring("Valid stations in muon system", "-2", "10", "cm"),
 #			 Glb		  = cms.vstring("Probe Global", "0.0", "2.0", ""),
@@ -109,6 +110,19 @@ process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
     # defines a set of efficiency calculations, what PDF to use for fitting and how to bin the data;
     # there will be a separate output directory for each calculation that includes a simultaneous fit, side band subtraction and counting. 
     Efficiencies = cms.PSet(
+
+        Glb_nPV = cms.PSet(
+#           EfficiencyCategoryAndState = cms.vstring("MuIDForOutsideInTk","pass"),
+            EfficiencyCategoryAndState = cms.vstring("Glb","true"),
+            UnbinnedVariables = cms.vstring("mass"),
+            BinnedVariables = cms.PSet(
+		tag_nVertices = cms.vdouble(1),	
+                pt = cms.vdouble(15, 200),
+                eta = cms.vdouble(-2.4, 2.4),
+            ),
+            BinToPDFmap = cms.vstring(PDFName)
+        ),
+
         Glb_1bin = cms.PSet(
 #	    EfficiencyCategoryAndState = cms.vstring("MuIDForOutsideInTk","pass"),
             EfficiencyCategoryAndState = cms.vstring("Glb","true"),
