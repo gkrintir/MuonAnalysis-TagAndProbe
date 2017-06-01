@@ -179,8 +179,8 @@ TString cutTag("tpTreeSta");
 TString cutLegend("Inner tracking - Global");
 const double effmin = 0.8;
 const double sfrange = 0.08;
-const char* fDataName[nSyst] = { "../test/zmumuHI/PreviousResults/tnp_Ana_Data_RecoTrackingGlbOnly_actual_Pbp.root" };
-const char* fMCName[nSyst] = { "../test/zmumuHI/PreviousResults/tnp_Ana_MC_RecoTrackingGlbOnly_Pbp.root" };
+const char* fDataName[nSyst] = { "../test/zmumuHI/FirstAttemptResults/tnp_Ana_Data_RecoTrackingGlbOnly_actual_Pbp.root" };
+const char* fMCName[nSyst] = { "../test/zmumuHI/FirstAttemptResults/tnp_Ana_MC_RecoTrackingGlbOnly_Pbp.root" };
 #endif
 
 // Function Define
