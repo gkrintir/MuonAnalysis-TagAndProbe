@@ -12,7 +12,7 @@ PDFName = "VoigtExp"
 
 process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
     # IO parameters:
-    InputFileNames = cms.vstring("file:/afs/cern.ch/user/s/stuli/stuliWork/public/TnP_run2/Current/InputFiles/MC_pPb/merged.root"),
+    InputFileNames = cms.vstring("file:/afs/cern.ch/user/s/stuli/stuliWork/public/TnP_run2/Current/InputFiles/MC_pPb_New/DYtoMuMu_pPb_EmbPOS_80X_mcRun2_pA_merged.root"),
     InputDirectoryName = cms.string("tpTreeSta"),
     InputTreeName = cms.string("fitter_tree"),
     OutputFileName = cms.string("tnp_Ana_MC_RecoTrackingGlbOnly_pPb.root"),
@@ -31,6 +31,9 @@ process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
                          pt               = cms.vstring("Probe p_{T}", "0.0", "1000", "GeV/c"),
                          eta              = cms.vstring("Probe #eta", "-2.4", "2.4", ""),
                          abseta           = cms.vstring("Probe |#eta|", "0", "2.5", ""),
+                         tag_nVertices    = cms.vstring("Number of Primary Vertices", "0", "4", ""),
+                         tag_hiHF         = cms.vstring("HF energy", "0", "300", ""),
+                         tag_hiNtracks    = cms.vstring("Number of tracks", "0", "250", ""),
 #                         tag_hiNtracks    = cms.vstring("N Tracks", "0", "400", ""),
 #			 staValidStations = cms.vstring("Valid stations in muon system", "-2", "10", "cm"),
 #			 Glb		  = cms.vstring("Probe Global", "0.0", "2.0", ""),

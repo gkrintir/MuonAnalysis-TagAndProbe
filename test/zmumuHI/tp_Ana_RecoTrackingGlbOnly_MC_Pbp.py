@@ -12,7 +12,7 @@ PDFName = "VoigtExp"
 
 process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
     # IO parameters:
-    InputFileNames = cms.vstring("file:/afs/cern.ch/user/s/stuli/stuliWork/public/TnP_run2/Current/InputFiles/MC_PbP/merged.root"),
+    InputFileNames = cms.vstring("file:/afs/cern.ch/user/s/stuli/stuliWork/public/TnP_run2/Current/InputFiles/MC_PbP_New/DYtoMuMu_Pbp_EmbPOS_80X_mcRun2_pA_merged.root"),
     InputDirectoryName = cms.string("tpTreeSta"),
     InputTreeName = cms.string("fitter_tree"),
     OutputFileName = cms.string("tnp_Ana_MC_RecoTrackingGlbOnly_Pbp.root"),
@@ -32,6 +32,8 @@ process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
                          eta              = cms.vstring("Probe #eta", "-2.4", "2.4", ""),
                          abseta           = cms.vstring("Probe |#eta|", "0", "2.5", ""),
 			 tag_nVertices    = cms.vstring("Number of Primary Vertices", "0", "4", ""),
+			 tag_hiHF	  = cms.vstring("HF energy", "0", "300", ""),
+			 tag_hiNtracks    = cms.vstring("Number of tracks", "0", "250", ""),
 #                         tag_hiNtracks    = cms.vstring("N Tracks", "0", "400", ""),
 #			 staValidStations = cms.vstring("Valid stations in muon system", "-2", "10", "cm"),
 #			 Glb		  = cms.vstring("Probe Global", "0.0", "2.0", ""),
@@ -40,6 +42,7 @@ process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
     Categories = cms.PSet(
 			 # MuIDForOutsideInTk = cms.vstring("OITK Seed", "dummy[pass=1,fail=0]"),
 			  Glb = cms.vstring("Glb", "dummy[true=1,false=0]"),
+			  PF  = cms.vstring("PF", "dummy[true=1, false=0]"),
                         #Tight2012 = cms.vstring("Tight2012", "dummy[true=1,false=0]"),
                           #HybridSoftHI = cms.vstring("HybridSoftHI", "dummy[true=1,false=0]"),
                           #L1Filter  = cms.vstring("L1Filter", "dummy[true=1,false=0]"),
@@ -111,13 +114,14 @@ process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
     # there will be a separate output directory for each calculation that includes a simultaneous fit, side band subtraction and counting. 
     Efficiencies = cms.PSet(
 
-        Glb_nPV = cms.PSet(
+        Glb_nPVdep = cms.PSet(
 #           EfficiencyCategoryAndState = cms.vstring("MuIDForOutsideInTk","pass"),
             EfficiencyCategoryAndState = cms.vstring("Glb","true"),
+            EfficiencyCategoryAndState = cms.vstring("PF","true"),
             UnbinnedVariables = cms.vstring("mass"),
             BinnedVariables = cms.PSet(
-		tag_nVertices = cms.vdouble(1),	
-                pt = cms.vdouble(15, 200),
+		tag_nVertices = cms.vdouble(0, 1, 2, 4),	
+                pt = cms.vdouble(15, 80),
                 eta = cms.vdouble(-2.4, 2.4),
             ),
             BinToPDFmap = cms.vstring(PDFName)
@@ -126,9 +130,10 @@ process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
         Glb_1bin = cms.PSet(
 #	    EfficiencyCategoryAndState = cms.vstring("MuIDForOutsideInTk","pass"),
             EfficiencyCategoryAndState = cms.vstring("Glb","true"),
+            EfficiencyCategoryAndState = cms.vstring("PF","true"),
             UnbinnedVariables = cms.vstring("mass"),
             BinnedVariables = cms.PSet(
-                pt = cms.vdouble(15, 200),
+                pt = cms.vdouble(15, 80),
                 eta = cms.vdouble(-2.4, 2.4),
             ),
             BinToPDFmap = cms.vstring(PDFName)
@@ -137,9 +142,10 @@ process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
        Glb_pt = cms.PSet(
 #           EfficiencyCategoryAndState = cms.vstring("MuIDForOutsideInTk","pass"),
            EfficiencyCategoryAndState = cms.vstring("Glb","true"),
+           EfficiencyCategoryAndState = cms.vstring("PF","true"),
            UnbinnedVariables = cms.vstring("mass"),
            BinnedVariables = cms.PSet(
-               pt = cms.vdouble(15, 30, 50, 80, 200),
+               pt = cms.vdouble(5, 15, 30, 50, 80),
                eta = cms.vdouble(-2.4,2.4),
            ),
            BinToPDFmap = cms.vstring(PDFName)
@@ -148,9 +154,10 @@ process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
         Glb_abseta00_09 = cms.PSet(
 #            EfficiencyCategoryAndState = cms.vstring("MuIDForOutsideInTk","pass"),
             EfficiencyCategoryAndState = cms.vstring("Glb","true"),
+            EfficiencyCategoryAndState = cms.vstring("PF","true"),
             UnbinnedVariables = cms.vstring("mass"),
             BinnedVariables = cms.PSet(
-                pt = cms.vdouble(15, 30, 50, 80, 200),
+                pt = cms.vdouble(15, 30, 50, 80),
                 abseta = cms.vdouble(0, 0.9),
             ),
             BinToPDFmap = cms.vstring(PDFName)
@@ -160,9 +167,10 @@ process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
          Glb_abseta09_12 = cms.PSet(
 #           EfficiencyCategoryAndState = cms.vstring("MuIDForOutsideInTk","pass"),
              EfficiencyCategoryAndState = cms.vstring("Glb","true"),
+             EfficiencyCategoryAndState = cms.vstring("PF","true"),
              UnbinnedVariables = cms.vstring("mass"),
              BinnedVariables = cms.PSet(
-                pt = cms.vdouble(15, 30, 50, 80, 200),
+                pt = cms.vdouble(15, 30, 50, 80),
                  abseta = cms.vdouble(0.9,1.2),
              ),
              BinToPDFmap = cms.vstring(PDFName)
@@ -171,9 +179,10 @@ process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
          Glb_abseta12_16 = cms.PSet(
 #            EfficiencyCategoryAndState = cms.vstring("MuIDForOutsideInTk","pass"),
              EfficiencyCategoryAndState = cms.vstring("Glb","true"),
+             EfficiencyCategoryAndState = cms.vstring("PF","true"),
              UnbinnedVariables = cms.vstring("mass"),
              BinnedVariables = cms.PSet(
-                pt = cms.vdouble(15, 30, 50, 80, 200),
+                pt = cms.vdouble(15, 30, 50, 80),
                  abseta = cms.vdouble(1.2, 1.6),
              ),
              BinToPDFmap = cms.vstring(PDFName)
@@ -182,9 +191,10 @@ process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
          Glb_abseta16_21 = cms.PSet(
 #            EfficiencyCategoryAndState = cms.vstring("MuIDForOutsideInTk","pass"),
              EfficiencyCategoryAndState = cms.vstring("Glb","true"),
+             EfficiencyCategoryAndState = cms.vstring("PF","true"),
              UnbinnedVariables = cms.vstring("mass"),
              BinnedVariables = cms.PSet(
-                pt = cms.vdouble(15, 30, 50, 80, 200),
+                pt = cms.vdouble(15, 30, 50, 80),
                  abseta = cms.vdouble(1.6, 2.1),
              ),
              BinToPDFmap = cms.vstring(PDFName)
@@ -194,9 +204,10 @@ process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
          Glb_abseta21_24 = cms.PSet(
 #             EfficiencyCategoryAndState = cms.vstring("MuIDForOutsideInTk","pass"),
              EfficiencyCategoryAndState = cms.vstring("Glb","true"),
+             EfficiencyCategoryAndState = cms.vstring("PF","true"),
              UnbinnedVariables = cms.vstring("mass"),
              BinnedVariables = cms.PSet(
-                pt = cms.vdouble(15, 30, 50, 80, 200),
+                pt = cms.vdouble(15, 30, 50, 80),
                  abseta = cms.vdouble(2.1,2.4),
              ),
              BinToPDFmap = cms.vstring(PDFName)
@@ -204,9 +215,10 @@ process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
           Glb_absetadep = cms.PSet(
 #             EfficiencyCategoryAndState = cms.vstring("MuIDForOutsideInTk","pass"),
              EfficiencyCategoryAndState = cms.vstring("Glb","true"),
+             EfficiencyCategoryAndState = cms.vstring("PF","true"),
              UnbinnedVariables = cms.vstring("mass"),
              BinnedVariables = cms.PSet(
-                 pt = cms.vdouble(15, 200),
+                 pt = cms.vdouble(15, 80),
                  abseta = cms.vdouble(0,0.9,1.2,1.6,2.1,2.4),
              ),
              BinToPDFmap = cms.vstring(PDFName)
@@ -214,9 +226,10 @@ process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
          Glb_etadep = cms.PSet(
 #             EfficiencyCategoryAndState = cms.vstring("MuIDForOutsideInTk","pass"),
              EfficiencyCategoryAndState = cms.vstring("Glb","true"),
+             EfficiencyCategoryAndState = cms.vstring("PF","true"),
              UnbinnedVariables = cms.vstring("mass"),
              BinnedVariables = cms.PSet(
-                 pt = cms.vdouble(15, 200),
+                 pt = cms.vdouble(15, 80),
                  eta = cms.vdouble(-2.4,-2.1,-1.6,-1.2,-0.9,0,0.9,1.2,1.6,2.1,2.4),
              ),
              BinToPDFmap = cms.vstring(PDFName)
