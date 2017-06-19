@@ -44,7 +44,7 @@ using namespace std;
 
 // Choose the efficiency type.
 // Possible values: MUIDTRG, TRK, STA, MUID, TRG
-#define MUID
+#define TRK
 
 // pp or PbPb?
 bool isPbPb = true; // if true, will compute the centrality dependence
@@ -70,7 +70,7 @@ const int nSyst = 1;//5;
 const char* fMCName[nSyst] = {
    //"tnp_Ana_MC_PbPb_MuonIDTrg_AllMB.root",
 	"tnp_Ana_MC_PbPb_MuonTrk_AllMB_isGlbPol2.root",
-};//*/
+};// */
 
 // names for systematics
 const char* systName[nSyst] = {
@@ -192,43 +192,52 @@ const char* fDataName[nSyst] = { "tnp_Ana_RD_PbPb_Trg_AllMB.root" };
 const char* fMCName[nSyst] = { "tnp_Ana_MC_PbPb_Trg_AllMB.root" };
 #endif
 
+// Need to switch between Ntracks and HF in 5 places: 200/223, 206/229, 210/233, 437, 891
 
 #ifdef STA
-TString etaTag("STA_eta");
-TString absetaTag("STA_abseta");
-TString centTag("STA_cent");
-const int nAbsEtaBins = 4;
-TString ptTag[nAbsEtaBins] = { "STA_pt1", "STA_pt2", "STA_pt3", "STA_pt4" };
+TString etaTag("STA_etadep");
+TString absetaTag("STA_absetadep");
+TString centTag("STA_nTracksdep");
+//TString centTag("STA_HFdep");
+const int nAbsEtaBins = 5;
+TString ptTag[nAbsEtaBins] = { "STA_abseta00_09", "STA_abseta09_12", "STA_abseta12_16", "STA_abseta16_21", "STA_abseta21_24" };
 TString allTag("STA_1bin");
 TString absetaVar("abseta");
-TString centVar("tag_hiBin");
+TString centVar("tag_hiNtracks");
+//TString centVar("tag_hiHF");
 ofstream file_sfs("correction_functions.txt");
 ofstream file_Eta("EtaValues_Sta.txt");
-ofstream file_Cent("CentValues_Sta.txt");
+ofstream file_Cent("NtracksValues_Sta.txt");
+//ofstream file_Cent("HFValues_Sta.txt");
 TString cutTag("tpTreeTrk");
 TString cutLegend("Standalone");
 const double effmin = 0.;
 const double sfrange = 0.55;
+const char* fDataName[nSyst] = { "../test/zmumuHI/STAResults/tnp_Ana_Data_RecoSTA_pPb.root" };
+const char* fMCName[nSyst] = { "../test/zmumuHI/STAResults/tnp_Ana_MC_RecoSTA_pPb.root" };
 #endif
 
 #ifdef TRK
-TString etaTag("Trk_etaSeg");
-TString absetaTag("Trk_1binSeg");
-TString centTag("Trk_centSeg");
-const int nAbsEtaBins = 1;
-TString ptTag[nAbsEtaBins] = { "Trk_ptSeg" };
-TString allTag("Trk_1binSeg");
-TString absetaVar("eta");
-TString centVar("tag_hiBin");
+TString etaTag("Trk_etadep");
+TString absetaTag("Trk_absetadep");
+//TString centTag("Trk_nTracksdep");
+TString centTag("Trk_HFdep");
+const int nAbsEtaBins = 5;
+TString ptTag[nAbsEtaBins] = { "Trk_abseta00_09", "Trk_abseta09_12", "Trk_abseta12_16", "Trk_abseta16_21", "Trk_abseta21_24" };
+TString allTag("Trk_1bin");
+TString absetaVar("abseta");
+//TString centVar("tag_hiNtracks");
+TString centVar("tag_hiHF");
 ofstream file_sfs("correction_functions.txt");
 ofstream file_Eta("EtaValues_Trk.txt");
-ofstream file_Cent("CentValues_Trk.txt");
+//ofstream file_Cent("NtracksValues_Sta.txt");
+ofstream file_Cent("HFValues_Trk.txt");
 TString cutTag("tpTreeSta");
-TString cutLegend("Inner tracking");
+TString cutLegend("Inner tracking - Global and PF");
 const double effmin = 0.8;
 const double sfrange = 0.08;
-const char* fDataName[nSyst] = { "tnp_Ana_RD_PbPb_MuonTrk_AllMB.root" };
-const char* fMCName[nSyst] = { "tnp_Ana_MC_PbPb_MuonTrk_AllMB.root" };
+const char* fDataName[nSyst] = { "../test/zmumuHI/TrackingResults/tnp_Ana_Data_RecoTracking_pPb.root" };
+const char* fMCName[nSyst] = { "../test/zmumuHI/TrackingResults/tnp_Ana_MC_RecoTracking_pPb.root" };
 #endif
 
 // Function Define
@@ -424,8 +433,9 @@ void TnPEffDraw_singleFile_O() {
 	// lTextSize *= 1./0.7;
 
 
-	TH1F *hPad = new TH1F("hPad", ";p^{#mu}_{T} [GeV/c];Single #mu Efficiency", 5, 0, 200);
+	TH1F *hPad = new TH1F("hPad", ";p^{#mu}_{T} [GeV/c];Single #mu Efficiency", 5, 0, 80);
 	TH1F *hPad1 = new TH1F("hPad1", ";#eta^{#mu};Single #mu Efficiency", 5, -2.4, 2.4);
+//        TH1F *hPad2 = new TH1F("hPad2", ";Centrality - Ntracks ;Single #mu Efficiency", 5, 0, 300);
 	TH1F *hPad2 = new TH1F("hPad2", ";Centrality - HF ;Single #mu Efficiency", 5, 0, 300);
 	hPad->GetXaxis()->CenterTitle();
 	hPad1->GetXaxis()->CenterTitle();
@@ -879,9 +889,14 @@ void TnPEffDraw_singleFile_O() {
 		gratio2->SetLineWidth(1);
 		gratio2->Draw("pz same");
 
-		c1->SaveAs(cutTag + "Eff_" + collTag + "_RD_MC_Cent.root");
-		c1->SaveAs(cutTag + "Eff_" + collTag + "_RD_MC_Cent.pdf");
-		c1->SaveAs(cutTag + "Eff_" + collTag + "_RD_MC_Cent.png");
+/*                c1->SaveAs(cutTag + "Eff_" + collTag + "_RD_MC_Cent_Ntracks.root");
+                c1->SaveAs(cutTag + "Eff_" + collTag + "_RD_MC_Cent_Ntracks.pdf");
+                c1->SaveAs(cutTag + "Eff_" + collTag + "_RD_MC_Cent_Ntracks.png");
+// */
+		c1->SaveAs(cutTag + "Eff_" + collTag + "_RD_MC_Cent_HF.root");
+		c1->SaveAs(cutTag + "Eff_" + collTag + "_RD_MC_Cent_HF.pdf");
+		c1->SaveAs(cutTag + "Eff_" + collTag + "_RD_MC_Cent_HF.png");
+// */
 
 		// print the centrality dependence to file
 		double xVal, yVal, ErrDown, ErrUp;

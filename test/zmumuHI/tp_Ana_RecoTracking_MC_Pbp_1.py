@@ -167,11 +167,10 @@ VEFFICIENCYSET = cms.VPSet(
 
     cms.PSet(
         Trk_nPVdep = cms.PSet(
-#           EfficiencyCategoryAndState = cms.vstring("MuIDForOutsideInTk","pass"),
             EfficiencyCategoryAndState = cms.vstring("Glb","true","PF","true"),
             UnbinnedVariables = cms.vstring("mass"),
             BinnedVariables = cms.PSet(
-                tag_nVertices = cms.vdouble(0, 1, 4),
+                tag_nVertices = cms.vdouble(0.5, 1.5, 4.5),
                 pt = cms.vdouble(15, 80),
                 eta = cms.vdouble(-2.4, 2.4),
             ),
@@ -215,7 +214,7 @@ process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
                          pt               = cms.vstring("Probe p_{T}", "0.0", "1000", "GeV/c"),
                          eta              = cms.vstring("Probe #eta", "-2.4", "2.4", ""),
                          abseta           = cms.vstring("Probe |#eta|", "0", "2.5", ""),
-			 tag_nVertices    = cms.vstring("Number of Primary Vertices", "0", "4", ""),
+			 tag_nVertices    = cms.vstring("Number of Primary Vertices", "0", "4.5", ""),
 			 tag_hiHF	  = cms.vstring("HF energy", "0", "300", ""),
 			 tag_hiNtracks    = cms.vstring("Number of tracks", "0", "250", ""),
 #                         tag_hiNtracks    = cms.vstring("N Tracks", "0", "400", ""),
