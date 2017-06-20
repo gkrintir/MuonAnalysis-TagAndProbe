@@ -44,11 +44,11 @@ using namespace std;
 
 // Choose the efficiency type.
 // Possible values: MUIDTRG, TRK, STA, MUID, TRG
-#define STA
+#define TRK
 
 // pp or PbPb?
 bool isPbPb = true; // if true, will compute the centrality dependence
-TString collTag = "pPb"; // isPbPb ? "PbPb" : "pp";
+TString collTag = "pPb"; // Don't forget to change collTag! pPb or Pbp
 
 // do the toy study for the correction factors? (only applies if MUIDTRG)
 bool doToys = false;
@@ -236,8 +236,8 @@ TString cutTag("tpTreeSta");
 TString cutLegend("Inner tracking - Global and PF");
 const double effmin = 0.8;
 const double sfrange = 0.08;
-const char* fDataName[nSyst] = { "../test/zmumuHI/TrackingResults/tnp_Ana_Data_RecoTracking_pPb.root" };
-const char* fMCName[nSyst] = { "../test/zmumuHI/TrackingResults/tnp_Ana_MC_RecoTracking_pPb.root" };
+const char* fDataName[nSyst] = { "../test/zmumuHI/TrackingResults/tnp_Ana_Data_RecoTracking_Pbp.root" };
+const char* fMCName[nSyst] = { "../test/zmumuHI/TrackingResults/tnp_Ana_MC_RecoTracking_Pbp.root" };
 #endif
 
 // Function Define
@@ -435,8 +435,8 @@ void TnPEffDraw_singleFile_O() {
 
 	TH1F *hPad = new TH1F("hPad", ";p^{#mu}_{T} [GeV/c];Single #mu Efficiency", 5, 0, 80);
 	TH1F *hPad1 = new TH1F("hPad1", ";#eta^{#mu};Single #mu Efficiency", 5, -2.4, 2.4);
-        TH1F *hPad2 = new TH1F("hPad2", ";Centrality - Ntracks ;Single #mu Efficiency", 5, 0, 300);
-//	TH1F *hPad2 = new TH1F("hPad2", ";Centrality - HF ;Single #mu Efficiency", 5, 0, 300);
+//        TH1F *hPad2 = new TH1F("hPad2", ";Centrality - Ntracks ;Single #mu Efficiency", 5, 0, 300);
+	TH1F *hPad2 = new TH1F("hPad2", ";Centrality - HF ;Single #mu Efficiency", 5, 0, 300);
 	hPad->GetXaxis()->CenterTitle();
 	hPad1->GetXaxis()->CenterTitle();
 	hPad2->GetXaxis()->CenterTitle();
@@ -889,11 +889,11 @@ void TnPEffDraw_singleFile_O() {
 		gratio2->SetLineWidth(1);
 		gratio2->Draw("pz same");
 
-                c1->SaveAs(cutTag + "Eff_" + collTag + "_RD_MC_Cent_Ntracks.root");
+/*                c1->SaveAs(cutTag + "Eff_" + collTag + "_RD_MC_Cent_Ntracks.root");
                 c1->SaveAs(cutTag + "Eff_" + collTag + "_RD_MC_Cent_Ntracks.pdf");
                 c1->SaveAs(cutTag + "Eff_" + collTag + "_RD_MC_Cent_Ntracks.png");
 // */
-/*		c1->SaveAs(cutTag + "Eff_" + collTag + "_RD_MC_Cent_HF.root");
+		c1->SaveAs(cutTag + "Eff_" + collTag + "_RD_MC_Cent_HF.root");
 		c1->SaveAs(cutTag + "Eff_" + collTag + "_RD_MC_Cent_HF.pdf");
 		c1->SaveAs(cutTag + "Eff_" + collTag + "_RD_MC_Cent_HF.png");
 // */
