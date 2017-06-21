@@ -44,11 +44,11 @@ using namespace std;
 
 // Choose the efficiency type.
 // Possible values: MUIDTRG, TRK, STA, MUID, TRG
-#define TRK
+#define STA
 
 // pp or PbPb?
 bool isPbPb = true; // if true, will compute the centrality dependence
-TString collTag = "pPb"; // Don't forget to change collTag! pPb or Pbp
+TString collTag = "Pbp"; // Don't forget to change collTag! pPb or Pbp
 
 // do the toy study for the correction factors? (only applies if MUIDTRG)
 bool doToys = false;
@@ -197,18 +197,18 @@ const char* fMCName[nSyst] = { "tnp_Ana_MC_PbPb_Trg_AllMB.root" };
 #ifdef STA
 TString etaTag("STA_etadep");
 TString absetaTag("STA_absetadep");
-TString centTag("STA_nTracksdep");
-//TString centTag("STA_HFdep");
+//TString centTag("STA_nTracksdep");
+TString centTag("STA_HFdep");
 const int nAbsEtaBins = 5;
 TString ptTag[nAbsEtaBins] = { "STA_abseta00_09", "STA_abseta09_12", "STA_abseta12_16", "STA_abseta16_21", "STA_abseta21_24" };
 TString allTag("STA_1bin");
 TString absetaVar("abseta");
-TString centVar("tag_hiNtracks");
-//TString centVar("tag_hiHF");
+//TString centVar("tag_hiNtracks");
+TString centVar("tag_hiHF");
 ofstream file_sfs("correction_functions.txt");
 ofstream file_Eta("EtaValues_Sta.txt");
-ofstream file_Cent("NtracksValues_Sta.txt");
-//ofstream file_Cent("HFValues_Sta.txt");
+//ofstream file_Cent("NtracksValues_Sta.txt");
+ofstream file_Cent("HFValues_Sta.txt");
 TString cutTag("tpTreeTrk");
 TString cutLegend("Standalone");
 const double effmin = 0.;
@@ -236,8 +236,8 @@ TString cutTag("tpTreeSta");
 TString cutLegend("Inner tracking - Global and PF");
 const double effmin = 0.8;
 const double sfrange = 0.08;
-const char* fDataName[nSyst] = { "../test/zmumuHI/TrackingResults/tnp_Ana_Data_RecoTracking_Pbp.root" };
-const char* fMCName[nSyst] = { "../test/zmumuHI/TrackingResults/tnp_Ana_MC_RecoTracking_Pbp.root" };
+const char* fDataName[nSyst] = { "../test/zmumuHI/TrackingResults/tnp_Ana_Data_RecoTracking_pPb.root" };
+const char* fMCName[nSyst] = { "../test/zmumuHI/TrackingResults/tnp_Ana_MC_RecoTracking_pPb.root" };
 #endif
 
 // Function Define
