@@ -1,9 +1,6 @@
 #include "TTree.h"
 #include "TFile.h"
 
-#define DXYCUT 0.2
-#define DZCUT 0.5
-
 #ifndef HFweight_h
 #define HFweight_h
 
@@ -74,7 +71,7 @@ TTree* copyTree(TTree* told) {
    for (int i=0; i<nentries; i++) {
       told->GetEntry(i);
 	  // HF Weight
-	  weight_HF = HFweight::weight(tag_hiHF);
+	  weight_HF = HFweight.weight(tag_hiHF);
 
       tnew->Fill();
    }
