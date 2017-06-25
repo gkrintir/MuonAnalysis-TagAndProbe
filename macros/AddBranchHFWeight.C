@@ -67,11 +67,13 @@ TTree* copyTree(TTree* told) {
 
    tnew->Branch("weight_HF",&weight_HF,"weight_HF/I");
 
+   HFweight instanceofweighthist("/afs/cern.ch/work/e/echapon/public/DY_pA_2016/HFweight.root");
+
    int nentries = told->GetEntries();
    for (int i=0; i<nentries; i++) {
       told->GetEntry(i);
 	  // HF Weight
-	  weight_HF = HFweight.weight(tag_hiHF);
+	  weight_HF = instanceofweighthist.weight(tag_hiHF);
 
       tnew->Fill();
    }
@@ -92,7 +94,7 @@ TTree* justCopyTree(TTree* told) {
 	return tnew;
 }
 
-void addFlagsToFile(const char *filein, const char *fileout) {
+void AddBranchHFWeight(const char *filein, const char *fileout) {
    TFile *fin = new TFile(filein);
    TFile *fout = new TFile(fileout,"RECREATE");
 
