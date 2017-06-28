@@ -6,7 +6,7 @@ if len(args) < 2: scenario = "0"
 else: 
    scenario = args[1]
 print "Will run scenario ", scenario
-# scenario: 1 onebin and pT, 2-4 pT in detailed abseta bins, 5 abseta, 6 eta, 7 centrality, 8 nPV, 0 (or no parameter) run all
+# scenario: 1 onebin and pT, 2-4 pT in detailed abseta bins, 5 abseta, 6 eta, 7 centrality, 0 (or no parameter) run all
 
 
 process = cms.Process("TagProbe")
@@ -21,10 +21,10 @@ PDFName = "VoigtExp"
 
 
 VEFFICIENCYSET = cms.VPSet(
-# Order: 0 onebin, 1 pT, 2-6 pT fits in abseta bins, 7 abseta, 8 eta, 9-10 centrality, 11 nPV   NOTE: IS NOT SAME AS SCENARIO
+# Order: 0 onebin, 1 pT, 2-6 pT fits in abseta bins, 7 abseta, 8 eta, 9-10 centrality   NOTE: IS NOT SAME AS SCENARIO
     cms.PSet(
-        Trk_1bin = cms.PSet(
-            EfficiencyCategoryAndState = cms.vstring("Glb","true","PF","true"),
+        STA_1bin = cms.PSet(
+            EfficiencyCategoryAndState = cms.vstring("isSTA","true"),
             UnbinnedVariables = cms.vstring("mass"),
             BinnedVariables = cms.PSet(
 #                tag_nVertices = cms.vdouble(0, 4),
@@ -36,8 +36,8 @@ VEFFICIENCYSET = cms.VPSet(
     ),
 
     cms.PSet(
-       Trk_pt = cms.PSet(
-           EfficiencyCategoryAndState = cms.vstring("Glb","true","PF","true"),
+       STA_pt = cms.PSet(
+           EfficiencyCategoryAndState = cms.vstring("isSTA","true"),
            UnbinnedVariables = cms.vstring("mass"),
            BinnedVariables = cms.PSet(
                pt = cms.vdouble(5, 15, 30, 50, 80),
@@ -49,8 +49,8 @@ VEFFICIENCYSET = cms.VPSet(
     ),
 
     cms.PSet(
-        Trk_abseta00_09 = cms.PSet(
-            EfficiencyCategoryAndState = cms.vstring("Glb","true","PF","true"),
+        STA_abseta00_09 = cms.PSet(
+            EfficiencyCategoryAndState = cms.vstring("isSTA","true"),
             UnbinnedVariables = cms.vstring("mass"),
             BinnedVariables = cms.PSet(
 #                tag_nVertices = cms.vdouble(0, 1, 2, 4),
@@ -62,8 +62,8 @@ VEFFICIENCYSET = cms.VPSet(
     ),
 
     cms.PSet(
-         Trk_abseta09_12 = cms.PSet(
-             EfficiencyCategoryAndState = cms.vstring("Glb","true","PF","true"),
+         STA_abseta09_12 = cms.PSet(
+             EfficiencyCategoryAndState = cms.vstring("isSTA","true"),
              UnbinnedVariables = cms.vstring("mass"),
              BinnedVariables = cms.PSet(
 #                 tag_nVertices = cms.vdouble(0, 1, 2, 4),
@@ -75,8 +75,8 @@ VEFFICIENCYSET = cms.VPSet(
     ),
 
     cms.PSet(
-         Trk_abseta12_16 = cms.PSet(
-             EfficiencyCategoryAndState = cms.vstring("Glb","true","PF","true"),
+         STA_abseta12_16 = cms.PSet(
+             EfficiencyCategoryAndState = cms.vstring("isSTA","true"),
              UnbinnedVariables = cms.vstring("mass"),
              BinnedVariables = cms.PSet(
 #                 tag_nVertices = cms.vdouble(0, 1, 2, 4),
@@ -88,8 +88,8 @@ VEFFICIENCYSET = cms.VPSet(
     ),
 
     cms.PSet(
-         Trk_abseta16_21 = cms.PSet(
-             EfficiencyCategoryAndState = cms.vstring("Glb","true","PF","true"),
+         STA_abseta16_21 = cms.PSet(
+             EfficiencyCategoryAndState = cms.vstring("isSTA","true"),
              UnbinnedVariables = cms.vstring("mass"),
              BinnedVariables = cms.PSet(
 #                 tag_nVertices = cms.vdouble(0, 1, 2, 4),
@@ -101,8 +101,8 @@ VEFFICIENCYSET = cms.VPSet(
     ),
 
     cms.PSet(
-         Trk_abseta21_24 = cms.PSet(
-             EfficiencyCategoryAndState = cms.vstring("Glb","true","PF","true"),
+         STA_abseta21_24 = cms.PSet(
+             EfficiencyCategoryAndState = cms.vstring("isSTA","true"),
              UnbinnedVariables = cms.vstring("mass"),
              BinnedVariables = cms.PSet(
 #                 tag_nVertices = cms.vdouble(0, 1, 2, 4),
@@ -114,8 +114,8 @@ VEFFICIENCYSET = cms.VPSet(
     ),
 
     cms.PSet(
-          Trk_absetadep = cms.PSet(
-             EfficiencyCategoryAndState = cms.vstring("Glb","true","PF","true"),
+          STA_absetadep = cms.PSet(
+             EfficiencyCategoryAndState = cms.vstring("isSTA","true"),
              UnbinnedVariables = cms.vstring("mass"),
              BinnedVariables = cms.PSet(
 #                 tag_nVertices = cms.vdouble(0, 1, 2, 4),
@@ -127,8 +127,8 @@ VEFFICIENCYSET = cms.VPSet(
     ),
 
     cms.PSet(
-         Trk_etadep = cms.PSet(
-             EfficiencyCategoryAndState = cms.vstring("Glb","true","PF","true"),
+         STA_etadep = cms.PSet(
+             EfficiencyCategoryAndState = cms.vstring("isSTA","true"),
              UnbinnedVariables = cms.vstring("mass"),
              BinnedVariables = cms.PSet(
 #                 tag_nVertices = cms.vdouble(0, 1, 2, 4),
@@ -140,11 +140,11 @@ VEFFICIENCYSET = cms.VPSet(
     ),
 
     cms.PSet(
-        Trk_HFdep = cms.PSet(
-            EfficiencyCategoryAndState = cms.vstring("Glb","true","PF","true"),
+        STA_HFdep = cms.PSet(
+            EfficiencyCategoryAndState = cms.vstring("isSTA","true"),
             UnbinnedVariables = cms.vstring("mass"),
             BinnedVariables = cms.PSet(
-                tag_hiHF = cms.vdouble(0, 50, 75, 95, 115, 150, 300),
+                tag_hiHF = cms.vdouble(0, 50, 75, 95, 115, 150, 450),
                 pt = cms.vdouble(15, 80),
                 eta = cms.vdouble(-2.4, 2.4),
             ),
@@ -153,24 +153,11 @@ VEFFICIENCYSET = cms.VPSet(
     ),
 
     cms.PSet(
-        Trk_nTracksdep = cms.PSet(
-            EfficiencyCategoryAndState = cms.vstring("Glb","true","PF","true"),
+        STA_nTracksdep = cms.PSet(
+            EfficiencyCategoryAndState = cms.vstring("isSTA","true"),
             UnbinnedVariables = cms.vstring("mass"),
             BinnedVariables = cms.PSet(
-                tag_hiNtracks = cms.vdouble(0, 50, 75, 95, 115, 150, 250),
-                pt = cms.vdouble(15, 80),
-                eta = cms.vdouble(-2.4, 2.4),
-            ),
-            BinToPDFmap = cms.vstring(PDFName)
-        )
-    ),
-
-    cms.PSet(
-        Trk_nPVdep = cms.PSet(
-            EfficiencyCategoryAndState = cms.vstring("Glb","true","PF","true"),
-            UnbinnedVariables = cms.vstring("mass"),
-            BinnedVariables = cms.PSet(
-                tag_nVertices = cms.vdouble(0.5, 1.5, 4.5),
+                tag_hiNtracks = cms.vdouble(0, 50, 75, 95, 115, 150, 300),
                 pt = cms.vdouble(15, 80),
                 eta = cms.vdouble(-2.4, 2.4),
             ),
@@ -187,18 +174,17 @@ if scenario == "4": EFFICIENCYSET = cms.PSet(VEFFICIENCYSET[6])
 if scenario == "5": EFFICIENCYSET = cms.PSet(VEFFICIENCYSET[7])
 if scenario == "6": EFFICIENCYSET = cms.PSet(VEFFICIENCYSET[8])
 if scenario == "7": EFFICIENCYSET = cms.PSet(VEFFICIENCYSET[9], VEFFICIENCYSET[10])
-if scenario == "8": EFFICIENCYSET = cms.PSet(VEFFICIENCYSET[11])
-if scenario == "0": EFFICIENCYSET = cms.PSet(VEFFICIENCYSET[0],VEFFICIENCYSET[1],VEFFICIENCYSET[2], VEFFICIENCYSET[3],VEFFICIENCYSET[4], VEFFICIENCYSET[5],VEFFICIENCYSET[6], VEFFICIENCYSET[7],VEFFICIENCYSET[8], VEFFICIENCYSET[9], VEFFICIENCYSET[10], VEFFICIENCYSET[11])
+if scenario == "0": EFFICIENCYSET = cms.PSet(VEFFICIENCYSET[0],VEFFICIENCYSET[1],VEFFICIENCYSET[2], VEFFICIENCYSET[3],VEFFICIENCYSET[4], VEFFICIENCYSET[5],VEFFICIENCYSET[6], VEFFICIENCYSET[7],VEFFICIENCYSET[8], VEFFICIENCYSET[9], VEFFICIENCYSET[10])
 
 
 
 
 process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
     # IO parameters:
-    InputFileNames = cms.vstring("file:/afs/cern.ch/user/s/stuli/stuliWork/public/TnP_run2/Current/InputFiles/MC_PbP_New/DYtoMuMu_Pbp_EmbPOS_80X_mcRun2_pA_merged.root"),
-    InputDirectoryName = cms.string("tpTreeSta"),
+    InputFileNames = cms.vstring("file:/afs/cern.ch/user/s/stuli/stuliWork/public/TnP_run2/Current/InputFiles/Data_pPb_New/PASingleMuon_PromptReco_pPb_merged_v1.root"),
+    InputDirectoryName = cms.string("tpTreeTrk"),
     InputTreeName = cms.string("fitter_tree"),
-    OutputFileName = cms.string("tnp_Ana_MC_RecoTracking_Pbp_%s.root" % scenario),
+    OutputFileName = cms.string("tnp_Ana_Data_RecoSTA_pPb_%s.root" % scenario),
     #numbrer of CPUs to use for fitting
     NumCPU = cms.uint32(25),
     # specifies whether to save the RooWorkspace containing the data for each bin and
@@ -210,13 +196,13 @@ process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
     
     # defines all the real variables of the probes available in the input tree and intended for use in the efficiencies
     Variables = cms.PSet(
-                         mass             = cms.vstring("Tag-Probe Mass", "30.0", "150.0", "GeV/c^{2}"), # mass range syst: 2.8-3.4
+                         mass             = cms.vstring("Tag-Probe Mass", "60.0", "120.0", "GeV/c^{2}"), # mass range syst: 2.8-3.4
                          pt               = cms.vstring("Probe p_{T}", "0.0", "1000", "GeV/c"),
                          eta              = cms.vstring("Probe #eta", "-2.4", "2.4", ""),
                          abseta           = cms.vstring("Probe |#eta|", "0", "2.5", ""),
-			 tag_nVertices    = cms.vstring("Number of Primary Vertices", "0", "4.5", ""),
-			 tag_hiHF	  = cms.vstring("HF energy", "0", "300", ""),
-			 tag_hiNtracks    = cms.vstring("Number of tracks", "0", "250", ""),
+#			 tag_nVertices    = cms.vstring("Number of Primary Vertices", "0", "4", ""),
+			 tag_hiHF	  = cms.vstring("HF energy", "0", "450", ""),
+			 tag_hiNtracks    = cms.vstring("Number of tracks", "0", "300", ""),
 #                         tag_hiNtracks    = cms.vstring("N Tracks", "0", "400", ""),
 #			 staValidStations = cms.vstring("Valid stations in muon system", "-2", "10", "cm"),
 #			 Glb		  = cms.vstring("Probe Global", "0.0", "2.0", ""),
@@ -224,9 +210,8 @@ process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
     # defines all the discrete variables of the probes available in the input tree and intended for use in the efficiency calculations
     Categories = cms.PSet(
 			 # MuIDForOutsideInTk = cms.vstring("OITK Seed", "dummy[pass=1,fail=0]"),
-                          Glb = cms.vstring("Glb", "dummy[true=1,false=0]"),
-                          PF  = cms.vstring("PF", "dummy[true=1, false=0]"),
-                         #Tight2012 = cms.vstring("Tight2012", "dummy[true=1,false=0]"),
+			  isSTA = cms.vstring("isSTA", "dummy[true=1,false=0]"),
+                        #Tight2012 = cms.vstring("Tight2012", "dummy[true=1,false=0]"),
                           #HybridSoftHI = cms.vstring("HybridSoftHI", "dummy[true=1,false=0]"),
                           #L1Filter  = cms.vstring("L1Filter", "dummy[true=1,false=0]"),
                           #L1Seed    = cms.vstring("L1Seed", "dummy[true=1,false=0]"),

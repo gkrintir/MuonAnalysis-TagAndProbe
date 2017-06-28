@@ -12,12 +12,12 @@ PDFName = "VoigtExp"
 
 process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
     # IO parameters:
-    InputFileNames = cms.vstring("file:/afs/cern.ch/user/s/stuli/stuliWork/public/TnP_run2/Current/InputFiles/Data_PbP_New/PASingleMuon_PromptReco_Pbp_merged_v1.root"),
+    InputFileNames = cms.vstring("file:/afs/cern.ch/user/s/stuli/stuliWork/public/TnP_run2/Current/InputFiles/MC_pPb+Pbp/DYtoMuMu_EmbPOS_80X_mcRun2_pA_merged_pruned.root"),
     InputDirectoryName = cms.string("tpTreeTrk"),
     InputTreeName = cms.string("fitter_tree"),
-    OutputFileName = cms.string("tnp_Ana_Data_RecoSTA_Pbp.root"),
+    OutputFileName = cms.string("tnp_Ana_MC_RecoSTA_pPb+Pbp.root"),
     #numbrer of CPUs to use for fitting
-    NumCPU = cms.uint32(16),
+    NumCPU = cms.uint32(25),
     # specifies whether to save the RooWorkspace containing the data for each bin and
     # the pdf object with the initial and final state snapshots
     binnedFit = cms.bool(False),
@@ -31,8 +31,8 @@ process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
                          pt               = cms.vstring("Probe p_{T}", "0.0", "1000", "GeV/c"),
                          eta              = cms.vstring("Probe #eta", "-2.4", "2.4", ""),
                          abseta           = cms.vstring("Probe |#eta|", "0", "2.5", ""),
-#                         tag_nVertices    = cms.vstring("Number of Primary Vertices", "0", "6", ""),
-                         tag_hiHF         = cms.vstring("HF energy", "0", "450", ""),
+#                         tag_nVertices    = cms.vstring("Number of Primary Vertices", "0", "4", ""),
+                         tag_hiHF         = cms.vstring("HF energy", "0", "400", ""),
                          tag_hiNtracks    = cms.vstring("Number of tracks", "0", "300", ""),
 #                         tag_hiNtracks    = cms.vstring("N Tracks", "0", "400", ""),
 #			 staValidStations = cms.vstring("Valid stations in muon system", "-2", "10", "cm"),
@@ -41,9 +41,9 @@ process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
     # defines all the discrete variables of the probes available in the input tree and intended for use in the efficiency calculations
     Categories = cms.PSet(
 			 # MuIDForOutsideInTk = cms.vstring("OITK Seed", "dummy[pass=1,fail=0]"),
+			 isSTA = cms.vstring("isSTA", "dummy[true=1,false=0]"),
 #			  Glb = cms.vstring("Glb", "dummy[true=1,false=0]"),
 #                          PF  = cms.vstring("PF", "dummy[true=1, false=0]"),
-			  isSTA = cms.vstring("isSTA", "dummy[true=1, false=0]"),
                         #Tight2012 = cms.vstring("Tight2012", "dummy[true=1,false=0]"),
                           #HybridSoftHI = cms.vstring("HybridSoftHI", "dummy[true=1,false=0]"),
                           #L1Filter  = cms.vstring("L1Filter", "dummy[true=1,false=0]"),
@@ -117,11 +117,11 @@ process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
 
 #        STA_nPVdep = cms.PSet(
 #           EfficiencyCategoryAndState = cms.vstring("MuIDForOutsideInTk","pass"),
+#            EfficiencyCategoryAndState = cms.vstring("Glb","true"),
 #            EfficiencyCategoryAndState = cms.vstring("isSTA","true"),
-#            EfficiencyCategoryAndState = cms.vstring("PF","true"),
 #            UnbinnedVariables = cms.vstring("mass"),
 #            BinnedVariables = cms.PSet(
-#                tag_nVertices = cms.vdouble(0, 1, 6),
+#                tag_nVertices = cms.vdouble(0, 1, 4),
 #                pt = cms.vdouble(15, 80),
 #                eta = cms.vdouble(-2.4, 2.4),
 #            ),
@@ -129,11 +129,10 @@ process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
 #        ),
 
         STA_HFdep = cms.PSet(
-#           EfficiencyCategoryAndState = cms.vstring("MuIDForOutsideInTk","pass"),
             EfficiencyCategoryAndState = cms.vstring("isSTA","true"),
             UnbinnedVariables = cms.vstring("mass"),
             BinnedVariables = cms.PSet(
-                tag_hiHF = cms.vdouble(0, 50, 75, 95, 115, 150, 450),
+                tag_hiHF = cms.vdouble(0, 50, 75, 95, 115, 150, 400),
                 pt = cms.vdouble(15, 80),
                 eta = cms.vdouble(-2.4, 2.4),
             ),
@@ -141,7 +140,6 @@ process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
         ),
 
         STA_nTracksdep = cms.PSet(
-#           EfficiencyCategoryAndState = cms.vstring("MuIDForOutsideInTk","pass"),
             EfficiencyCategoryAndState = cms.vstring("isSTA","true"),
             UnbinnedVariables = cms.vstring("mass"),
             BinnedVariables = cms.PSet(
@@ -153,11 +151,10 @@ process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
         ),
 
         STA_1bin = cms.PSet(
-#           EfficiencyCategoryAndState = cms.vstring("MuIDForOutsideInTk","pass"),
             EfficiencyCategoryAndState = cms.vstring("isSTA","true"),
             UnbinnedVariables = cms.vstring("mass"),
             BinnedVariables = cms.PSet(
-#                tag_nVertices = cms.vdouble(0, 6),
+#                tag_nVertices = cms.vdouble(0, 4),
                 pt = cms.vdouble(15, 80),
                 eta = cms.vdouble(-2.4, 2.4),
             ),
@@ -165,23 +162,21 @@ process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
         ),
 
        STA_pt = cms.PSet(
-#           EfficiencyCategoryAndState = cms.vstring("MuIDForOutsideInTk","pass"),
            EfficiencyCategoryAndState = cms.vstring("isSTA","true"),
            UnbinnedVariables = cms.vstring("mass"),
-           BinnedVariables = cms.PSet(
+           BinnedVariables = cms.PSet( 
                pt = cms.vdouble(5, 15, 30, 50, 80),
                eta = cms.vdouble(-2.4,2.4),
-#               tag_nVertices = cms.vdouble(0, 1, 2, 6),
+#               tag_nVertices = cms.vdouble(0, 1, 2, 4),
            ),
            BinToPDFmap = cms.vstring(PDFName)
        ),
 
         STA_abseta00_09 = cms.PSet(
-#            EfficiencyCategoryAndState = cms.vstring("MuIDForOutsideInTk","pass"),
             EfficiencyCategoryAndState = cms.vstring("isSTA","true"),
             UnbinnedVariables = cms.vstring("mass"),
             BinnedVariables = cms.PSet(
-#                tag_nVertices = cms.vdouble(0, 1, 2, 6),
+#                tag_nVertices = cms.vdouble(0, 1, 2, 4),
                 pt = cms.vdouble(15, 30, 50, 80),
                 abseta = cms.vdouble(0, 0.9),
             ),
@@ -189,11 +184,10 @@ process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
         ),
 
          STA_abseta09_12 = cms.PSet(
-#           EfficiencyCategoryAndState = cms.vstring("MuIDForOutsideInTk","pass"),
              EfficiencyCategoryAndState = cms.vstring("isSTA","true"),
              UnbinnedVariables = cms.vstring("mass"),
              BinnedVariables = cms.PSet(
-#                 tag_nVertices = cms.vdouble(0, 1, 2, 6),
+#                 tag_nVertices = cms.vdouble(0, 1, 2, 4),
                  pt = cms.vdouble(15, 30, 50, 80),
                  abseta = cms.vdouble(0.9,1.2),
              ),
@@ -201,11 +195,10 @@ process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
          ),
 
          STA_abseta12_16 = cms.PSet(
-#            EfficiencyCategoryAndState = cms.vstring("MuIDForOutsideInTk","pass"),
              EfficiencyCategoryAndState = cms.vstring("isSTA","true"),
              UnbinnedVariables = cms.vstring("mass"),
              BinnedVariables = cms.PSet(
-#                 tag_nVertices = cms.vdouble(0, 1, 2, 6),
+#                 tag_nVertices = cms.vdouble(0, 1, 2, 4),
                  pt = cms.vdouble(15, 30, 50, 80),
                  abseta = cms.vdouble(1.2, 1.6),
              ),
@@ -213,11 +206,10 @@ process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
          ),
 
          STA_abseta16_21 = cms.PSet(
-#            EfficiencyCategoryAndState = cms.vstring("MuIDForOutsideInTk","pass"),
              EfficiencyCategoryAndState = cms.vstring("isSTA","true"),
              UnbinnedVariables = cms.vstring("mass"),
              BinnedVariables = cms.PSet(
-#                 tag_nVertices = cms.vdouble(0, 1, 2, 6),
+#                 tag_nVertices = cms.vdouble(0, 1, 2, 4),
                  pt = cms.vdouble(15, 30, 50, 80),
                  abseta = cms.vdouble(1.6, 2.1),
              ),
@@ -226,11 +218,10 @@ process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
 
 
          STA_abseta21_24 = cms.PSet(
-#             EfficiencyCategoryAndState = cms.vstring("MuIDForOutsideInTk","pass"),
              EfficiencyCategoryAndState = cms.vstring("isSTA","true"),
              UnbinnedVariables = cms.vstring("mass"),
              BinnedVariables = cms.PSet(
-#                 tag_nVertices = cms.vdouble(0, 1, 2, 6),
+#                 tag_nVertices = cms.vdouble(0, 1, 2, 4),
                  pt = cms.vdouble(15, 30, 50, 80),
                  abseta = cms.vdouble(2.1,2.4),
              ),
@@ -238,11 +229,10 @@ process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
          ),
 
           STA_absetadep = cms.PSet(
-#             EfficiencyCategoryAndState = cms.vstring("MuIDForOutsideInTk","pass"),
              EfficiencyCategoryAndState = cms.vstring("isSTA","true"),
              UnbinnedVariables = cms.vstring("mass"),
              BinnedVariables = cms.PSet(
-#                 tag_nVertices = cms.vdouble(0, 1, 2, 6),
+#                 tag_nVertices = cms.vdouble(0, 1, 2, 4),
                  pt = cms.vdouble(15, 80),
                  abseta = cms.vdouble(0,0.9,1.2,1.6,2.1,2.4),
              ),
@@ -250,11 +240,10 @@ process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
          ),
 
          STA_etadep = cms.PSet(
-#             EfficiencyCategoryAndState = cms.vstring("MuIDForOutsideInTk","pass"),
              EfficiencyCategoryAndState = cms.vstring("isSTA","true"),
              UnbinnedVariables = cms.vstring("mass"),
              BinnedVariables = cms.PSet(
-#                 tag_nVertices = cms.vdouble(0, 1, 2, 6),
+#                 tag_nVertices = cms.vdouble(0, 1, 2, 4),
                  pt = cms.vdouble(15, 80),
                  eta = cms.vdouble(-2.4,-2.1,-1.6,-1.2,-0.9,0,0.9,1.2,1.6,2.1,2.4),
              ),
