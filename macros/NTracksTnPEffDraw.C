@@ -197,18 +197,18 @@ const char* fMCName[nSyst] = { "tnp_Ana_MC_PbPb_Trg_AllMB.root" };
 #ifdef STA
 TString etaTag("STA_etadep");
 TString absetaTag("STA_absetadep");
-//TString centTag("STA_nTracksdep");
-TString centTag("STA_HFdep");
+TString centTag("STA_nTracksdep");
+//TString centTag("STA_HFdep");
 const int nAbsEtaBins = 5;
 TString ptTag[nAbsEtaBins] = { "STA_abseta00_09", "STA_abseta09_12", "STA_abseta12_16", "STA_abseta16_21", "STA_abseta21_24" };
 TString allTag("STA_1bin");
 TString absetaVar("abseta");
-//TString centVar("tag_hiNtracks");
-TString centVar("tag_hiHF");
+TString centVar("tag_hiNtracks");
+//TString centVar("tag_hiHF");
 ofstream file_sfs("correction_functions.txt");
 ofstream file_Eta("EtaValues_Sta.txt");
-//ofstream file_Cent("NtracksValues_Sta.txt");
-ofstream file_Cent("HFValues_Sta.txt");
+ofstream file_Cent("NtracksValues_Sta.txt");
+//ofstream file_Cent("HFValues_Sta.txt");
 TString cutTag("tpTreeTrk");
 TString cutLegend("Standalone");
 const double effmin = 0.9;
@@ -220,18 +220,18 @@ const char* fMCName[nSyst] = { "../test/zmumuHI/STAResults/tnp_Ana_MC_RecoSTA_Pb
 #ifdef TRK
 TString etaTag("Trk_etadep");
 TString absetaTag("Trk_absetadep");
-//TString centTag("Trk_nTracksdep");
-TString centTag("Trk_HFdep");
+TString centTag("Trk_nTracksdep");
+//TString centTag("Trk_HFdep");
 const int nAbsEtaBins = 5;
 TString ptTag[nAbsEtaBins] = { "Trk_abseta00_09", "Trk_abseta09_12", "Trk_abseta12_16", "Trk_abseta16_21", "Trk_abseta21_24" };
 TString allTag("Trk_1bin");
 TString absetaVar("abseta");
-//TString centVar("tag_hiNtracks");
-TString centVar("tag_hiHF");
+TString centVar("tag_hiNtracks");
+//TString centVar("tag_hiHF");
 ofstream file_sfs("correction_functions.txt");
 ofstream file_Eta("EtaValues_Trk.txt");
-//ofstream file_Cent("NtracksValues_Sta.txt");
-ofstream file_Cent("HFValues_Trk.txt");
+ofstream file_Cent("NtracksValues_Sta.txt");
+//ofstream file_Cent("HFValues_Trk.txt");
 TString cutTag("tpTreeSta");
 TString cutLegend("Inner tracking - Global and PF");
 const double effmin = 0.9;
@@ -257,7 +257,7 @@ TF1 *ratiofunc(const char* fname, TF1 *fnum, TF1 *fden);
 ofstream file_binnedsfs("correction_binned.txt");
 
 // From here you need to set up your environments.
-void TnPEffDraw_singleFile_O() {
+void NTracksTnPEffDraw() {
 
 	// gROOT->Macro("~/logon.C");
 	gROOT->SetStyle("Plain");
@@ -435,8 +435,8 @@ void TnPEffDraw_singleFile_O() {
 
 	TH1F *hPad = new TH1F("hPad", ";p^{#mu}_{T} [GeV/c];Single #mu Efficiency", 5, 10, 80);  // changed lower limit from 0 to 10
 	TH1F *hPad1 = new TH1F("hPad1", ";#eta^{#mu};Single #mu Efficiency", 5, -2.4, 2.4);
-//        TH1F *hPad2 = new TH1F("hPad2", ";Centrality - Ntracks ;Single #mu Efficiency", 5, 0, 300);
-	TH1F *hPad2 = new TH1F("hPad2", ";Centrality - HF ;Single #mu Efficiency", 5, 0, 300);
+        TH1F *hPad2 = new TH1F("hPad2", ";Centrality - Ntracks ;Single #mu Efficiency", 5, 0, 300);
+//	TH1F *hPad2 = new TH1F("hPad2", ";Centrality - HF ;Single #mu Efficiency", 5, 0, 300);
 	hPad->GetXaxis()->CenterTitle();
 	hPad1->GetXaxis()->CenterTitle();
 	hPad2->GetXaxis()->CenterTitle();
@@ -889,11 +889,11 @@ void TnPEffDraw_singleFile_O() {
 		gratio2->SetLineWidth(1);
 		gratio2->Draw("pz same");
 
-/*                c1->SaveAs(cutTag + "Eff_" + collTag + "_RD_MC_Cent_Ntracks.root");
+                c1->SaveAs(cutTag + "Eff_" + collTag + "_RD_MC_Cent_Ntracks.root");
                 c1->SaveAs(cutTag + "Eff_" + collTag + "_RD_MC_Cent_Ntracks.pdf");
                 c1->SaveAs(cutTag + "Eff_" + collTag + "_RD_MC_Cent_Ntracks.png");
 // */
-		c1->SaveAs(cutTag + "Eff_" + collTag + "_RD_MC_Cent_HF.root");
+/*		c1->SaveAs(cutTag + "Eff_" + collTag + "_RD_MC_Cent_HF.root");
 		c1->SaveAs(cutTag + "Eff_" + collTag + "_RD_MC_Cent_HF.pdf");
 		c1->SaveAs(cutTag + "Eff_" + collTag + "_RD_MC_Cent_HF.png");
 // */

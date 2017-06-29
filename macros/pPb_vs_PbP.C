@@ -1,18 +1,31 @@
 #include "TnPEffDraw_singleFile.C"
 
 void pPb_vs_PbP (const char* file_pPb, const char* file_PbP, const char* fullpathtodataset="tpTree/Iso_etadep/fit_eff") {
+
+   gStyle->SetOptStat(0);
+
    TFile *_file0 = TFile::Open(file_pPb);
    TFile *_file1 = TFile::Open(file_PbP);
-   TH1F *haxes = new TH1F("haxes","haxes;#eta;Efficiency",1,-2.4,2.4);
-   haxes->GetYaxis()->SetRangeUser(0.9,1);
+//   TH1F *haxes = new TH1F("haxes","pPb vs Pbp;#eta;Efficiency",1,-2.4,2.4);
+//   TH1F *haxes = new TH1F("haxes","pPb vs Pbp;Number of Vertices;Efficiency",1,0,6.5);
+   TH1F *haxes = new TH1F("haxes","pPb vs Pbp;Event Activity - HF;Efficiency",1,0,300);
+
+   haxes->GetYaxis()->SetRangeUser(0.9,1.01);
    TCanvas *c1 = new TCanvas();
    haxes->Draw();
 
-   TGraphAsymmErrors *tg0 = plotEff_1bin((RooDataSet*) _file0->Get(fullpathtodataset),1,"eta");
+//   TGraphAsymmErrors *tg0 = plotEff_1bin((RooDataSet*) _file0->Get(fullpathtodataset),1,"eta");
+//   TGraphAsymmErrors *tg0 = plotEff_1bin((RooDataSet*) _file0->Get(fullpathtodataset),1,"tag_nVertices");
+   TGraphAsymmErrors *tg0 = plotEff_1bin((RooDataSet*) _file0->Get(fullpathtodataset),1,"tag_hiHF");
+
    tg0->SetLineColor(kRed);
    tg0->SetMarkerColor(kRed);
    tg0->Draw("P");
-   TGraphAsymmErrors *tg1 = plotEff_1bin((RooDataSet*) _file1->Get(fullpathtodataset),1,"eta");
+
+//   TGraphAsymmErrors *tg1 = plotEff_1bin((RooDataSet*) _file1->Get(fullpathtodataset),1,"eta");
+//   TGraphAsymmErrors *tg1 = plotEff_1bin((RooDataSet*) _file1->Get(fullpathtodataset),1,"tag_nVertices");
+   TGraphAsymmErrors *tg1 = plotEff_1bin((RooDataSet*) _file1->Get(fullpathtodataset),1,"tag_hiHF");
+
    tg1->SetLineColor(kBlue);
    tg1->SetMarkerColor(kBlue);
    tg1->Draw("P");
@@ -22,6 +35,13 @@ void pPb_vs_PbP (const char* file_pPb, const char* file_PbP, const char* fullpat
    tleg->AddEntry(tg0,"pPb","lp");
    tleg->AddEntry(tg1,"PbP","lp");
    tleg->Draw();
+
+//   c1->SaveAs("STA_pPb_vs_Pbp_Etadep.pdf");
+//   c1->SaveAs("STA_pPb_vs_Pbp_Etadep.png");
+//   c1->SaveAs("Trk_pPb_vs_Pbp_PUdep.pdf");
+//   c1->SaveAs("Trk_pPb_vs_Pbp_PUdep.png");
+   c1->SaveAs("STA_pPb_vs_Pbp_HFdep.pdf");
+   c1->SaveAs("STA_pPb_vs_Pbp_HFdep.png");
 
    cout << "Differences: \neta : diff : differr" << endl;
 
@@ -40,4 +60,12 @@ void pPb_vs_PbP (const char* file_pPb, const char* file_PbP, const char* fullpat
    TCanvas *c2 = new TCanvas();
    hpull->Draw();
    hpull->Fit("gaus");
+   
+//   c2->SaveAs("STA_pPb_vs_Pbp_Etadep_pulls.pdf");
+//   c2->SaveAs("STA_pPb_vs_Pbp_Etadep_pulls.png");
+//   c2->SaveAs("Trk_pPb_vs_Pbp_PUdep_pulls.pdf");
+//   c2->SaveAs("Trk_pPb_vs_Pbp_PUdep_pulls.png");
+   c2->SaveAs("STA_pPb_vs_Pbp_HFdep_pulls.pdf");
+   c2->SaveAs("STA_pPb_vs_Pbp_HFdep_pulls.png");
+
 }
