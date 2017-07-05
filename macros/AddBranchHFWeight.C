@@ -65,7 +65,7 @@ TTree* copyTree(TTree* told) {
 
    told->SetBranchAddress("tag_hiHF", &tag_hiHF);
 
-   tnew->Branch("weight_HF",&weight_HF,"weight_HF/I");
+   tnew->Branch("weight_HF",&weight_HF,"weight_HF/F");
 
    HFweight instanceofweighthist("/afs/cern.ch/work/e/echapon/public/DY_pA_2016/HFweight.root");
 
@@ -101,7 +101,7 @@ void AddBranchHFWeight(const char *filein, const char *fileout) {
    fout->cd();
    TDirectory *tdir_trk = fout->mkdir("tpTreeSta");
    tdir_trk->cd();
-   TTree *tr_trk = justCopyTree((TTree*)fin->Get("tpTreeSta/fitter_tree"));
+   TTree *tr_trk = copyTree((TTree*)fin->Get("tpTreeSta/fitter_tree"));
 
    fout->cd();
    TDirectory *tdir_muidtrg = fout->mkdir("tpTree");
@@ -111,7 +111,7 @@ void AddBranchHFWeight(const char *filein, const char *fileout) {
    fout->cd();
    TDirectory *tdir_trg = fout->mkdir("tpTreeTrk");
    tdir_trg->cd();
-   TTree *tr_trg = justCopyTree((TTree*)fin->Get("tpTreeTrk/fitter_tree"));
+   TTree *tr_trg = copyTree((TTree*)fin->Get("tpTreeTrk/fitter_tree"));
 
 
    fout->Write();
