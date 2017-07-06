@@ -131,7 +131,7 @@ void AddHFWeightMC(){
 
     MCTree->GetEntry(nEvent);
 
-    weight = hWeighthiHF_aux->GetBinContent(MChiHF+1);
+    weight = hWeighthiHF_aux->GetBinContent(hWeighthiHF_aux->FindBin(MChiHF));
     hWeightedMC->Fill(MChiHF,weight*normMC);
     newBranch->Fill();
 //    WeightedhiHF = hWeighthiHF->GetBinContent(MChiHF);
@@ -144,7 +144,7 @@ void AddHFWeightMC(){
   hWeightedMC->SetLineColor(3);
   hWeightedMC->SetLineWidth(2);
   hWeightedMC->GetXaxis()->SetTitle("HF Energy");
-  hWeightedMC->GetYaxis()->SetTitle("Weight");
+  hWeightedMC->GetYaxis()->SetTitle("Data and weighted MC");
   hWeightedMC->Draw("");
   hDatahiHF2_aux->Draw("pe same");
   cc->SaveAs("cc.png");
