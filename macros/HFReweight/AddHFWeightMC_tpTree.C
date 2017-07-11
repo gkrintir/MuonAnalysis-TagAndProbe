@@ -1,20 +1,32 @@
-/* #include "TTree.h"
-#include "TFile.h"
-#include "TH1.h"
-#include <iostream>
 
-using namespace std;
+
+void AddHFWeightMC_tpTree(){
+
+//  int filetype = 1; // 1 = pPb, 2 = Pbp, 3 = pPb=Pbp
+
+//  if (filetype == 1) {
+// pPb
+//  TFile *inputData = TFile::Open("/afs/cern.ch/user/s/stuli/stuliWork/public/TnP_run2/Current/InputFiles/Data/PASingleMuon_PromptReco_pPb_merged_v1.root");
+//  TFile *inputMC   = TFile::Open("./MC_PrunedTrees/TnP_DYtoMuMu_Embd_PU_pPb_pruned.root","update");
+//  }
+
+//  else if (filetype == 2) {
+// Pbp
+//  TFile *inputData = TFile::Open("/afs/cern.ch/user/s/stuli/stuliWork/public/TnP_run2/Current/InputFiles/Data/PASingleMuon_PromptReco_Pbp_merged_v1.root");
+//  TFile *inputMC   = TFile::Open("./MC_PrunedTrees/TnP_DYtoMuMu_Embd_PU_Pbp_pruned.root","update");
+//  }
+
+//  else {
+// pPb+Pbp
+  TFile *inputData = TFile::Open("/afs/cern.ch/user/s/stuli/stuliWork/public/TnP_run2/Current/InputFiles/Data/PASingleMuon_PromptReco_pPb+Pbp.root");
+  TFile *inputMC   = TFile::Open("./MC_PrunedTrees/TnP_DYtoMuMu_Embd_PU-merged.root","update");
+//  }
 // */
-void AddHFWeightMC(){
-
-  TFile *inputData = TFile::Open("PASingleMuon_PromptReco_pPb_merged_v1.root");
-  TFile *inputMC   = TFile::Open("DYtoMuMu_pPb_EmbPOS_80X_mcRun2_pA_merged.root","update");
 
   Float_t DatahiHF;
   Float_t MChiHF;
 
   Float_t weight;
-//  Float_t WeightedhiHF;
 
   TH1F* hDatahiHF_aux  = new TH1F("hDatahiHF_aux" ,"",50,0.,450.);
   TH1F* hDatahiHF2_aux  = new TH1F("hDatahiHF2_aux" ,"",50,0.,450.);
@@ -38,7 +50,7 @@ void AddHFWeightMC(){
 
   hWeightedMC->Sumw2();
 
-  dataTree = (TTree*)inputData->Get("tpTreeSta/fitter_tree");
+  dataTree = (TTree*)inputData->Get("tpTree/fitter_tree");
   dataTree->SetBranchAddress("tag_hiHF",&DatahiHF);
   Int_t nData = dataTree->GetEntries();
 
@@ -56,7 +68,7 @@ void AddHFWeightMC(){
 
   }
 
-  MCTree = (TTree*)inputMC->Get("tpTreeSta/fitter_tree");
+  MCTree = (TTree*)inputMC->Get("tpTree/fitter_tree");
   MCTree->SetBranchAddress("tag_hiHF",&MChiHF);
   Int_t nMC = MCTree->GetEntries();
 
@@ -107,7 +119,7 @@ void AddHFWeightMC(){
 
   c->cd(4);
   hWeighthiHF->Draw("pe");
-  c->SaveAs("c.png");
+//  c->SaveAs("c.png");
 
   TCanvas *ca = new TCanvas();
   ca->Divide(2,2);
@@ -122,10 +134,9 @@ void AddHFWeightMC(){
 
   ca->cd(4);
   hWeighthiHF_aux->Draw("pe");
-  ca->SaveAs("ca.png");
+//  ca->SaveAs("ca.png");
 
   TBranch *newBranch = MCTree->Branch("weight", &weight, "weight/F");
-//  TBranch *anothernewBranch = MCTree->Branch("WeightedhiHF", &WeightedhiHF, "WeightedhiHF/F");
 
   for(size_t nEvent=0; nEvent<nMC; ++nEvent){
 
@@ -134,9 +145,6 @@ void AddHFWeightMC(){
     weight = hWeighthiHF_aux->GetBinContent(hWeighthiHF_aux->FindBin(MChiHF));
     hWeightedMC->Fill(MChiHF,weight*normMC);
     newBranch->Fill();
-//    WeightedhiHF = hWeighthiHF->GetBinContent(MChiHF);
-//    anothernewBranch->Fill();
-
   }
 
   TCanvas *cc = new TCanvas();
@@ -144,10 +152,10 @@ void AddHFWeightMC(){
   hWeightedMC->SetLineColor(3);
   hWeightedMC->SetLineWidth(2);
   hWeightedMC->GetXaxis()->SetTitle("HF Energy");
-  hWeightedMC->GetYaxis()->SetTitle("Data and weighted MC");
+  hWeightedMC->GetYaxis()->SetTitle("Weighted MC");
   hWeightedMC->Draw("");
-  hDatahiHF2_aux->Draw("pe same");
-  cc->SaveAs("cc.png");
+//  hDatahiHF2_aux->Draw("pe same");
+//  cc->SaveAs("cc.png");
 
 
   inputMC->Write("", TObject::kOverwrite);
