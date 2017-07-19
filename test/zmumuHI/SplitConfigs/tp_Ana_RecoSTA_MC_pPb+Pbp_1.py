@@ -25,7 +25,7 @@ VEFFICIENCYSET = cms.VPSet(
     cms.PSet(
         STA_1bin = cms.PSet(
             EfficiencyCategoryAndState = cms.vstring("isSTA","true"),
-            UnbinnedVariables = cms.vstring("mass"),
+            UnbinnedVariables = cms.vstring("mass","weight"),
             BinnedVariables = cms.PSet(
 #                tag_nVertices = cms.vdouble(0, 4),
                 pt = cms.vdouble(15, 80),
@@ -38,7 +38,7 @@ VEFFICIENCYSET = cms.VPSet(
     cms.PSet(
        STA_pt = cms.PSet(
            EfficiencyCategoryAndState = cms.vstring("isSTA","true"),
-           UnbinnedVariables = cms.vstring("mass"),
+           UnbinnedVariables = cms.vstring("mass","weight"),
            BinnedVariables = cms.PSet(
                pt = cms.vdouble(5, 15, 30, 50, 80),
                eta = cms.vdouble(-2.4,2.4),
@@ -51,7 +51,7 @@ VEFFICIENCYSET = cms.VPSet(
     cms.PSet(
         STA_abseta00_09 = cms.PSet(
             EfficiencyCategoryAndState = cms.vstring("isSTA","true"),
-            UnbinnedVariables = cms.vstring("mass"),
+            UnbinnedVariables = cms.vstring("mass","weight"),
             BinnedVariables = cms.PSet(
 #                tag_nVertices = cms.vdouble(0, 1, 2, 4),
                 pt = cms.vdouble(15, 30, 50, 80),
@@ -64,7 +64,7 @@ VEFFICIENCYSET = cms.VPSet(
     cms.PSet(
          STA_abseta09_12 = cms.PSet(
              EfficiencyCategoryAndState = cms.vstring("isSTA","true"),
-             UnbinnedVariables = cms.vstring("mass"),
+             UnbinnedVariables = cms.vstring("mass","weight"),
              BinnedVariables = cms.PSet(
 #                 tag_nVertices = cms.vdouble(0, 1, 2, 4),
                  pt = cms.vdouble(15, 30, 50, 80),
@@ -77,7 +77,7 @@ VEFFICIENCYSET = cms.VPSet(
     cms.PSet(
          STA_abseta12_16 = cms.PSet(
              EfficiencyCategoryAndState = cms.vstring("isSTA","true"),
-             UnbinnedVariables = cms.vstring("mass"),
+             UnbinnedVariables = cms.vstring("mass","weight"),
              BinnedVariables = cms.PSet(
 #                 tag_nVertices = cms.vdouble(0, 1, 2, 4),
                  pt = cms.vdouble(15, 30, 50, 80),
@@ -90,7 +90,7 @@ VEFFICIENCYSET = cms.VPSet(
     cms.PSet(
          STA_abseta16_21 = cms.PSet(
              EfficiencyCategoryAndState = cms.vstring("isSTA","true"),
-             UnbinnedVariables = cms.vstring("mass"),
+             UnbinnedVariables = cms.vstring("mass","weight"),
              BinnedVariables = cms.PSet(
 #                 tag_nVertices = cms.vdouble(0, 1, 2, 4),
                  pt = cms.vdouble(15, 30, 50, 80),
@@ -103,7 +103,7 @@ VEFFICIENCYSET = cms.VPSet(
     cms.PSet(
          STA_abseta21_24 = cms.PSet(
              EfficiencyCategoryAndState = cms.vstring("isSTA","true"),
-             UnbinnedVariables = cms.vstring("mass"),
+             UnbinnedVariables = cms.vstring("mass","weight"),
              BinnedVariables = cms.PSet(
 #                 tag_nVertices = cms.vdouble(0, 1, 2, 4),
                  pt = cms.vdouble(15, 30, 50, 80),
@@ -116,7 +116,7 @@ VEFFICIENCYSET = cms.VPSet(
     cms.PSet(
           STA_absetadep = cms.PSet(
              EfficiencyCategoryAndState = cms.vstring("isSTA","true"),
-             UnbinnedVariables = cms.vstring("mass"),
+             UnbinnedVariables = cms.vstring("mass","weight"),
              BinnedVariables = cms.PSet(
 #                 tag_nVertices = cms.vdouble(0, 1, 2, 4),
                  pt = cms.vdouble(15, 80),
@@ -129,7 +129,7 @@ VEFFICIENCYSET = cms.VPSet(
     cms.PSet(
          STA_etadep = cms.PSet(
              EfficiencyCategoryAndState = cms.vstring("isSTA","true"),
-             UnbinnedVariables = cms.vstring("mass"),
+             UnbinnedVariables = cms.vstring("mass","weight"),
              BinnedVariables = cms.PSet(
 #                 tag_nVertices = cms.vdouble(0, 1, 2, 4),
                  pt = cms.vdouble(15, 80),
@@ -142,7 +142,7 @@ VEFFICIENCYSET = cms.VPSet(
     cms.PSet(
         STA_HFdep = cms.PSet(
             EfficiencyCategoryAndState = cms.vstring("isSTA","true"),
-            UnbinnedVariables = cms.vstring("mass"),
+            UnbinnedVariables = cms.vstring("mass","weight"),
             BinnedVariables = cms.PSet(
                 tag_hiHF = cms.vdouble(0, 50, 75, 95, 115, 150, 400),
                 pt = cms.vdouble(15, 80),
@@ -155,7 +155,7 @@ VEFFICIENCYSET = cms.VPSet(
     cms.PSet(
         STA_nTracksdep = cms.PSet(
             EfficiencyCategoryAndState = cms.vstring("isSTA","true"),
-            UnbinnedVariables = cms.vstring("mass"),
+            UnbinnedVariables = cms.vstring("mass","weight"),
             BinnedVariables = cms.PSet(
                 tag_hiNtracks = cms.vdouble(0, 50, 75, 95, 115, 150, 300),
                 pt = cms.vdouble(15, 80),
@@ -181,7 +181,7 @@ if scenario == "0": EFFICIENCYSET = cms.PSet(VEFFICIENCYSET[0],VEFFICIENCYSET[1]
 
 process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
     # IO parameters:
-    InputFileNames = cms.vstring("file:/afs/cern.ch/user/s/stuli/stuliWork/public/TnP_run2/Current/InputFiles/MC_pPb+Pbp/DYtoMuMu_EmbPOS_80X_mcRun2_pA_merged_pruned.root"),
+    InputFileNames = cms.vstring("file:/afs/cern.ch/user/s/stuli/stuliWork/public/TnP_run2/Current/InputFiles/MC_Pruned_HFWeightedTrees/TnP_DYtoMuMu_Embd_PU-merged_weighted.root"),
     InputDirectoryName = cms.string("tpTreeTrk"),
     InputTreeName = cms.string("fitter_tree"),
     OutputFileName = cms.string("tnp_Ana_MC_RecoSTA_pPb+Pbp_%s.root" % scenario),
@@ -203,6 +203,7 @@ process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
 #			 tag_nVertices    = cms.vstring("Number of Primary Vertices", "0", "4", ""),
 			 tag_hiHF	  = cms.vstring("HF energy", "0", "400", ""),
 			 tag_hiNtracks    = cms.vstring("Number of tracks", "0", "300", ""),
+                         weight           = cms.vstring("weight","0","10",""),
 #                         tag_hiNtracks    = cms.vstring("N Tracks", "0", "400", ""),
 #			 staValidStations = cms.vstring("Valid stations in muon system", "-2", "10", "cm"),
 #			 Glb		  = cms.vstring("Probe Global", "0.0", "2.0", ""),

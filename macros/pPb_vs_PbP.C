@@ -7,7 +7,7 @@ void pPb_vs_PbP (const char* file_pPb, const char* file_PbP, const char* fullpat
    TFile *_file0 = TFile::Open(file_pPb);
    TFile *_file1 = TFile::Open(file_PbP);
 //   TH1F *haxes = new TH1F("haxes","pPb vs Pbp;#eta;Efficiency",1,-2.4,2.4);
-//   TH1F *haxes = new TH1F("haxes","pPb vs Pbp;Number of Vertices;Efficiency",1,0,6.5);
+//   TH1F *haxes = new TH1F("haxes","pPb vs Pbp;Number of Vertices;Efficiency",1,0,6.5);  // For Trk only
    TH1F *haxes = new TH1F("haxes","pPb vs Pbp;Event Activity - HF;Efficiency",1,0,300);
 
    haxes->GetYaxis()->SetRangeUser(0.9,1.01);
@@ -36,12 +36,12 @@ void pPb_vs_PbP (const char* file_pPb, const char* file_PbP, const char* fullpat
    tleg->AddEntry(tg1,"PbP","lp");
    tleg->Draw();
 
-//   c1->SaveAs("STA_pPb_vs_Pbp_Etadep.pdf");
-//   c1->SaveAs("STA_pPb_vs_Pbp_Etadep.png");
+//   c1->SaveAs("Trk_pPb_vs_Pbp_Etadep.pdf");
+//   c1->SaveAs("Trk_pPb_vs_Pbp_Etadep.png");
 //   c1->SaveAs("Trk_pPb_vs_Pbp_PUdep.pdf");
 //   c1->SaveAs("Trk_pPb_vs_Pbp_PUdep.png");
-   c1->SaveAs("STA_pPb_vs_Pbp_HFdep.pdf");
-   c1->SaveAs("STA_pPb_vs_Pbp_HFdep.png");
+   c1->SaveAs("Trk_pPb_vs_Pbp_HFdep.pdf");
+   c1->SaveAs("Trk_pPb_vs_Pbp_HFdep.png");
 
    cout << "Differences: \neta : diff : differr" << endl;
 
@@ -61,11 +61,11 @@ void pPb_vs_PbP (const char* file_pPb, const char* file_PbP, const char* fullpat
    hpull->Draw();
    hpull->Fit("gaus");
    
-//   c2->SaveAs("STA_pPb_vs_Pbp_Etadep_pulls.pdf");
-//   c2->SaveAs("STA_pPb_vs_Pbp_Etadep_pulls.png");
+//   c2->SaveAs("Trk_pPb_vs_Pbp_Etadep_pulls.pdf");
+//   c2->SaveAs("Trk_pPb_vs_Pbp_Etadep_pulls.png");
 //   c2->SaveAs("Trk_pPb_vs_Pbp_PUdep_pulls.pdf");
 //   c2->SaveAs("Trk_pPb_vs_Pbp_PUdep_pulls.png");
-   c2->SaveAs("STA_pPb_vs_Pbp_HFdep_pulls.pdf");
-   c2->SaveAs("STA_pPb_vs_Pbp_HFdep_pulls.png");
+   c2->SaveAs("Trk_pPb_vs_Pbp_HFdep_pulls.pdf");
+   c2->SaveAs("Trk_pPb_vs_Pbp_HFdep_pulls.png");
 
 }
