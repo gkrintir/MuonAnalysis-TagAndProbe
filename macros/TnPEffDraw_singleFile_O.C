@@ -436,7 +436,7 @@ void TnPEffDraw_singleFile_O() {
 	TH1F *hPad = new TH1F("hPad", ";p^{#mu}_{T} [GeV/c];Single #mu Efficiency", 5, 10, 80);  // changed lower limit from 0 to 10
 	TH1F *hPad1 = new TH1F("hPad1", ";#eta^{#mu};Single #mu Efficiency", 5, -2.4, 2.4);
 //        TH1F *hPad2 = new TH1F("hPad2", ";Centrality - Ntracks ;Single #mu Efficiency", 5, 0, 300);
-	TH1F *hPad2 = new TH1F("hPad2", ";Centrality - HF ;Single #mu Efficiency", 5, 0, 300);
+	TH1F *hPad2 = new TH1F("hPad2", ";HF Energy [GeV];Single #mu Efficiency", 5, 0, 300);
 	hPad->GetXaxis()->CenterTitle();
 	hPad1->GetXaxis()->CenterTitle();
 	hPad2->GetXaxis()->CenterTitle();
@@ -530,7 +530,7 @@ void TnPEffDraw_singleFile_O() {
 				header = TString("#splitline{") + cutLegend + Form(" Efficiency}{(p^{#mu}_{T}>%.1f, #eta #in [%.1f, %.1f])}", ptmin, etamin, etamax);
 			}
 			leg1->SetHeader(header);
-			sprintf(legs, "MC PYTHIA+EvtGen: %.4f^{ + %.3f}_{ - %.3f}", TrkAbsEta0[k][i][0], TrkAbsEta0[k][i][1], TrkAbsEta0[k][i][2]);
+			sprintf(legs, "MC POWHEG+EPOS: %.4f^{ + %.3f}_{ - %.3f}", TrkAbsEta0[k][i][0], TrkAbsEta0[k][i][1], TrkAbsEta0[k][i][2]);
 			//sprintf(legs, "MC Pbp: %.4f^{ + %.3f}_{ - %.3f}", TrkAbsEta0[k][i][0], TrkAbsEta0[k][i][1], TrkAbsEta0[k][i][2]);
 			leg1->AddEntry(ComPt0[k][i], legs, "pl");
 			sprintf(legs, "Data: %.4f^{ + %.3f}_{ - %.3f}", TrkAbsEta1[k][i][0], TrkAbsEta1[k][i][1], TrkAbsEta1[k][i][2]);
@@ -746,8 +746,8 @@ void TnPEffDraw_singleFile_O() {
 		pad1->cd();
 		hPad1->Draw();
 
-		ComEta0[k]->Draw("pz same");
-		ComEta1[k]->Draw("pz same");
+//		ComEta0[k]->Draw("pz same");
+//		ComEta1[k]->Draw("pz same");
 
 		lt1->SetNDC();
 		char legs[512];
@@ -757,7 +757,7 @@ void TnPEffDraw_singleFile_O() {
 		leg1->SetTextSize(0.035);
 		double ptmin = ((RooRealVar*)daEtaData0[k]->get()->find("pt"))->getBinning().binLow(0);
 		leg1->SetHeader(TString("#splitline{") + cutLegend + Form(" Efficiency}{(p^{#mu}_{T}>%.1f)}", ptmin));
-		sprintf(legs, "MC PYTHIA+EvtGen: %.4f^{ + %.3f}_{ - %.3f}", Trk0[k][0], Trk0[k][1], Trk0[k][2]);
+		sprintf(legs, "MC POWHEG+EPOS: %.4f^{ + %.3f}_{ - %.3f}", Trk0[k][0], Trk0[k][1], Trk0[k][2]);
 		//sprintf(legs, "MC Pbp: %.4f^{ + %.3f}_{ - %.3f}", Trk0[k][0], Trk0[k][1], Trk0[k][2]);
 		leg1->AddEntry(ComPt0[k][0], legs, "pl");
 		sprintf(legs, "Data: %.4f^{ + %.3f}_{ - %.3f}", Trk1[k][0], Trk1[k][1], Trk1[k][2]);
@@ -765,6 +765,9 @@ void TnPEffDraw_singleFile_O() {
 		leg1->AddEntry(ComPt1[k][0], legs, "pl");
 		leg1->Draw("same");
 		leg1->Draw("same");
+
+                ComEta0[k]->Draw("pz same");
+                ComEta1[k]->Draw("pz same");
 
 		lt1->SetTextSize(0.05);
 		lt1->DrawLatex(0.43, 0.50, "CMS Preliminary");
@@ -843,13 +846,42 @@ void TnPEffDraw_singleFile_O() {
 
 	//-------- This is for centrality dependence
 	if (isPbPb) {
+
+//	        TLegend *leg1 = new TLegend(0.43, 0.11, 0.66, 0.33);
+//        	TLatex *lt1 = new TLatex();
+
 		pad1->cd();
 		hPad2->Draw();
 
-		effCentMC->Draw("pz same");
-		effCentData->Draw("pz same");
+//		effCentMC->Draw("pz same");
+//		effCentData->Draw("pz same");
+/*
+                lt1->SetNDC();
+                char legs[512];
+                leg1->SetFillStyle(0);
+                leg1->SetFillColor(0);
+                leg1->SetBorderSize(0);
+                leg1->SetTextSize(0.035);
+                double ptmin = ((RooRealVar*)daEtaData0[k]->get()->find("pt"))->getBinning().binLow(0);
+
+                double etamin = ((RooRealVar*)daPtData0[k][i]->get()->find("eta"))->getBinning().binLow(0);
+                double etamax = ((RooRealVar*)daPtData0[k][i]->get()->find("eta"))->getBinning().binHigh(0);
+                TString header = TString("#splitline{") + cutLegend + Form(" Efficiency}{(p^{#mu}_{T}>%.1f, #eta #in [%.1f, %.1f])}", ptmin, etamin, etamax);
+
+//                leg1->SetHeader(TString("#splitline{") + cutLegend + Form(" Efficiency}{(p^{#mu}_{T}>%.1f)}", ptmin));
+		leg1->SetHeader(header);
+                sprintf(legs, "MC POWHEG+EPOS: %.4f^{ + %.3f}_{ - %.3f}", Trk0[k][0], Trk0[k][1], Trk0[k][2]);
+                //sprintf(legs, "MC Pbp: %.4f^{ + %.3f}_{ - %.3f}", Trk0[k][0], Trk0[k][1], Trk0[k][2]);
+                leg1->AddEntry(effCentMC, legs, "pl");
+                sprintf(legs, "Data: %.4f^{ + %.3f}_{ - %.3f}", Trk1[k][0], Trk1[k][1], Trk1[k][2]);
+                //sprintf(legs, "MC pPb: %.4f^{ + %.3f}_{ - %.3f}", Trk1[k][0], Trk1[k][1], Trk1[k][2]);
+                leg1->AddEntry(effCentData, legs, "pl");
+// */
 
 		leg1->Draw("same");
+
+                effCentMC->Draw("pz same");
+                effCentData->Draw("pz same");
 
 		lt1->SetTextSize(0.05);
 		lt1->DrawLatex(0.43, 0.50, "CMS Preliminary");
