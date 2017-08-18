@@ -44,7 +44,7 @@ using namespace std;
 
 // Choose the efficiency type.
 // Possible values: MUIDTRG, TRK, STA, MUID, TRG
-#define TRK
+#define STA
 
 // pp or PbPb?
 bool isPbPb = true; // if true, will compute the centrality dependence
@@ -210,11 +210,11 @@ ofstream file_Eta("EtaValues_Sta.txt");
 //ofstream file_Cent("NtracksValues_Sta.txt");
 ofstream file_Cent("HFValues_Sta.txt");
 TString cutTag("tpTreeTrk");
-TString cutLegend("Standalone");
+TString cutLegend("Reconstruction - Standalone");
 const double effmin = 0.9;
 const double sfrange = 0.03;
-const char* fDataName[nSyst] = { "../test/zmumuHI/STAResults/tnp_Ana_Data_RecoSTA_pPb+Pbp.root" };
-const char* fMCName[nSyst] = { "../test/zmumuHI/STAResults/tnp_Ana_MC_RecoSTA_pPb+Pbp.root" };
+const char* fDataName[nSyst] = { "../test/zmumuHI/STAResults/tnp_Ana_Data_RecoSTA_Pbp.root" };
+const char* fMCName[nSyst] = { "../test/zmumuHI/STAResults/tnp_Ana_MC_RecoSTA_Pbp.root" };
 #endif
 
 #ifdef TRK
@@ -236,8 +236,8 @@ TString cutTag("tpTreeSta");
 TString cutLegend("Inner tracking - Global and PF");
 const double effmin = 0.9;
 const double sfrange = 0.03;
-const char* fDataName[nSyst] = { "../test/zmumuHI/TrackingResults/tnp_Ana_Data_RecoTracking_Pbp.root" };
-const char* fMCName[nSyst] = { "../test/zmumuHI/TrackingResults/tnp_Ana_MC_RecoTracking_Pbp.root" };
+const char* fDataName[nSyst] = { "../test/zmumuHI/TrackingResults/tnp_Ana_Data_RecoTracking_pPb.root" };
+const char* fMCName[nSyst] = { "../test/zmumuHI/TrackingResults/tnp_Ana_MC_RecoTracking_pPb.root" };
 #endif
 
 // Function Define
