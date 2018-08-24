@@ -10,14 +10,16 @@ TTree* copyTree(TTree* told, int nentries=0) {
    tnew->SetAutoFlush(0);
    int iso1p00, iso1p25, iso1p50,iso1p75,iso2p00;
    int tkiso2p5, tkiso3, tkiso4, tkiso5, tkiso6, tkiso7;
+   int reltkiso0p2, reltkiso0p3, reltkiso0p4;
    int dxycut, dzcut;
    float combRelIsoPF03, tkIso;
-   float dB,dzPV;
+   float dB,dzPV,pt;
 
    told->SetBranchAddress("combRelIsoPF03", &combRelIsoPF03);
    told->SetBranchAddress("tkIso", &tkIso);
    told->SetBranchAddress("dB",&dB);
    told->SetBranchAddress("dzPV",&dzPV);
+   told->SetBranchAddress("pt",&pt);
 
    tnew->Branch("iso1p00", &iso1p00, "iso1p00/I");
    tnew->Branch("iso1p25", &iso1p25, "iso1p25/I");
@@ -30,6 +32,9 @@ TTree* copyTree(TTree* told, int nentries=0) {
    tnew->Branch("tkiso5", &tkiso5, "tkiso5/I");
    tnew->Branch("tkiso6", &tkiso6, "tkiso6/I");
    tnew->Branch("tkiso7", &tkiso7, "tkiso7/I");
+   tnew->Branch("reltkiso0p2", &reltkiso0p2, "reltkiso0p2/I");
+   tnew->Branch("reltkiso0p3", &reltkiso0p3, "reltkiso0p3/I");
+   tnew->Branch("reltkiso0p4", &reltkiso0p4, "reltkiso0p4/I");
    tnew->Branch("dxycut", &dxycut, "dxycut/I");
    tnew->Branch("dzcut", &dzcut, "dzcut/I");
 
@@ -52,6 +57,9 @@ TTree* copyTree(TTree* told, int nentries=0) {
      tkiso5 = (tkIso<5);
      tkiso6 = (tkIso<6);
      tkiso7 = (tkIso<7);
+     reltkiso0p2 = (tkIso/pt<0.2);
+     reltkiso0p3 = (tkIso/pt<0.3);
+     reltkiso0p4 = (tkIso/pt<0.4);
 
 	  dxycut = (fabs(dB)<0.01);
 	  dzcut = (fabs(dzPV)<0.1);
