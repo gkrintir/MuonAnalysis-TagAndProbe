@@ -12,10 +12,14 @@ PDFName = "VoigtExp"
 
 process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
     # IO parameters:
-    InputFileNames = cms.vstring("file:/afs/cern.ch/user/s/stuli/stuliWork/public/TnP_run2/Current/InputFiles/Data_pPb_New/PASingleMuon_PromptReco_pPb_merged_v1.root"),
+#    InputFileNames = cms.vstring("file:/afs/cern.ch/user/s/stuli/stuliWork/public/TnP_run2/Current/InputFiles/Data_pPb_New/PASingleMuon_PromptReco_pPb_merged_v1.root"),
+#########
+    InputFileNames = cms.vstring("file:/afs/cern.ch/user/s/stuli/stuliWork/public/TnP_run2/Current/InputFiles/LowPt_Nov2018_Data_pPb/tnpJPsi_Data_pPb_AOD_merged.root"),
     InputDirectoryName = cms.string("tpTreeTrk"),
     InputTreeName = cms.string("fitter_tree"),
-    OutputFileName = cms.string("tnp_Ana_Data_RecoSTA_pPb.root"),
+#    OutputFileName = cms.string("tnp_Ana_Data_RecoSTA_pPb.root"),
+#########
+    OutputFileName = cms.string("test.root"),
     #numbrer of CPUs to use for fitting
     NumCPU = cms.uint32(16),
     # specifies whether to save the RooWorkspace containing the data for each bin and
@@ -27,7 +31,9 @@ process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
     
     # defines all the real variables of the probes available in the input tree and intended for use in the efficiencies
     Variables = cms.PSet(
-                         mass             = cms.vstring("Tag-Probe Mass", "60.0", "120.0", "GeV/c^{2}"), # mass range syst: 2.8-3.4
+#                         mass             = cms.vstring("Tag-Probe Mass", "60.0", "120.0", "GeV/c^{2}"), # mass range syst: 2.8-3.4
+############
+			 mass             = cms.vstring("Tag-Probe Mass", "2.5", "5.0", "GeV/c^{2}"),
                          pt               = cms.vstring("Probe p_{T}", "0.0", "1000", "GeV/c"),
                          eta              = cms.vstring("Probe #eta", "-2.4", "2.4", ""),
                          abseta           = cms.vstring("Probe |#eta|", "0", "2.5", ""),
@@ -57,7 +63,9 @@ process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
     # each pdf needs to define "signal", "backgroundPass", "backgroundFail" pdfs, "efficiency[0.9,0,1]" and "signalFractionInPassing[0.9]" are used for initial values  
     PDFs = cms.PSet(
 	VoigtExp = cms.vstring(
-		"Voigtian::signal(mass, mean[91,80,100], width[3,-5,15], sigma[3,-5,15])", # mean 85-95, width, sigma 1-10
+#		"Voigtian::signal(mass, mean[91,80,100], width[3,-5,15], sigma[3,-5,15])", # mean 85-95, width, sigma 1-10
+###########
+		"Voigtian::signal(mass, mean[3.5,3.0,4.0], width[0.5,-1,3], sigma[0.5,-1,3])",
 		"Exponential::backgroundPass(mass, lp[0,-5,5])",
 		"Exponential::backgroundFail(mass, lf[0,-5,5])",
 		"efficiency[0.9,0,1]",
@@ -132,7 +140,9 @@ process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
             UnbinnedVariables = cms.vstring("mass"),
             BinnedVariables = cms.PSet(
                 tag_hiHF = cms.vdouble(0, 50, 75, 95, 115, 150, 450),
-                pt = cms.vdouble(15, 80),
+#                pt = cms.vdouble(15, 80),
+##########
+		pt = cms.vdouble(4, 30),
                 eta = cms.vdouble(-2.4, 2.4),
             ),
             BinToPDFmap = cms.vstring(PDFName)
@@ -143,7 +153,9 @@ process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
             UnbinnedVariables = cms.vstring("mass"),
             BinnedVariables = cms.PSet(
                 tag_hiNtracks = cms.vdouble(0, 50, 75, 95, 115, 150, 300),
-                pt = cms.vdouble(15, 80),
+#                pt = cms.vdouble(15, 80),
+##########
+		pt = cms.vdouble(4, 30),
                 eta = cms.vdouble(-2.4, 2.4),
             ),
             BinToPDFmap = cms.vstring(PDFName)
@@ -155,7 +167,9 @@ process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
             UnbinnedVariables = cms.vstring("mass"),
             BinnedVariables = cms.PSet(
 #                tag_nVertices = cms.vdouble(0, 6),
-                pt = cms.vdouble(15, 80),
+#                pt = cms.vdouble(15, 80),
+##########
+		pt = cms.vdouble(4, 30),
                 eta = cms.vdouble(-2.4, 2.4),
             ),
             BinToPDFmap = cms.vstring(PDFName)
@@ -165,7 +179,9 @@ process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
            EfficiencyCategoryAndState = cms.vstring("isSTA","true"),
            UnbinnedVariables = cms.vstring("mass"),
            BinnedVariables = cms.PSet(
-               pt = cms.vdouble(5, 15, 30, 50, 80),
+#               pt = cms.vdouble(5, 15, 30, 50, 80),
+##########
+		pt = cms.vdouble(4, 6, 8, 10, 12, 15, 20, 25, 30),
                eta = cms.vdouble(-2.4,2.4),
 #               tag_nVertices = cms.vdouble(0, 1, 2, 6),
            ),
@@ -177,7 +193,9 @@ process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
             UnbinnedVariables = cms.vstring("mass"),
             BinnedVariables = cms.PSet(
 #                tag_nVertices = cms.vdouble(0, 1, 2, 6),
-                pt = cms.vdouble(15, 30, 50, 80),
+#                pt = cms.vdouble(15, 30, 50, 80),
+##########
+		pt = cms.vdouble(10, 12, 15, 20, 25, 30),
                 abseta = cms.vdouble(0, 0.9),
             ),
             BinToPDFmap = cms.vstring(PDFName)
@@ -188,7 +206,9 @@ process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
              UnbinnedVariables = cms.vstring("mass"),
              BinnedVariables = cms.PSet(
 #                 tag_nVertices = cms.vdouble(0, 1, 2, 6),
-                 pt = cms.vdouble(15, 30, 50, 80),
+#                 pt = cms.vdouble(15, 30, 50, 80),
+##########
+		pt = cms.vdouble(10, 12, 15, 20, 25, 30),
                  abseta = cms.vdouble(0.9,1.2),
              ),
              BinToPDFmap = cms.vstring(PDFName)
@@ -199,7 +219,9 @@ process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
              UnbinnedVariables = cms.vstring("mass"),
              BinnedVariables = cms.PSet(
 #                 tag_nVertices = cms.vdouble(0, 1, 2, 6),
-                 pt = cms.vdouble(15, 30, 50, 80),
+#                 pt = cms.vdouble(15, 30, 50, 80),
+##########
+		pt = cms.vdouble(10, 12, 15, 20, 25, 30),
                  abseta = cms.vdouble(1.2, 1.6),
              ),
              BinToPDFmap = cms.vstring(PDFName)
@@ -210,7 +232,9 @@ process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
              UnbinnedVariables = cms.vstring("mass"),
              BinnedVariables = cms.PSet(
 #                 tag_nVertices = cms.vdouble(0, 1, 2, 6),
-                 pt = cms.vdouble(15, 30, 50, 80),
+#                 pt = cms.vdouble(15, 30, 50, 80),
+##########
+		pt = cms.vdouble(10, 12, 15, 20, 25, 30),
                  abseta = cms.vdouble(1.6, 2.1),
              ),
              BinToPDFmap = cms.vstring(PDFName)
@@ -222,7 +246,9 @@ process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
              UnbinnedVariables = cms.vstring("mass"),
              BinnedVariables = cms.PSet(
 #                 tag_nVertices = cms.vdouble(0, 1, 2, 6),
-                 pt = cms.vdouble(15, 30, 50, 80),
+#                 pt = cms.vdouble(15, 30, 50, 80),
+##########
+		pt = cms.vdouble(10, 12, 15, 20, 25, 30),
                  abseta = cms.vdouble(2.1,2.4),
              ),
              BinToPDFmap = cms.vstring(PDFName)
@@ -233,7 +259,9 @@ process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
              UnbinnedVariables = cms.vstring("mass"),
              BinnedVariables = cms.PSet(
 #                 tag_nVertices = cms.vdouble(0, 1, 2, 6),
-                 pt = cms.vdouble(15, 80),
+#                 pt = cms.vdouble(15, 80),
+##########
+		pt = cms.vdouble(4, 30),
                  abseta = cms.vdouble(0,0.9,1.2,1.6,2.1,2.4),
              ),
              BinToPDFmap = cms.vstring(PDFName)
@@ -244,7 +272,9 @@ process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
              UnbinnedVariables = cms.vstring("mass"),
              BinnedVariables = cms.PSet(
 #                 tag_nVertices = cms.vdouble(0, 1, 2, 6),
-                 pt = cms.vdouble(15, 80),
+#                 pt = cms.vdouble(15, 80),
+##########
+		pt = cms.vdouble(4, 30),
                  eta = cms.vdouble(-2.4,-2.1,-1.6,-1.2,-0.9,0,0.9,1.2,1.6,2.1,2.4),
              ),
              BinToPDFmap = cms.vstring(PDFName)
