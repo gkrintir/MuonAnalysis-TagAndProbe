@@ -8,19 +8,25 @@ TTree* copyTree(TTree* told, int nentries=0) {
    TTree *tnew = told->CloneTree(0);
    tnew->SetAutoSave(0);
    tnew->SetAutoFlush(0);
-   int iso1p00, iso1p25, iso1p50,iso1p75,iso2p00;
+   int iso0p15, iso1p00, iso1p25, iso1p50,iso1p75,iso2p00;
    int tkiso2p5, tkiso3, tkiso4, tkiso5, tkiso6, tkiso7;
    int reltkiso0p2, reltkiso0p3, reltkiso0p4;
    int dxycut, dzcut;
+   int l1ok, l1OpenQ, l1DoubleQ;
    float combRelIsoPF03, tkIso;
    float dB,dzPV,pt;
+   float l1dr;
+   float l1q;
 
    told->SetBranchAddress("combRelIsoPF03", &combRelIsoPF03);
    told->SetBranchAddress("tkIso", &tkIso);
    told->SetBranchAddress("dB",&dB);
    told->SetBranchAddress("dzPV",&dzPV);
    told->SetBranchAddress("pt",&pt);
+   told->SetBranchAddress("l1dr",&l1dr);
+   told->SetBranchAddress("l1q",&l1q);
 
+   tnew->Branch("iso0p15", &iso0p15, "iso0p15/I");
    tnew->Branch("iso1p00", &iso1p00, "iso1p00/I");
    tnew->Branch("iso1p25", &iso1p25, "iso1p25/I");
    tnew->Branch("iso1p50", &iso1p50, "iso1p50/I");
@@ -37,6 +43,9 @@ TTree* copyTree(TTree* told, int nentries=0) {
    tnew->Branch("reltkiso0p4", &reltkiso0p4, "reltkiso0p4/I");
    tnew->Branch("dxycut", &dxycut, "dxycut/I");
    tnew->Branch("dzcut", &dzcut, "dzcut/I");
+   tnew->Branch("l1ok", &l1ok, "l1ok/I");
+   tnew->Branch("l1OpenQ", &l1OpenQ, "l1OpenQ/I");
+   tnew->Branch("l1DoubleQ", &l1DoubleQ, "l1DoubleQ/I");
 
  
    if (nentries == 0)
@@ -46,6 +55,7 @@ TTree* copyTree(TTree* told, int nentries=0) {
    for (int i=0; i<nentries; i++) {
       told->GetEntry(i);
 	  // Isolations
+	  iso0p15 = ((combRelIsoPF03)<0.15);
 	  iso1p00 = ((combRelIsoPF03)<1.00);
 	  iso1p25 = ((combRelIsoPF03)<1.25);
 	  iso1p50 = ((combRelIsoPF03)<1.50);
@@ -63,6 +73,11 @@ TTree* copyTree(TTree* told, int nentries=0) {
 
 	  dxycut = (fabs(dB)<0.01);
 	  dzcut = (fabs(dzPV)<0.1);
+
+     // L1 matching
+     l1ok = (l1dr<0.5);
+     l1OpenQ = (l1q > 3.9);
+     l1DoubleQ = (l1q > 7.9);
 
      tnew->Fill();
    }
