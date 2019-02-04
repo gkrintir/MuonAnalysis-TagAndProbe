@@ -15,15 +15,17 @@ void reorganise_tnp(const char* filename, const char* output="out.root") {
    topdir->cd();
    TDirectoryFile *torig = (TDirectoryFile*) fin->Get("tpTree/Iso_abseta_0_24_pt_7_200");
    if (!torig) cerr << "ERROR! missing tpTree/Iso_abseta_0_24_pt_7_200" << endl;
-   topdir->cd();
-   CopyDir(torig,"Iso_1bin");
+   else {
+      topdir->cd();
+      CopyDir(torig,"Iso_1bin");
+   }
 
    ////////////////////////////////////////////////
    // abseta00_12
    double ael = 0;
    double aeh = 1.2;
-   double ptl[10] = {7  ,12 ,15 ,25 ,30 ,35 ,40 ,45 ,50 ,80 };
-   double pth[10] = {12 ,15 ,25 ,30 ,35 ,40 ,45 ,50 ,80 ,200};
+   double ptl[14] = {7  ,12 ,15, 20 ,25 ,30 ,35 ,40 ,45 ,50, 60, 70 ,80 ,100 };
+   double pth[14] = {12 ,15, 20 ,25 ,30 ,35 ,40 ,45 ,50, 60, 70 ,80 ,100,200};
 
    // first bin
    torig = (TDirectoryFile*) fin->Get("tpTree/Iso_abseta_0_12_pt_7_12");
@@ -36,7 +38,7 @@ void reorganise_tnp(const char* filename, const char* output="out.root") {
    RooDataSet *ds = (RooDataSet*) topdir2->Get("fit_eff");
    RooDataSet *dsc = (RooDataSet*) topdir2->Get("cnt_eff");
 
-   for (int i=1; i<10; i++) {
+   for (int i=1; i<14; i++) {
       // take care of the plots and fit results
       torig = (TDirectoryFile*) fin->Get(Form("tpTree/Iso_abseta_%.0f_%.0f_pt_%.0f_%.0f/abseta_bin0__pt_bin0__TightId_true__templates_abseta_%.0f_%.0f_pt_%.0f_%.0f",ael*10.,aeh*10.,ptl[i],pth[i],ael*10.,aeh*10.,ptl[i],pth[i]));
       TString tname = torig->GetName();
@@ -72,7 +74,7 @@ void reorganise_tnp(const char* filename, const char* output="out.root") {
    ds = (RooDataSet*) topdir2->Get("fit_eff");
    dsc = (RooDataSet*) topdir2->Get("cnt_eff");
 
-   for (int i=1; i<10; i++) {
+   for (int i=1; i<14; i++) {
       // take care of the plots and fit results
       torig = (TDirectoryFile*) fin->Get(Form("tpTree/Iso_abseta_%.0f_%.0f_pt_%.0f_%.0f/abseta_bin0__pt_bin0__TightId_true__templates_abseta_%.0f_%.0f_pt_%.0f_%.0f",ael*10.,aeh*10.,ptl[i],pth[i],ael*10.,aeh*10.,ptl[i],pth[i]));
       TString tname = torig->GetName();
@@ -213,8 +215,8 @@ void reorganise_tnp(const char* filename, const char* output="out.root") {
    // pt
    double ael5 = 0;
    double aeh5 = 2.4;
-   double ptl5[10] = {7  ,12 ,15 ,30 ,40 ,50, 60 ,70 ,80 ,100};
-   double pth5[10] = {12 ,15 ,30 ,40 ,50, 60 ,70 ,80 ,100,200};
+   double ptl5[14] = {7  ,12 ,15, 20 ,25 ,30 ,35 ,40 ,45 ,50, 60, 70 ,80 ,100 };
+   double pth5[14] = {12 ,15, 20 ,25 ,30 ,35 ,40 ,45 ,50, 60, 70 ,80 ,100,200};
 
    // first bin
    torig = (TDirectoryFile*) fin->Get("tpTree/Iso_abseta_0_24_pt_7_12");
@@ -227,7 +229,7 @@ void reorganise_tnp(const char* filename, const char* output="out.root") {
    ds = (RooDataSet*) topdir2->Get("fit_eff");
    dsc = (RooDataSet*) topdir2->Get("cnt_eff");
 
-   for (int i=1; i<10; i++) {
+   for (int i=1; i<14; i++) {
       // take care of the plots and fit results
       torig = (TDirectoryFile*) fin->Get(Form("tpTree/Iso_abseta_%.0f_%.0f_pt_%.0f_%.0f/abseta_bin0__pt_bin0__TightId_true__templates_abseta_%.0f_%.0f_pt_%.0f_%.0f",ael5*10.,aeh5*10.,ptl5[i],pth5[i],ael5*10.,aeh5*10.,ptl5[i],pth5[i]));
       TString tname = torig->GetName();
@@ -282,6 +284,46 @@ void reorganise_tnp(const char* filename, const char* output="out.root") {
    // topdir2->WriteTObject(ds);
    // topdir2->Delete("cnt_eff;*");
    // topdir2->WriteTObject(dsc);
+
+   ////////////////////////////////////////////////
+   // centdep
+   topdir->cd();
+   torig = (TDirectoryFile*) fin->Get("tpTree/Iso_centdep");
+   if (!torig) cerr << "ERROR! missing tpTree/Iso_centdep" << endl;
+   else {
+      topdir->cd();
+      CopyDir(torig,"Iso_centdep");
+   }
+
+   ////////////////////////////////////////////////
+   // centdepHF
+   topdir->cd();
+   torig = (TDirectoryFile*) fin->Get("tpTree/Iso_centdepHF");
+   if (!torig) cerr << "ERROR! missing tpTree/Iso_centdepHF" << endl;
+   else {
+      topdir->cd();
+      CopyDir(torig,"Iso_centdepHF");
+   }
+
+   ////////////////////////////////////////////////
+   // nPV
+   topdir->cd();
+   torig = (TDirectoryFile*) fin->Get("tpTree/Iso_nPV");
+   if (!torig) cerr << "ERROR! missing tpTree/Iso_nPV" << endl;
+   else {
+      topdir->cd();
+      CopyDir(torig,"Iso_nPV");
+   }
+
+   ////////////////////////////////////////////////
+   // rundep
+   topdir->cd();
+   torig = (TDirectoryFile*) fin->Get("tpTree/Iso_rundep");
+   if (!torig) cerr << "ERROR! missing tpTree/Iso_rundep" << endl;
+   else {
+      topdir->cd();
+      CopyDir(torig,"Iso_rundep");
+   }
 
    fout->Close();
 }
