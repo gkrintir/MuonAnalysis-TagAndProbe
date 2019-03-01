@@ -34,7 +34,7 @@ void plotSFs_20190212() {
    etamin = new float[4]; etamin[0] = -2.4; etamin[1]=0.; etamin[2]=1.2; etamin[3]=2.1;
    etamax = new float[4]; etamax[0] = 0; etamax[1]=1.2; etamax[2]=2.1; etamax[3]=2.4;;
 
-   const char* tags[6] = {"L3Mu12_","L1DM0_","L1DMOpen","muid_","iso_","isotk_"};
+   const char* tags[6] = {"L3Mu12_","L1DM0_","L1DMOpen_","muid_","iso_","isotk_"};
    const char* names[6] = {"L3Mu12","L1DoubleMu0","L1DoubleMuOpen","MuID","PF Iso","Tk Iso"};
    const double range[6] = {0.1,0.1,0.1,0.1,0.1,0.1};
 
@@ -67,11 +67,11 @@ void plotSFs_20190212() {
          TF1 *fp = new TF1("fp",tnp_weight_ppb_wrapper,ptminval,ptmaxval,3);
          fp->SetParameters(eta,-1,j);
          fp->SetLineColor(kCyan);
-         if (j==3) fp->Draw("same");
+         fp->Draw("same");
          TF1 *fm = new TF1("fm",tnp_weight_ppb_wrapper,ptminval,ptmaxval,3);
          fm->SetParameters(eta,-2,j);
          fm->SetLineColor(kCyan);
-         if (j==3) fm->Draw("same");
+         fm->Draw("same");
          TF1 *fbinned = new TF1("fbinned",tnp_weight_ppb_wrapper,ptminval,ptmaxval,3);
          fbinned->SetParameters(eta,-10,j);
          fbinned->SetLineColor(kGreen+2);
@@ -87,7 +87,7 @@ void plotSFs_20190212() {
          tleg->AddEntry(fnom,"Nominal","l");
          if (j>2) tleg->AddEntry("f1","stat (100 toys)","l");
          else tleg->AddEntry("f1","stat","l");
-         if (j==3) tleg->AddEntry(fp,"syst (+/1#sigma)","l");
+         tleg->AddEntry(fp,"syst (+/1#sigma)","l");
          if (j>2) tleg->AddEntry(fbinned,"binned","l");
          tleg->Draw();
          c1->SaveAs(Form("tnp_ppb_%seta%.1f-%.1f.pdf",tags[j],fabs(etamin[ieta]),fabs(etamax[ieta])));
