@@ -2,7 +2,7 @@ from CRABClient.UserUtilities import config, getUsernameFromSiteDB
 config = config()
 
 config.section_('General')
-config.General.requestName = 'TNP_HIOniaTnP_HIRun2016_PromptReco_v1_AOD_20180813'
+config.General.requestName = 'TNP_HIOniaTnP_HIRun2016_PromptReco_v1_AOD_20180813_v2'
 config.General.workArea = 'crab_projects'
 config.General.transferOutputs = True
 config.General.transferLogs = False
@@ -19,8 +19,8 @@ config.Data.inputDBS = 'global'
 config.Data.unitsPerJob = 10 
 config.Data.splitting = 'LumiBased'
 #Pbp (1st run)
-#config.Data.runRange = '285479-285832'
-config.Data.runRange = '285480-285480'
+config.Data.runRange = '285479-285832'
+#config.Data.runRange = '285480-285480'
 config.Data.lumiMask = '/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions16/HI/Cert_285479-285832_HI8TeV_PromptReco_pPb_Collisions16_JSON_NoL1T.txt'
 #pPb (2nd run)
 #config.Data.runRange = '285952-286496'

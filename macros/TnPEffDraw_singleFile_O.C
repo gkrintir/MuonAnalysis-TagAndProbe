@@ -47,7 +47,7 @@ using namespace std;
 #define MUID
 
 // pp or PbPb?
-bool isPbPb = true; // if true, will compute the centrality dependence
+bool isPbPb = false; // if true, will compute the centrality dependence
 TString collTag = "pPb"; // isPbPb ? "PbPb" : "pp";
 
 // do the toy study for the correction factors? (only applies if MUIDTRG)
@@ -102,28 +102,28 @@ const char* fDataName[nSyst] = { "tnp_Ana_RD_PbPb_MuIDTrg_AllMB.root" };
 const char* fMCName[nSyst] = { "tnp_Ana_MC_PbPb_MuIDTrg_AllMB.root" };
 #endif
 
-#ifdef MUID
-TString etaTag("MuId_etadep");
-TString absetaTag("MuId_absetadep");
+//#ifdef MUID
+//TString etaTag("MuId_etadep");
+//TString absetaTag("MuId_absetadep");
 //TString centTag("MuId_centdep");
-TString centTag("MuId_centdepHF");
-const int nAbsEtaBins = 8;
-TString ptTag[nAbsEtaBins] = {"MuId_pt","MuId_abseta00_09","MuId_abseta09_12", "MuId_abseta00_12", "MuId_abseta12_16", "MuId_abseta16_21", "MuId_abseta12_21", "MuId_abseta21_24" };
-TString allTag("MuId_1bin");
-TString absetaVar("abseta");
+////TString centTag("MuId_centdepHF");
+//const int nAbsEtaBins = 8;
+//TString ptTag[nAbsEtaBins] = {"MuId_pt","MuId_abseta00_09","MuId_abseta09_12", "MuId_abseta00_12", "MuId_abseta12_16", "MuId_abseta16_21", "MuId_abseta12_21", "MuId_abseta21_24" };
+//TString allTag("MuId_1bin");
+//TString absetaVar("abseta");
 //TString centVar("tag_hiNtracks");
-TString centVar("tag_hiHF");
-ofstream file_sfs("correction_functions.txt");
-ofstream file_Eta("EtaValues_MuId.txt");
-ofstream file_Cent("CentValues_MuId.txt");
-ofstream file_TestErr("MuId_ExpErr.txt");
-TString cutTag("tpTree");
-TString cutLegend("Soft ID");
-const double effmin = 0.8;
-const double sfrange = 0.1;
-const char* fDataName[nSyst] = { "tnp_Ana_RD_MuId_pPb.root" };
-const char* fMCName[nSyst] = { "tnp_Ana_MC_MuId_pPb.root" };
-#endif
+////TString centVar("tag_hiHF");
+//ofstream file_sfs("correction_functions.txt");
+//ofstream file_Eta("EtaValues_MuId.txt");
+//ofstream file_Cent("CentValues_MuId.txt");
+//ofstream file_TestErr("MuId_ExpErr.txt");
+//TString cutTag("tpTree");
+//TString cutLegend("Soft ID");
+//const double effmin = 0.9;
+//const double sfrange = 0.05;
+//const char* fDataName[nSyst] = { "tnp_Ana_RD_MuId_pPb.root" };
+//const char* fMCName[nSyst] = { "tnp_Ana_MC_MuId_pPb.root" };
+//#endif
 
 //#ifdef MUID
 //TString etaTag("Iso_etadep");
@@ -149,26 +149,26 @@ const char* fMCName[nSyst] = { "tnp_Ana_MC_MuId_pPb.root" };
 //#endif
 
 
-//#ifdef MUID
-//TString etaTag("Iso_etadep");
-//TString absetaTag("Iso_absetadep");
-//TString centTag("Iso_centdep");
-//const int nAbsEtaBins = 0;
-//TString ptTag[nAbsEtaBins] = { };
-//TString allTag("Iso_1bin");
-//TString absetaVar("abseta");
-//TString centVar("tag_hiNtracks");
-//ofstream file_sfs("correction_functions.txt");
-//ofstream file_Eta("EtaValues_Iso.txt");
-//ofstream file_Cent("CentValues_Iso.txt");
-//ofstream file_TestErr("Iso_ExpErr.txt");
-//TString cutTag("tpTree");
-//TString cutLegend("Iso");
-//const double effmin = 0.;
-//const double sfrange = 0.2;
-//const char* fDataName[nSyst] = { "tnp_Ana_RD_Iso_pPb_Quick.root" };
-//const char* fMCName[nSyst] = { "tnp_Ana_RD_Iso_Pbp_Quick.root" };
-//#endif
+#ifdef MUID
+TString etaTag("MuId_etadep");
+TString absetaTag("TightId_absetadep");
+TString centTag("TightId_centdep");
+const int nAbsEtaBins = 3;
+TString ptTag[nAbsEtaBins] = {"TightId_abseta00_12", "TightId_abseta12_21", "TightId_abseta21_24"};
+TString allTag("TightId_1bin");
+TString absetaVar("abseta");
+TString centVar("tag_hiNtracks");
+ofstream file_sfs("correction_functions.txt");
+ofstream file_Eta("EtaValues_TightId.txt");
+ofstream file_Cent("CentValues_TightId.txt");
+ofstream file_TestErr("TightId_ExpErr.txt");
+TString cutTag("tpTree");
+TString cutLegend("TightId");
+const double effmin = 0.9;
+const double sfrange = 0.05;
+const char* fDataName[nSyst] = { "tnp_Ana_RD_TightId_pPb_0.root" };
+const char* fMCName[nSyst] = { "tnp_Ana_MC_TightId_pPb_0.root" };
+#endif
 
 
 #ifdef TRG
@@ -307,7 +307,7 @@ void TnPEffDraw_singleFile_O() {
 		ComEta0[i] = plotEff_1bin(daEtaData0[i], 1, "eta");
 		ComEta1[i] = plotEff_1bin(daEtaData1[i], 1, "eta");
 	}
-
+	cout << "HERE3" << endl;
 	RooDataSet* daPtMC1Bin0[nSyst];
 	RooDataSet* daPtData1Bin0[nSyst];
 	RooDataSet* daAbsEtaMC1[nSyst];
@@ -316,8 +316,8 @@ void TnPEffDraw_singleFile_O() {
 	RooDataSet* daCentData1[nSyst];
 
 	for (int i = 0; i < nSyst; i++) {
-		daPtMC1Bin0[i] = (RooDataSet*)fMC[i]->Get(cutTag + "/" + allTag + "/fit_eff");
-		daPtData1Bin0[i] = (RooDataSet*)fData[i]->Get(cutTag + "/" + allTag + "/fit_eff");
+		//daPtMC1Bin0[i] = (RooDataSet*)fMC[i]->Get(cutTag + "/" + allTag + "/fit_eff");
+		//daPtData1Bin0[i] = (RooDataSet*)fData[i]->Get(cutTag + "/" + allTag + "/fit_eff");
 		daAbsEtaMC1[i] = (RooDataSet*)fMC[i]->Get(cutTag + "/" + absetaTag + "/fit_eff");
 		daAbsEtaData1[i] = (RooDataSet*)fData[i]->Get(cutTag + "/" + absetaTag + "/fit_eff");
 		if (isPbPb) {
@@ -325,7 +325,7 @@ void TnPEffDraw_singleFile_O() {
 			daCentData1[i] = (RooDataSet*)fData[i]->Get(cutTag + "/" + centTag + "/fit_eff");
 		}
 	}
-
+	cout << "HERE4" << endl;
 	TGraphAsymmErrors* effPtMC[nSyst];
 	TGraphAsymmErrors* effPtData[nSyst];
 	vector<TGraphAsymmErrors*> effAbsEtaMC[nSyst];
@@ -451,9 +451,9 @@ void TnPEffDraw_singleFile_O() {
 	hPad2->GetYaxis()->SetTitleOffset(1.);
 
 
-	hPad->GetYaxis()->SetRangeUser(effmin, 1.05);
-	hPad1->GetYaxis()->SetRangeUser(effmin, 1.05);
-	hPad2->GetYaxis()->SetRangeUser(effmin, 1.05);
+	hPad->GetYaxis()->SetRangeUser(effmin, 1.02);
+	hPad1->GetYaxis()->SetRangeUser(effmin, 1.02);
+	hPad2->GetYaxis()->SetRangeUser(effmin, 1.02);
 
 	pad2->cd();
 	pad2->SetGridy();
@@ -532,9 +532,9 @@ void TnPEffDraw_singleFile_O() {
 			ComPt0[k][i]->Draw("pz same");
 			ComPt1[k][i]->Draw("pz same");
 
-			lt1->SetTextSize(0.05);
-			lt1->DrawLatex(0.43, 0.50, "CMS Preliminary");
-			lt1->DrawLatex(0.43, 0.44, collTag + "  #sqrt{s_{NN}} = 8.16 TeV");
+			//lt1->SetTextSize(0.05);
+			//lt1->DrawLatex(0.20, 0.30, "CMS Preliminary");
+			//lt1->DrawLatex(0.20, 0.24, collTag + "  #sqrt{s_{NN}} = 8.16 TeV");
 
 			// now take care of the data/mc ratio panel
 			c1->cd();
@@ -730,183 +730,183 @@ void TnPEffDraw_singleFile_O() {
 	}
 
 	//---------- This is for eta dependence
-	TLegend *leg1 = new TLegend(0.43, 0.11, 0.66, 0.33);
-	TLatex *lt1 = new TLatex();
-	for (int k = 0; k < nSyst; k++)
-	{
-		pad1->cd();
-		hPad1->Draw();
+	//TLegend *leg1 = new TLegend(0.43, 0.11, 0.66, 0.33);
+	//TLatex *lt1 = new TLatex();
+	//for (int k = 0; k < nSyst; k++)
+	//{
+	//	pad1->cd();
+	//	hPad1->Draw();
 
-		ComEta0[k]->Draw("pz same");
-		ComEta1[k]->Draw("pz same");
+	//	ComEta0[k]->Draw("pz same");
+	//	ComEta1[k]->Draw("pz same");
 
-		lt1->SetNDC();
-		char legs[512];
-		leg1->SetFillStyle(0);
-		leg1->SetFillColor(0);
-		leg1->SetBorderSize(0);
-		leg1->SetTextSize(0.035);
-		double ptmin = ((RooRealVar*)daEtaData0[k]->get()->find("pt"))->getBinning().binLow(0);
-		leg1->SetHeader(TString("#splitline{") + cutLegend + Form(" Efficiency}{(p^{#mu}_{T}>%.1f)}", ptmin));
-		sprintf(legs, "MC PYTHIA+EvtGen: %.4f^{ + %.3f}_{ - %.3f}", Trk0[k][0], Trk0[k][1], Trk0[k][2]);
-		//sprintf(legs, "MC Pbp: %.4f^{ + %.3f}_{ - %.3f}", Trk0[k][0], Trk0[k][1], Trk0[k][2]);
-		leg1->AddEntry(ComPt0[k][0], legs, "pl");
-		sprintf(legs, "Data: %.4f^{ + %.3f}_{ - %.3f}", Trk1[k][0], Trk1[k][1], Trk1[k][2]);
-		//sprintf(legs, "MC pPb: %.4f^{ + %.3f}_{ - %.3f}", Trk1[k][0], Trk1[k][1], Trk1[k][2]);
-		leg1->AddEntry(ComPt1[k][0], legs, "pl");
-		leg1->Draw("same");
-		leg1->Draw("same");
+	//	lt1->SetNDC();
+	//	char legs[512];
+	//	leg1->SetFillStyle(0);
+	//	leg1->SetFillColor(0);
+	//	leg1->SetBorderSize(0);
+	//	leg1->SetTextSize(0.035);
+	//	double ptmin = ((RooRealVar*)daEtaData0[k]->get()->find("pt"))->getBinning().binLow(0);
+	//	leg1->SetHeader(TString("#splitline{") + cutLegend + Form(" Efficiency}{(p^{#mu}_{T}>%.1f)}", ptmin));
+	//	sprintf(legs, "MC PYTHIA+EvtGen: %.4f^{ + %.3f}_{ - %.3f}", Trk0[k][0], Trk0[k][1], Trk0[k][2]);
+	//	//sprintf(legs, "MC Pbp: %.4f^{ + %.3f}_{ - %.3f}", Trk0[k][0], Trk0[k][1], Trk0[k][2]);
+	//	leg1->AddEntry(ComPt0[k][0], legs, "pl");
+	//	sprintf(legs, "Data: %.4f^{ + %.3f}_{ - %.3f}", Trk1[k][0], Trk1[k][1], Trk1[k][2]);
+	//	//sprintf(legs, "MC pPb: %.4f^{ + %.3f}_{ - %.3f}", Trk1[k][0], Trk1[k][1], Trk1[k][2]);
+	//	leg1->AddEntry(ComPt1[k][0], legs, "pl");
+	//	leg1->Draw("same");
+	//	leg1->Draw("same");
 
-		lt1->SetTextSize(0.05);
-		lt1->DrawLatex(0.43, 0.45, "CMS Preliminary");
-		//lt1->DrawLatex(0.43,0.54,"pp  #sqrt{s} = 5.02 TeV");
-		lt1->DrawLatex(0.43, 0.39, collTag + "  #sqrt{s_{NN}} = 8.16 TeV");
+	//	lt1->SetTextSize(0.05);
+	//	lt1->DrawLatex(0.43, 0.45, "CMS Preliminary");
+	//	//lt1->DrawLatex(0.43,0.54,"pp  #sqrt{s} = 5.02 TeV");
+	//	lt1->DrawLatex(0.43, 0.39, collTag + "  #sqrt{s_{NN}} = 8.16 TeV");
 
-		// now take care of the data/mc ratio panel
-		c1->cd();
-		// pad2->SetFrameFillStyle(4000);
-		pad2->Draw();
-		pad2->cd();
-		hPad1r->Draw();
+	//	// now take care of the data/mc ratio panel
+	//	c1->cd();
+	//	// pad2->SetFrameFillStyle(4000);
+	//	pad2->Draw();
+	//	pad2->cd();
+	//	hPad1r->Draw();
 
-		int nbins = ComEta0[k]->GetN();
-		double *xr = new double[nbins];
-		double *yr = new double[nbins];
-		double *xrlo = new double[nbins];
-		double *yrlo = new double[nbins];
-		double *xrhi = new double[nbins];
-		double *yrhi = new double[nbins];
+	//	int nbins = ComEta0[k]->GetN();
+	//	double *xr = new double[nbins];
+	//	double *yr = new double[nbins];
+	//	double *xrlo = new double[nbins];
+	//	double *yrlo = new double[nbins];
+	//	double *xrhi = new double[nbins];
+	//	double *yrhi = new double[nbins];
 
-		// here we assume that the mc uncertainty is negligible compared to the data one: simply scale everything by the central value.
-		for (int j = 0; j < nbins; j++)
-		{
-			xr[j] = ComEta1[k]->GetX()[j];
-			xrlo[j] = ComEta1[k]->GetErrorXlow(j);
-			xrhi[j] = ComEta1[k]->GetErrorXhigh(j);
-			yr[j] = ComEta1[k]->GetY()[j] / ComEta0[k]->GetY()[j];
-			yrlo[j] = ComEta1[k]->GetErrorYlow(j) / ComEta0[k]->GetY()[j];
-			yrhi[j] = ComEta1[k]->GetErrorYhigh(j) / ComEta0[k]->GetY()[j];
-		}
-		TGraphAsymmErrors *gratio1 = new TGraphAsymmErrors(nbins, xr, yr, xrlo, xrhi, yrlo, yrhi);
-		gratio1->SetMarkerStyle(20);
-		gratio1->SetMarkerColor(kBlack);
-		gratio1->SetMarkerSize(1.0);
-		gratio1->SetLineColor(kBlack);
-		gratio1->SetLineWidth(1);
-		gratio1->Draw("pz same");
+	//	// here we assume that the mc uncertainty is negligible compared to the data one: simply scale everything by the central value.
+	//	for (int j = 0; j < nbins; j++)
+	//	{
+	//		xr[j] = ComEta1[k]->GetX()[j];
+	//		xrlo[j] = ComEta1[k]->GetErrorXlow(j);
+	//		xrhi[j] = ComEta1[k]->GetErrorXhigh(j);
+	//		yr[j] = ComEta1[k]->GetY()[j] / ComEta0[k]->GetY()[j];
+	//		yrlo[j] = ComEta1[k]->GetErrorYlow(j) / ComEta0[k]->GetY()[j];
+	//		yrhi[j] = ComEta1[k]->GetErrorYhigh(j) / ComEta0[k]->GetY()[j];
+	//	}
+	//	TGraphAsymmErrors *gratio1 = new TGraphAsymmErrors(nbins, xr, yr, xrlo, xrhi, yrlo, yrhi);
+	//	gratio1->SetMarkerStyle(20);
+	//	gratio1->SetMarkerColor(kBlack);
+	//	gratio1->SetMarkerSize(1.0);
+	//	gratio1->SetLineColor(kBlack);
+	//	gratio1->SetLineWidth(1);
+	//	gratio1->Draw("pz same");
 
-		if (k == 0) {
-			c1->SaveAs(cutTag + "Eff_" + collTag + "_RD_MC_Eta.root");
-			c1->SaveAs(cutTag + "Eff_" + collTag + "_RD_MC_Eta.pdf");
-			c1->SaveAs(cutTag + "Eff_" + collTag + "_RD_MC_Eta.png");
+	//	if (k == 0) {
+	//		c1->SaveAs(cutTag + "Eff_" + collTag + "_RD_MC_Eta.root");
+	//		c1->SaveAs(cutTag + "Eff_" + collTag + "_RD_MC_Eta.pdf");
+	//		c1->SaveAs(cutTag + "Eff_" + collTag + "_RD_MC_Eta.png");
 
 
-			// print the eta dependence to file
-			double xVal, yVal, ErrDown, ErrUp;
-			file_Eta << "Data " << endl << endl;
-			file_Eta << "Eta Value ErrDown ErrUp" << endl;
-			for (int bin = 0; bin < ComEta1[k]->GetN(); bin++)
-			{
-				ComEta1[k]->GetPoint(bin, xVal, yVal);
-				ErrDown = ComEta1[k]->GetErrorYlow(bin);
-				ErrUp = ComEta1[k]->GetErrorYhigh(bin);
-				file_Eta << xVal << " " << yVal << " " << ErrDown << " " << ErrUp << endl;
-			}
+	//		// print the eta dependence to file
+	//		double xVal, yVal, ErrDown, ErrUp;
+	//		file_Eta << "Data " << endl << endl;
+	//		file_Eta << "Eta Value ErrDown ErrUp" << endl;
+	//		for (int bin = 0; bin < ComEta1[k]->GetN(); bin++)
+	//		{
+	//			ComEta1[k]->GetPoint(bin, xVal, yVal);
+	//			ErrDown = ComEta1[k]->GetErrorYlow(bin);
+	//			ErrUp = ComEta1[k]->GetErrorYhigh(bin);
+	//			file_Eta << xVal << " " << yVal << " " << ErrDown << " " << ErrUp << endl;
+	//		}
 
-			file_Eta << endl << endl << "MC " << endl << endl;
-			file_Eta << "Eta Value ErrDown ErrUp" << endl;
-			for (int bin = 0; bin < ComEta0[k]->GetN(); bin++)
-			{
-				ComEta0[k]->GetPoint(bin, xVal, yVal);
-				ErrDown = ComEta0[k]->GetErrorYlow(bin);
-				ErrUp = ComEta0[k]->GetErrorYhigh(bin);
-				file_Eta << xVal << " " << yVal << " " << ErrDown << " " << ErrUp << endl;
-			}
-			file_Eta.close();
-		}
-	}
+	//		file_Eta << endl << endl << "MC " << endl << endl;
+	//		file_Eta << "Eta Value ErrDown ErrUp" << endl;
+	//		for (int bin = 0; bin < ComEta0[k]->GetN(); bin++)
+	//		{
+	//			ComEta0[k]->GetPoint(bin, xVal, yVal);
+	//			ErrDown = ComEta0[k]->GetErrorYlow(bin);
+	//			ErrUp = ComEta0[k]->GetErrorYhigh(bin);
+	//			file_Eta << xVal << " " << yVal << " " << ErrDown << " " << ErrUp << endl;
+	//		}
+	//		file_Eta.close();
+	//	}
+	//}
 
-	// plot systematics
-	//data
-	plotSysts(ComEta1, c1, pad1, hPad1_syst, pad2, hPad1r_syst, header, "syst_data_eta");
-	//mc
-	plotSysts(ComEta0, c1, pad1, hPad1_syst, pad2, hPad1r_syst, header, "syst_mc_eta");
+	//// plot systematics
+	////data
+	//plotSysts(ComEta1, c1, pad1, hPad1_syst, pad2, hPad1r_syst, header, "syst_data_eta");
+	////mc
+	//plotSysts(ComEta0, c1, pad1, hPad1_syst, pad2, hPad1r_syst, header, "syst_mc_eta");
 
-	//-------- This is for centrality dependence
-	if (isPbPb) {
-		pad1->cd();
-		hPad2->Draw();
+	////-------- This is for centrality dependence
+	//if (isPbPb) {
+	//	pad1->cd();
+	//	hPad2->Draw();
 
-		effCentMC->Draw("pz same");
-		effCentData->Draw("pz same");
+	//	effCentMC->Draw("pz same");
+	//	effCentData->Draw("pz same");
 
-		leg1->Draw("same");
+	//	leg1->Draw("same");
 
-		lt1->SetTextSize(0.05);
-		lt1->DrawLatex(0.43, 0.45, "CMS Preliminary");
-		//lt1->DrawLatex(0.43,0.54,"pp  #sqrt{s} = 5.02 TeV");
-		lt1->DrawLatex(0.43, 0.39, collTag + "  #sqrt{s_{NN}} = 8.16 TeV");
+	//	lt1->SetTextSize(0.05);
+	//	lt1->DrawLatex(0.43, 0.45, "CMS Preliminary");
+	//	//lt1->DrawLatex(0.43,0.54,"pp  #sqrt{s} = 5.02 TeV");
+	//	lt1->DrawLatex(0.43, 0.39, collTag + "  #sqrt{s_{NN}} = 8.16 TeV");
 
-		// now take care of the data/mc ratio panel
-		c1->cd();
-		// pad2->SetFrameFillStyle(4000);
-		pad2->Draw();
-		pad2->cd();
-		hPad2r->Draw();
+	//	// now take care of the data/mc ratio panel
+	//	c1->cd();
+	//	// pad2->SetFrameFillStyle(4000);
+	//	pad2->Draw();
+	//	pad2->cd();
+	//	hPad2r->Draw();
 
-		int nbins2 = effCentMC->GetN();
-		double* xr2 = new double[nbins2];
-		double* yr2 = new double[nbins2];
-		double* xr2lo = new double[nbins2];
-		double* yr2lo = new double[nbins2];
-		double* xr2hi = new double[nbins2];
-		double* yr2hi = new double[nbins2];
+	//	int nbins2 = effCentMC->GetN();
+	//	double* xr2 = new double[nbins2];
+	//	double* yr2 = new double[nbins2];
+	//	double* xr2lo = new double[nbins2];
+	//	double* yr2lo = new double[nbins2];
+	//	double* xr2hi = new double[nbins2];
+	//	double* yr2hi = new double[nbins2];
 
-		// here we assume that the mc uncertainty is negligible compared to the data one: simply scale everything by the central value.
-		for (int j = 0; j < nbins2; j++)
-		{
-			xr2[j] = effCentData->GetX()[j];
-			xr2lo[j] = effCentData->GetErrorXlow(j);
-			xr2hi[j] = effCentData->GetErrorXhigh(j);
-			yr2[j] = effCentData->GetY()[j] / effCentMC->GetY()[j];
-			yr2lo[j] = effCentData->GetErrorYlow(j) / effCentMC->GetY()[j];
-			yr2hi[j] = effCentData->GetErrorYhigh(j) / effCentMC->GetY()[j];
-		}
-		TGraphAsymmErrors *gratio2 = new TGraphAsymmErrors(nbins2, xr2, yr2, xr2lo, xr2hi, yr2lo, yr2hi);
-		gratio2->SetMarkerStyle(20);
-		gratio2->SetMarkerColor(kBlack);
-		gratio2->SetMarkerSize(1.0);
-		gratio2->SetLineColor(kBlack);
-		gratio2->SetLineWidth(1);
-		gratio2->Draw("pz same");
+	//	// here we assume that the mc uncertainty is negligible compared to the data one: simply scale everything by the central value.
+	//	for (int j = 0; j < nbins2; j++)
+	//	{
+	//		xr2[j] = effCentData->GetX()[j];
+	//		xr2lo[j] = effCentData->GetErrorXlow(j);
+	//		xr2hi[j] = effCentData->GetErrorXhigh(j);
+	//		yr2[j] = effCentData->GetY()[j] / effCentMC->GetY()[j];
+	//		yr2lo[j] = effCentData->GetErrorYlow(j) / effCentMC->GetY()[j];
+	//		yr2hi[j] = effCentData->GetErrorYhigh(j) / effCentMC->GetY()[j];
+	//	}
+	//	TGraphAsymmErrors *gratio2 = new TGraphAsymmErrors(nbins2, xr2, yr2, xr2lo, xr2hi, yr2lo, yr2hi);
+	//	gratio2->SetMarkerStyle(20);
+	//	gratio2->SetMarkerColor(kBlack);
+	//	gratio2->SetMarkerSize(1.0);
+	//	gratio2->SetLineColor(kBlack);
+	//	gratio2->SetLineWidth(1);
+	//	gratio2->Draw("pz same");
 
-		c1->SaveAs(cutTag + "Eff_" + collTag + "_RD_MC_Cent.root");
-		c1->SaveAs(cutTag + "Eff_" + collTag + "_RD_MC_Cent.pdf");
-		c1->SaveAs(cutTag + "Eff_" + collTag + "_RD_MC_Cent.png");
+	//	c1->SaveAs(cutTag + "Eff_" + collTag + "_RD_MC_Cent.root");
+	//	c1->SaveAs(cutTag + "Eff_" + collTag + "_RD_MC_Cent.pdf");
+	//	c1->SaveAs(cutTag + "Eff_" + collTag + "_RD_MC_Cent.png");
 
-		// print the centrality dependence to file
-		double xVal, yVal, ErrDown, ErrUp;
-		file_Cent << "Data " << endl << endl;
-		file_Cent << "Centrality Value ErrDown ErrUp" << endl;
-		for (int bin = 0; bin < effCentData->GetN(); bin++)
-		{
-			effCentData->GetPoint(bin, xVal, yVal);
-			ErrDown = effCentData->GetErrorYlow(bin);
-			ErrUp = effCentData->GetErrorYhigh(bin);
-			file_Cent << xVal << " " << yVal << " " << ErrDown << " " << ErrUp << endl;
-		}
+	//	// print the centrality dependence to file
+	//	double xVal, yVal, ErrDown, ErrUp;
+	//	file_Cent << "Data " << endl << endl;
+	//	file_Cent << "Centrality Value ErrDown ErrUp" << endl;
+	//	for (int bin = 0; bin < effCentData->GetN(); bin++)
+	//	{
+	//		effCentData->GetPoint(bin, xVal, yVal);
+	//		ErrDown = effCentData->GetErrorYlow(bin);
+	//		ErrUp = effCentData->GetErrorYhigh(bin);
+	//		file_Cent << xVal << " " << yVal << " " << ErrDown << " " << ErrUp << endl;
+	//	}
 
-		file_Cent << endl << endl << "MC " << endl << endl;
-		file_Cent << "Centrality Value ErrDown ErrUp" << endl;
-		for (int bin = 0; bin < effCentMC->GetN(); bin++)
-		{
-			effCentMC->GetPoint(bin, xVal, yVal);
-			ErrDown = effCentMC->GetErrorYlow(bin);
-			ErrUp = effCentMC->GetErrorYhigh(bin);
-			file_Cent << xVal << " " << yVal << " " << ErrDown << " " << ErrUp << endl;
-		}
-		file_Cent.close();
-	}
+	//	file_Cent << endl << endl << "MC " << endl << endl;
+	//	file_Cent << "Centrality Value ErrDown ErrUp" << endl;
+	//	for (int bin = 0; bin < effCentMC->GetN(); bin++)
+	//	{
+	//		effCentMC->GetPoint(bin, xVal, yVal);
+	//		ErrDown = effCentMC->GetErrorYlow(bin);
+	//		ErrUp = effCentMC->GetErrorYhigh(bin);
+	//		file_Cent << xVal << " " << yVal << " " << ErrDown << " " << ErrUp << endl;
+	//	}
+	//	file_Cent.close();
+	//}
 
 
 	file_sfs.close();

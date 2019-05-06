@@ -103,10 +103,9 @@ process.centralityInfo.CentralitySrc = cms.InputTag("pACentrality")
 ## Flags
 ### Muon Id
 TightIdReco = "isGlobalMuon && isPFMuon && globalTrack.normalizedChi2 < 10 && globalTrack.hitPattern.numberOfValidMuonHits > 0 && numberOfMatchedStations > 1 && track.hitPattern.trackerLayersWithMeasurement > 5 && track.hitPattern.numberOfValidPixelHits > 0"
-TightId = TightIdReco+" && abs(dB('PV2D')) < 0.2 && abs(dB('PVDZ')) < 0.5"
 HybridSoftIdReco = "isTrackerMuon && isGlobalMuon && innerTrack.hitPattern.trackerLayersWithMeasurement > 5 && innerTrack.hitPattern.pixelLayersWithMeasurement > 0"
-HybridSoftId = HybridSoftIdReco + " && muonID('TMOneStationTight') && abs(dB('PV2D')) < 0.3 && abs(dB('PVDZ')) < 20.0"
-SoftId = "muonID('TMOneStationTight') && innerTrack.hitPattern.trackerLayersWithMeasurement > 5 && innerTrack.hitPattern.pixelLayersWithMeasurement > 0 && innerTrack.quality(\"highPurity\") && abs(dB('PV2D')) < 0.3 && abs(dB('PVDZ')) < 20.0"
+HybridSoftId = HybridSoftIdReco + " && muonID('TMOneStationTight') && abs(dB('PV2D')) < 0.3"
+SoftId = "muonID('TMOneStationTight') && innerTrack.hitPattern.trackerLayersWithMeasurement > 5 && innerTrack.hitPattern.pixelLayersWithMeasurement > 0 && innerTrack.quality(\"highPurity\")"
 ### Tracking
 track_cuts = "track.isNonnull && track.hitPattern.trackerLayersWithMeasurement > 5 && track.hitPattern.pixelLayersWithMeasurement > 0" #currently used only as a flag
 ### Trigger
@@ -201,7 +200,7 @@ process.tpTree = cms.EDAnalyzer("TagProbeFitTreeProducer",
        TrackQualityFlags,
        MuonIDFlags,
        TrigProbeFlags,
-       TightHINoDz = cms.string(TightId),
+       TightHINoDz = cms.string(TightIdReco),
        HybridSoftHINoDxyz = cms.string(HybridSoftId),
        SoftHINoDxyz = cms.string(SoftId),
        InAcceptance = cms.string(InAcceptance),

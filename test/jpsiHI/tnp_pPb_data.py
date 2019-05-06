@@ -8,9 +8,9 @@ process.options   = cms.untracked.PSet(wantSummary = cms.untracked.bool(True))
 process.MessageLogger.cerr.FwkReport.reportEvery = 100
 
 process.source = cms.Source("PoolSource",
-    fileNames = cms.untracked.vstring('root://cmsxrootd.fnal.gov//store/hidata/PARun2016C/PASingleMuon/AOD/PromptReco-v1/000/286/010/00000/249B8523-D0B6-E611-A48A-02163E011BAA.root')
+    fileNames = cms.untracked.vstring('file:/afs/cern.ch/work/o/okukral/TnP_pPb/CMSSW_8_0_30/src/MuonAnalysis/TagAndProbe/test/jpsiHI/0249A3C5-A2B1-E611-8E3E-FA163ED701FA.root')
 )
-process.maxEvents = cms.untracked.PSet(input = cms.untracked.int32(-1))
+process.maxEvents = cms.untracked.PSet(input = cms.untracked.int32(10000))
 
 process.load('Configuration.StandardSequences.GeometryRecoDB_cff')
 process.load('Configuration.StandardSequences.MagneticField_cff')
@@ -103,10 +103,9 @@ process.centralityInfo.CentralitySrc = cms.InputTag("pACentrality")
 ## Flags
 ### Muon Id
 TightIdReco = "isGlobalMuon && isPFMuon && globalTrack.normalizedChi2 < 10 && globalTrack.hitPattern.numberOfValidMuonHits > 0 && numberOfMatchedStations > 1 && track.hitPattern.trackerLayersWithMeasurement > 5 && track.hitPattern.numberOfValidPixelHits > 0"
-TightId = TightIdReco+" && abs(dB('PV2D')) < 0.2 && abs(dB('PVDZ')) < 0.5"
 HybridSoftIdReco = "isTrackerMuon && isGlobalMuon && innerTrack.hitPattern.trackerLayersWithMeasurement > 5 && innerTrack.hitPattern.pixelLayersWithMeasurement > 0"
-HybridSoftId = HybridSoftIdReco + " && muonID('TMOneStationTight') && abs(dB('PV2D')) < 0.3 && abs(dB('PVDZ')) < 20.0"
-SoftId = "muonID('TMOneStationTight') && innerTrack.hitPattern.trackerLayersWithMeasurement > 5 && innerTrack.hitPattern.pixelLayersWithMeasurement > 0 && innerTrack.quality(\"highPurity\") && abs(dB('PV2D')) < 0.3 && abs(dB('PVDZ')) < 20.0"
+HybridSoftId = HybridSoftIdReco + " && muonID('TMOneStationTight') && abs(dB('PV2D')) < 0.3"
+SoftId = "muonID('TMOneStationTight') && innerTrack.hitPattern.trackerLayersWithMeasurement > 5 && innerTrack.hitPattern.pixelLayersWithMeasurement > 0 && innerTrack.quality(\"highPurity\")"
 ### Tracking
 track_cuts = "track.isNonnull && track.hitPattern.trackerLayersWithMeasurement > 5 && track.hitPattern.pixelLayersWithMeasurement > 0" #currently used only as a flag
 ### Trigger
@@ -196,19 +195,20 @@ process.tpTree = cms.EDAnalyzer("TagProbeFitTreeProducer",
         dxyPVdzmin = cms.InputTag("muonDxyPVdzmin","dxyPVdzmin"),
         dzPV = cms.InputTag("muonDxyPVdzmin","dzPV"),
         dxyPV = cms.InputTag("muonDxyPVdzmin","dxyPV"),
+        trackAlgo=cms.InputTag("innerTrack.originalAlgo"),
     ),
     flags = cms.PSet(
        TrackQualityFlags,
        MuonIDFlags,
        TrigProbeFlags,
-       TightHINoDz = cms.string(TightId),
+       TightHINoDxyz = cms.string(TightIdReco),
        HybridSoftHINoDxyz = cms.string(HybridSoftId),
        SoftHINoDxyz = cms.string(SoftId),
        InAcceptance = cms.string(InAcceptance),
        Custom_track_cuts = cms.string(track_cuts),
        StaTkSameCharge = cms.string("outerTrack.isNonnull && innerTrack.isNonnull && (outerTrack.charge == innerTrack.charge)"),
        outerValidHits = cms.string("outerTrack.isNonnull && outerTrack.numberOfValidHits > 0"),
-       isMuonSeeded = cms.string("innerTrack.isNonnull && innerTrack.originalAlgo<13"), #   muonSeededStepInOut = 13,
+       isNotMuonSeeded = cms.string("innerTrack.isNonnull && innerTrack.originalAlgo!=13 && innerTrack.originalAlgo!=14"), #   muonSeededStepInOut = 13,
     ),
     tagVariables = cms.PSet(
         KinematicVariables,
@@ -280,4 +280,4 @@ process.schedule = cms.Schedule(
    process.tagAndProbe
 )
 
-process.TFileService = cms.Service("TFileService", fileName = cms.string("tnpJPsi_Data_pPb_AOD.root"))
+process.TFileService = cms.Service("TFileService", fileName = cms.string("tnpJPsi_Data_pPb_AOD_test.root"))
