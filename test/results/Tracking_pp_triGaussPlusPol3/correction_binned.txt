@@ -1,0 +1,60 @@
+//Central scale-factor value, statistical error, systematic error, total error
+// -2.4 < |eta| < 2.4
+if (pt<2.5) return std::tuple(1.00109, 0.00252651, 0.0044329, 0.00510234);
+else if (pt<3.5) return std::tuple(0.989328, 0.00126062, 0.0025514, 0.00284584);
+else if (pt<4.8) return std::tuple(0.989576, 0.000975607, 0.00293426, 0.0030922);
+else if (pt<6.5) return std::tuple(0.989672, 0.000901398, 0.00473396, 0.00481902);
+else if (pt<8.5) return std::tuple(0.98702, 0.0011298, 0.00306431, 0.00326595);
+else if (pt<12) return std::tuple(0.997039, 0.00149654, 0.00540922, 0.00561242);
+else if (pt<30) return std::tuple(1, 1.41414e-07, 8.42534e-05, 8.42536e-05);
+
+//Central scale-factor value, statistical error, systematic error, total error
+// -2.4 < |eta| < 2.4
+if (pt<2.5) return std::tuple(1.00109, 0.00252651, 0.0044329, 0.00510234);
+else if (pt<3.5) return std::tuple(0.989328, 0.00126062, 0.0025514, 0.00284584);
+else if (pt<4.8) return std::tuple(0.989576, 0.000975607, 0.00293426, 0.0030922);
+else if (pt<6.5) return std::tuple(0.989672, 0.000901398, 0.00473396, 0.00481902);
+else if (pt<8.5) return std::tuple(0.98702, 0.0011298, 0.00306431, 0.00326595);
+else if (pt<12) return std::tuple(0.997039, 0.00149654, 0.00540922, 0.00561242);
+else if (pt<30) return std::tuple(1, 1.41414e-07, 8.42534e-05, 8.42536e-05);
+
+//Central scale-factor value, statistical error, systematic error, total error
+// -2.4 < |eta| < 2.4
+if (pt<2.5) return std::tuple(1.00109, 0.00252651, 0.0044329, 0.00510234);
+else if (pt<3.5) return std::tuple(0.989328, 0.00126062, 0.0025514, 0.00284584);
+else if (pt<4.8) return std::tuple(0.989576, 0.000975607, 0.00293426, 0.0030922);
+else if (pt<6.5) return std::tuple(0.989672, 0.000901398, 0.00473396, 0.00481902);
+else if (pt<8.5) return std::tuple(0.98702, 0.0011298, 0.00306431, 0.00326595);
+else if (pt<12) return std::tuple(0.997039, 0.00149654, 0.00540922, 0.00561242);
+else if (pt<30) return std::tuple(1, 1.41414e-07, 8.42534e-05, 8.42536e-05);
+
+//Central scale-factor value, statistical error, systematic error, total error
+// -2.4 < |eta| < 2.4
+if (pt<2.5) return std::tuple(1.00109, 0.00252651, 0.0044329, 0.00510234);
+else if (pt<3.5) return std::tuple(0.989328, 0.00126062, 0.0025514, 0.00284584);
+else if (pt<4.8) return std::tuple(0.989576, 0.000975607, 0.00293426, 0.0030922);
+else if (pt<6.5) return std::tuple(0.989672, 0.000901398, 0.00473396, 0.00481902);
+else if (pt<8.5) return std::tuple(0.98702, 0.0011298, 0.00306431, 0.00326595);
+else if (pt<12) return std::tuple(0.997039, 0.00149654, 0.00540922, 0.00561242);
+else if (pt<30) return std::tuple(1, 1.41414e-07, 8.42534e-05, 8.42536e-05);
+
+//Central scale-factor value, statistical error, systematic error, total error
+// -2.4 < |eta| < 2.4
+if (pt<2.5) return std::tuple(1.00109, 0.00252651, 0.0044329, 0.00510234);
+else if (pt<3.5) return std::tuple(0.989328, 0.00126062, 0.0025514, 0.00284584);
+else if (pt<4.8) return std::tuple(0.989576, 0.000975607, 0.00293426, 0.0030922);
+else if (pt<6.5) return std::tuple(0.989672, 0.000901398, 0.00473396, 0.00481902);
+else if (pt<8.5) return std::tuple(0.98702, 0.0011298, 0.00306431, 0.00326595);
+else if (pt<12) return std::tuple(0.997039, 0.00149654, 0.00540922, 0.00561242);
+else if (pt<30) return std::tuple(1, 1.41414e-07, 8.42534e-05, 8.42536e-05);
+
+//Central scale-factor value, statistical error, systematic error, total error
+// -2.4 < |eta| < 2.4
+if (pt<2.5) return std::tuple(1.00109, 0.00252651, 0.0044329, 0.00510234);
+else if (pt<3.5) return std::tuple(0.989328, 0.00126062, 0.0025514, 0.00284584);
+else if (pt<4.8) return std::tuple(0.989576, 0.000975607, 0.00293426, 0.0030922);
+else if (pt<6.5) return std::tuple(0.989672, 0.000901398, 0.00473396, 0.00481902);
+else if (pt<8.5) return std::tuple(0.98702, 0.0011298, 0.00306431, 0.00326595);
+else if (pt<12) return std::tuple(0.997039, 0.00149654, 0.00540922, 0.00561242);
+else if (pt<30) return std::tuple(1, 1.41414e-07, 8.42534e-05, 8.42536e-05);
+

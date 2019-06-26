@@ -47,8 +47,8 @@ using namespace std;
 #define TRK
 
 // pp or PbPb?
-bool isPbPb = true; // if true, will compute the centrality dependence
-TString collTag = "pPb"; // isPbPb ? "PbPb" : "pp";
+bool isPbPb = false; // if true, will compute the centrality dependence
+TString collTag = "pp"; // isPbPb ? "PbPb" : "pp";
 
 // do the toy study for the correction factors? (only applies if MUIDTRG)
 bool doToys = false;
@@ -61,7 +61,7 @@ bool doToys = false;
 int fitfcn = 2;
 
 // Location of the files
-const int nSyst = 1;//5;
+const int nSyst = 4;//4;
 // the first file is for the nominal case, the following ones are for the systematics
 /*const char* fDataName[nSyst] = {
 	//"tnp_Ana_RD_PbPb_MuonIDTrg_AllMB.root",
@@ -74,20 +74,27 @@ const char* fMCName[nSyst] = {
 
 // names for systematics
 const char* systName[nSyst] = {
-   "nominal",
+  "nominal (3Gauss+pol3)","Background_pol2","Signal_VoigtGauss","MassRange_narrow"//,"TightAcceptance"
 };
+//GLB:   "nominal","Background_pol3","Signal_CB+Gauss","MassRange_narrow","LooseAcceptance"
+//MUID:  "nominal (CB+pol2)","Background_pol2","Signal_CB","MassRange_narrow","TightAcceptance"
+//MUIDTRG:   "nominal (CB+pol2)","Background_pol2","Signal_CB","MassRange_narrow"
+//TRK:"nominal (3Gauss+pol3)","Background_pol2","Signal_VoigtGauss","MassRange_narrow"
 
-
+const double rsystrange = 0.02;
+//GLB:0.02
+//MUID:0.005
+//MUIDTRG:0.018
 
 //////////////////////////////////////////////////////////////////////////
 
 // Other parameters
 #ifdef MUIDTRG
 TString etaTag("MuIdTrg_etadep");
-TString absetaTag("MuIdTrg_absetadep");
+TString absetaTag("MuIdTrg_absetadep_HighPt");
 TString centTag("MuIdTrg_centdep");
 const int nAbsEtaBins = 4;
-TString ptTag[nAbsEtaBins] = { "MuIdTrg_abseta00_09", "MuIdTrg_abseta09_12", "MuIdTrg_abseta12_16", "MuIdTrg_abseta16_21", "MuIdTrg_abseta21_24" };
+TString ptTag[nAbsEtaBins] = { "MuIdTrg_abseta00_12", "MuIdTrg_abseta12_18", "MuIdTrg_abseta18_21", "MuIdTrg_abseta21_24" };
 TString allTag("MuIdTrg_1bin");
 TString absetaVar("abseta");
 TString centVar("tag_hiBin");
@@ -95,35 +102,14 @@ ofstream file_sfs("correction_functions.txt");
 ofstream file_Eta("EtaValues_MuIdTrg.txt");
 ofstream file_Cent("CentValues_MuIdTrg.txt");
 TString cutTag("tpTree");
-TString cutLegend("Muon ID + trigger");
-const double effmin = 0.;
-const double sfrange = 0.35;
-const char* fDataName[nSyst] = { "tnp_Ana_RD_PbPb_MuIDTrg_AllMB.root" };
-const char* fMCName[nSyst] = { "tnp_Ana_MC_PbPb_MuIDTrg_AllMB.root" };
+TString cutLegend("HybridSoft ID + DoubleMu0 trigger");
+const double effmin = 0.2;
+const double sfrange = 0.19;
+const char* fDataName[nSyst] = { "../../tnp_fitOutput_HybridSoftIDTrigger_data_pp_CBGPlusPol1.root", "../../tnp_fitOutput_HybridSoftIDTrigger_data_pp_CBGPlusPol2.root", "../../tnp_fitOutput_HybridSoftIDTrigger_data_pp_CBPlusPol1.root", "../../tnp_fitOutput_HybridSoftIDTrigger_data_pp_CBGPlusPol1_narrowMrange.root" };
+const char* fMCName[nSyst] = { "../../tnp_fitOutput_HybridSoftIDTrigger_MC_pp_CBGPlusPol1.root", "../../tnp_fitOutput_HybridSoftIDTrigger_MC_pp_CBGPlusPol2.root", "../../tnp_fitOutput_HybridSoftIDTrigger_MC_pp_CBPlusPol1.root", "../../tnp_fitOutput_HybridSoftIDTrigger_MC_pp_CBGPlusPol1_narrowMrange.root" };
 #endif
 
-#ifdef MUID
-TString etaTag("MuId_etadep");
-TString absetaTag("MuId_absetadep");
-TString centTag("MuId_centdep");
-const int nAbsEtaBins = 5;
-TString ptTag[nAbsEtaBins] = {"MuId_pt","MuId_abseta00_12", "MuId_abseta12_18", "MuId_abseta18_21", "MuId_abseta21_24" };
-TString allTag("MuId_1bin");
-TString absetaVar("abseta");
-TString centVar("tag_hiNtracks");
-ofstream file_sfs("correction_functions.txt");
-ofstream file_Eta("EtaValues_MuId.txt");
-ofstream file_Cent("CentValues_MuId.txt");
-ofstream file_TestErr("MuId_ExpErr.txt");
-TString cutTag("tpTree");
-TString cutLegend("Tight ID");
-const double effmin = 0.;
-const double sfrange = 0.2;
-const char* fDataName[nSyst] = { "tnp_Ana_RD_MuonID_pPb.root" };
-const char* fMCName[nSyst] = { "tnp_Ana_MC_MuonID_pPb.root" };
-#endif
-
-#ifdef TRG
+#ifdef MUIDTRGfromTM
 TString etaTag("MuIdTrg_etadep");
 TString absetaTag("MuIdTrg_absetadep");
 TString centTag("MuIdTrg_centdep");
@@ -133,15 +119,56 @@ TString allTag("MuIdTrg_1bin");
 TString absetaVar("abseta");
 TString centVar("tag_hiBin");
 ofstream file_sfs("correction_functions.txt");
+ofstream file_Eta("EtaValues_MuIdTrg.txt");
+ofstream file_Cent("CentValues_MuIdTrg.txt");
+TString cutTag("tpTree");
+TString cutLegend("Soft ID + DoubleMu0 trigger, for tracker muons");
+const double effmin = 0.;
+const double sfrange = 0.3;
+const char* fDataName[nSyst] = {  "../../tnp_fitOutput_MuonIDTrigger_fromTrkMuon_data_pp_pol1.root" };
+const char* fMCName[nSyst] = { "../../tnp_fitOutput_MuonIDTrigger_fromTrkMuon_MC_pp_pol1.root" };
+#endif
+
+#ifdef MUID
+TString etaTag("MuId_etadep");
+TString absetaTag("MuId_absetadep_HighPt");
+TString centTag("MuId_centdep");
+const int nAbsEtaBins = 4;
+TString ptTag[nAbsEtaBins] = {"MuId_abseta00_12", "MuId_abseta12_18", "MuId_abseta18_21", "MuId_abseta21_24" };
+TString allTag("MuId_1bin");
+TString absetaVar("abseta");
+TString centVar("tag_hiNtracks");
+ofstream file_sfs("correction_functions.txt");
+ofstream file_Eta("EtaValues_MuId.txt");
+ofstream file_Cent("CentValues_MuId.txt");
+ofstream file_TestErr("MuId_ExpErr.txt");
+TString cutTag("tpTree");
+TString cutLegend("Soft ID");
+const double effmin = 0.85;
+const double sfrange = 0.015;
+const char* fDataName[nSyst] = { "../../tnp_fitOutput_HybridSoftID_data_pp_CBGPlusPol1.root", "../../tnp_fitOutput_HybridSoftID_data_pp_CBGPlusPol2.root", "../../tnp_fitOutput_HybridSoftID_data_pp_CBPlusPol1.root", "../../tnp_fitOutput_HybridSoftID_data_pp_CBGPlusPol1_narrowMrange.root" };// , "../../tnp_fitOutput_HybridSoftID_data_pp_TightAcceptance_CBGPlusPol1.root"
+const char* fMCName[nSyst] = { "../../tnp_fitOutput_HybridSoftID_MC_pp_CBGPlusPol1.root", "../../tnp_fitOutput_HybridSoftID_MC_pp_CBGPlusPol2.root", "../../tnp_fitOutput_HybridSoftID_MC_pp_CBPlusPol1.root", "../../tnp_fitOutput_HybridSoftID_MC_pp_CBGPlusPol1_narrowMrange.root" } ;//"../../tnp_fitOutput_HybridSoftID_MC_pp_TightAcceptance_CBGPlusPol1.root"
+#endif
+
+#ifdef TRG
+TString etaTag("Trg_etadep");
+TString absetaTag("Trg_absetadep");
+TString centTag("Trg_centdep");
+const int nAbsEtaBins = 4;
+TString ptTag[nAbsEtaBins] = { "Trg_abseta00_12", "Trg_abseta12_18", "Trg_abseta18_21", "Trg_abseta21_24" };
+TString allTag("Trg_1bin");
+TString absetaVar("abseta");
+TString centVar("tag_hiBin");
+ofstream file_sfs("correction_functions.txt");
 ofstream file_Eta("EtaValues_Trg.txt");
 ofstream file_Cent("CentValues_Trg.txt");
 ofstream file_TestErr("Trg_ExpErr.txt");
 TString cutTag("tpTree");
-TString cutLegend("Trigger");
+TString cutLegend("DoubleMu0 trigger");
 const double effmin = 0.;
 const double sfrange = 0.35;
-const char* fDataName[nSyst] = { "tnp_Ana_RD_PbPb_Trg_AllMB.root" };
-const char* fMCName[nSyst] = { "tnp_Ana_MC_PbPb_Trg_AllMB.root" };
+const char* fDataName[nSyst] = { "../../tnp_fitOutput_Trigger_data_pp_pol1.root" };
+const char* fMCName[nSyst] = { "../../tnp_fitOutput_Trigger_MC_pp_pol1.root" };
 #endif
 
 
@@ -151,41 +178,81 @@ TString absetaTag("STA_absetadep");
 //TString centTag("STA_cent");
 TString HFTag("STA_HFdep");
 TString NtracksTag("STA_nTracksdep");
-const int nAbsEtaBins = 5;
-TString ptTag[nAbsEtaBins] = { "STA_abseta00_09", "STA_abseta09_12", "STA_abseta12_16", "STA_abseta16_21", "STA_abseta21_24" };
+const int nAbsEtaBins = 4;
+TString ptTag[nAbsEtaBins] = { "STA_abseta00_12", "STA_abseta12_18", "STA_abseta18_21", "STA_abseta21_24" };
 TString allTag("STA_1bin");
 TString absetaVar("abseta");
 TString HFVar("tag_hiHF");
 TString NtracksVar("tag_hiNtracks");
 ofstream file_sfs("correction_functions.txt");
 ofstream file_Eta("EtaValues_Sta.txt");
-//ofstream file_Cent("CentValues_Sta.txt");
-TString cutTag("tpTreeTrk");
+//ofstream file_Cent("CentValues_Sta.txt");T
+String cutTag("tpTreeTrk");
 TString cutLegend("Standalone");
 const double effmin = 0.;
 const double sfrange = 0.55;
-const char* fDataName[nSyst] = { "../test/zmumuHI/STAResults/tnp_Ana_Data_RecoSTA_pPb.root" };
-const char* fMCName[nSyst] = { "../test/zmumuHI/STAResults/tnp_Ana_MC_RecoSTA_pPb.root" };
+const char* fDataName[nSyst] = { "../../tnp_fitOutput_STA_data_pp_pol1.root" };
+const char* fMCName[nSyst] = { "../../tnp_fitOutput_STA_MC_pp_pol1.root" };
 #endif
 
 #ifdef TRK
-TString etaTag("Glb_etadep");
-TString absetaTag("Glb_absetadep");
+TString etaTag("Trk_etadep");
+TString absetaTag("Trk_absetadep");
 //TString centTag("Trk_centSeg");
-const int nAbsEtaBins = 5;
-TString ptTag[nAbsEtaBins] = { "Glb_abseta00_09", "Glb_abseta09_12", "Glb_abseta12_16", "Glb_abseta16_21", "Glb_abseta21_24" };
-TString allTag("Glb_1bin");
+const int nAbsEtaBins = 6;
+TString ptTag[nAbsEtaBins] = { "Trk_pt", "Trk_pt", "Trk_pt", "Trk_pt", "Trk_pt", "Trk_pt",};//,"Trk_ptSeg"
+TString allTag("Trk_1bin");
 TString absetaVar("abseta");
 //TString centVar("tag_hiBin");
 ofstream file_sfs("correction_functions.txt");
 ofstream file_Eta("EtaValues_Trk.txt");
 ofstream file_Cent("CentValues_Trk.txt");
 TString cutTag("tpTreeSta");
-TString cutLegend("Inner tracking - Global and PF");
+TString cutLegend("Inner tracking - Global");
 const double effmin = 0.8;
-const double sfrange = 0.08;
-const char* fDataName[nSyst] = { "../test/zmumuHI/FirstAttemptResults/tnp_Ana_Data_RecoTrackingGlbOnly_actual_Pbp.root" };
-const char* fMCName[nSyst] = { "../test/zmumuHI/FirstAttemptResults/tnp_Ana_MC_RecoTrackingGlbOnly_Pbp.root" };
+const double sfrange = 0.04;
+const char* fDataName[nSyst] = { "../../tnp_fitOutput_Tracking_data_pp_triGaussPlusPol3.root", "../../tnp_fitOutput_Tracking_data_pp_triGaussPlusPol2.root","../../tnp_fitOutput_Tracking_data_pp_VoigtGaussPlusPol3.root", "../../tnp_fitOutput_Tracking_data_pp_triGaussPlusPol3_narrowMrange.root"};
+const char* fMCName[nSyst] = { "../../tnp_fitOutput_Tracking_MC_pp_triGaussPlusPol3.root", "../../tnp_fitOutput_Tracking_MC_pp_triGaussPlusPol2.root","../../tnp_fitOutput_Tracking_MC_pp_VoigtGaussPlusPol3.root", "../../tnp_fitOutput_Tracking_MC_pp_triGaussPlusPol3_narrowMrange.root"};
+#endif
+
+#ifdef TM
+TString etaTag("TM_etadep");
+TString absetaTag("TM_absetadep");
+//TString centTag("TM_centSeg");
+const int nAbsEtaBins = 3;
+TString ptTag[nAbsEtaBins] = { "TM_abseta00_12", "TM_abseta12_18", "TM_abseta18_24" };
+TString allTag("TM_1bin");
+TString absetaVar("abseta");
+//TString centVar("tag_hiBin");
+ofstream file_sfs("correction_functions.txt");
+ofstream file_Eta("EtaValues_TM.txt");
+ofstream file_Cent("CentValues_TM.txt");
+TString cutTag("tpTreeTrk");
+TString cutLegend("Tracker muon reconstruction");
+const double effmin = 0.5;
+const double sfrange = 0.04;
+const char* fDataName[nSyst] = { "../../tnp_fitOutput_TM_data_pp_pol2.root" };
+const char* fMCName[nSyst] = { "../../tnp_fitOutput_TM_MC_pp_pol2.root" };
+#endif
+
+#ifdef GLB
+TString etaTag("Glb_etadep");
+TString absetaTag("Glb_absetadep");//Glb_absetadep_HighPt
+//TString centTag("Glb_centSeg");
+const int nAbsEtaBins = 4;
+TString ptTag[nAbsEtaBins] = { "Glb_abseta00_12", "Glb_abseta12_18", "Glb_abseta18_24" , "Glb_abseta18_24"};
+TString allTag("Glb_1bin");
+TString absetaVar("abseta");
+//TString centVar("tag_hiBin");
+ofstream file_sfs("correction_functions.txt");
+ofstream file_Eta("EtaValues_Glb.txt");
+ofstream file_Cent("CentValues_Glb.txt");
+TString cutTag("tpTreeTrk");
+TString cutLegend("Global muon reconstruction");
+const double effmin = 0.;
+const double sfrange = 0.075;
+const char* fDataName[nSyst] = { "../../tnp_fitOutput_Glb_data_pp_twoGaussPlusPol2.root","../../tnp_fitOutput_Glb_data_pp_twoGaussPlusPol3.root","../../tnp_fitOutput_Glb_data_pp_CBGPlusPol2.root","../../tnp_fitOutput_Glb_data_pp_twoGaussPlusPol2_narrowMrange.root"};//,"../../tnp_fitOutput_Glb_LooseAcceptance_data_pp_twoGaussPlusPol2.root" 
+const char* fMCName[nSyst] = { "../../tnp_fitOutput_Glb_MC_pp_twoGaussPlusPol2.root","../../tnp_fitOutput_Glb_MC_pp_twoGaussPlusPol3.root","../../tnp_fitOutput_Glb_MC_pp_CBGPlusPol2.root","../../tnp_fitOutput_Glb_MC_pp_twoGaussPlusPol2_narrowMrange.root" };//,"../../tnp_fitOutput_Glb_LooseAcceptance_MC_pp_twoGaussPlusPol2.root"
 #endif
 
 // Function Define
@@ -237,11 +304,12 @@ cout << "point1" << endl;
 			daPtData0[k].push_back((RooDataSet*)fMC[k]->Get(cutTag + "/" + ptTag[i] + "/fit_eff"));
 			daPtData1[k].push_back((RooDataSet*)fData[k]->Get(cutTag + "/" + ptTag[i] + "/fit_eff"));
 		
+cout <<"Looking for"<<cutTag + "/" + ptTag[i] + "/fit_eff" << endl;
 cout << (RooDataSet*)fMC[k]->Get(cutTag + "/" + ptTag[i] + "/fit_eff") << endl;
 		}
 	}
 
-	vector<TGraphAsymmErrors*> ComPt0[nSyst], ComPt1[nSyst];
+	vector<TGraphAsymmErrors*> ComPt0[nSyst], ComPt1[nSyst], ComSFPt[nSyst];
 
 	for (int k = 0; k < nSyst; k++) {
 cout << "k is " << k << endl;
@@ -253,7 +321,7 @@ cout << "k is " << k << endl;
 			ComPt1[k].push_back(plotEff_1bin(daPtData1[k][i], 1, "pt"));
 		}
 	}
-
+	
 	RooDataSet* daEtaData0[nSyst];
 	RooDataSet* daEtaData1[nSyst];
 
@@ -283,6 +351,7 @@ cout << "point2" << endl;
 		daPtMC1Bin0[i] = (RooDataSet*)fMC[i]->Get(cutTag + "/" + allTag + "/fit_eff");
 		daPtData1Bin0[i] = (RooDataSet*)fData[i]->Get(cutTag + "/" + allTag + "/fit_eff");
 		daAbsEtaMC1[i] = (RooDataSet*)fMC[i]->Get(cutTag + "/" + absetaTag + "/fit_eff");
+		cout<<"Looking for "<<cutTag + "/" + absetaTag + "/fit_eff"<<endl; 
 		daAbsEtaData1[i] = (RooDataSet*)fData[i]->Get(cutTag + "/" + absetaTag + "/fit_eff");
 /*		if (isPbPb) {
 			daCentMC1[i] = (RooDataSet*)fMC[i]->Get(cutTag + "/" + centTag + "/fit_eff");
@@ -399,7 +468,7 @@ cout << "point4" << endl;
 	// lTextSize *= 1./0.7;
 
 
-	TH1F *hPad = new TH1F("hPad", ";p^{#mu}_{T} [GeV/c];Single #mu Efficiency", 5, 0, 200);
+	TH1F *hPad = new TH1F("hPad", ";p^{#mu}_{T} [GeV/c];Single #mu Efficiency", 5, 0, 30);
 	TH1F *hPad1 = new TH1F("hPad1", ";#eta^{#mu};Single #mu Efficiency", 5, -2.4, 2.4);
 //	TH1F *hPad2 = new TH1F("hPad2", ";Centrality - nTracks ;Single #mu Efficiency", 5, 0, 300);
 	hPad->GetXaxis()->CenterTitle();
@@ -439,8 +508,12 @@ cout << "point4" << endl;
 	hPadr->GetYaxis()->SetTitleSize(tsize);
 	hPadr->GetYaxis()->SetLabelSize(tsize);
 	hPadr->GetYaxis()->SetNdivisions(504, kTRUE);
-	TH1F *hPadr_syst = (TH1F*)hPadr->Clone("hPadr_syst");hPadr_syst->GetYaxis()->SetRangeUser(1. - .1, 1. + .1);
+	TH1F *hPadr_syst = (TH1F*)hPadr->Clone("hPadr_syst");
+	hPadr_syst->GetYaxis()->SetRangeUser(1. - rsystrange, 1. + rsystrange);
 	TH1F *hPad_syst = (TH1F*)hPad->Clone("hPad_syst");
+	TH1F *hPad_SFsyst = (TH1F*)hPad->Clone("hPad_SFsyst");
+	hPad_SFsyst->GetYaxis()->SetRangeUser(1. - sfrange, 1. + sfrange);
+	hPad_SFsyst->GetYaxis()->SetTitle("Scale Factor on single #mu efficiency");
 	TH1F *hPad1r = (TH1F*)hPad1->Clone("hPad1r"); hPad1r->GetYaxis()->SetRangeUser(1. - sfrange, 1. + sfrange);
 	hPad1r->GetYaxis()->SetTitle("Scale Factor");
 	hPad1r->GetXaxis()->SetTitleSize(tsize);
@@ -448,8 +521,10 @@ cout << "point4" << endl;
 	hPad1r->GetYaxis()->SetTitleSize(tsize);
 	hPad1r->GetYaxis()->SetLabelSize(tsize);
 	hPad1r->GetYaxis()->SetNdivisions(504, kTRUE);
-	TH1F *hPad1r_syst = (TH1F*)hPad1r->Clone("hPad1r_syst");hPad1r_syst->GetYaxis()->SetRangeUser(1. - .1, 1. + .1);
+	TH1F *hPad1r_syst = (TH1F*)hPad1r->Clone("hPad1r_syst");
+	hPad1r_syst->GetYaxis()->SetRangeUser(1. - rsystrange, 1. + rsystrange);
 	TH1F *hPad1_syst = (TH1F*)hPad1->Clone("hPad1_syst");
+	
 /*	TH1F *hPad2r = (TH1F*)hPad2->Clone("hPad2r"); hPad2r->GetYaxis()->SetRangeUser(1. - sfrange, 1. + sfrange);
 	hPad2r->GetYaxis()->SetTitle("Scale Factor");
 	hPad2r->GetXaxis()->SetTitleSize(tsize);
@@ -461,6 +536,10 @@ cout << "point4" << endl;
 	pad1->cd();
 
 cout << "point5" << endl;
+ 
+	//For output 2D graphs of final scale factors with stat+syst errors
+	vector<double> eta,etaErr,pt,ptErr,SF,SFstatErr,SFsysErr,SFtotErr;
+	int nPtsFinal = 0;
 
 	TString header;
 	for (int i = 0; i < nbins_abseta; i++)
@@ -468,6 +547,7 @@ cout << "point5" << endl;
 		TF1 *fdata = NULL;
 		TF1 *fmc = NULL;
 		double ptmin, ptmax;
+		double etamin, etamax;
 
 		for (int k = 0; k < nSyst; k++)
 		{
@@ -483,7 +563,7 @@ cout << "point5" << endl;
 			leg1->SetBorderSize(0);
 			leg1->SetTextSize(0.030);
 			ptmin = ((RooRealVar*)daPtData0[k][i]->get()->find("pt"))->getBinning().binLow(0);
-			double etamin, etamax;
+
 			if (daPtData0[k][i]->get()->find("abseta"))
 			{
 				etamin = ((RooRealVar*)daPtData0[k][i]->get()->find("abseta"))->getBinning().binLow(0);
@@ -497,7 +577,7 @@ cout << "point5" << endl;
 				header = TString("#splitline{") + cutLegend + Form(" Efficiency}{(p^{#mu}_{T}>%.1f, #eta #in [%.1f, %.1f])}", ptmin, etamin, etamax);
 			}
 			leg1->SetHeader(header);
-			sprintf(legs, "MC PYTHIA+EvtGen: %.4f^{ + %.3f}_{ - %.3f}", TrkAbsEta0[k][i][0], TrkAbsEta0[k][i][1], TrkAbsEta0[k][i][2]);
+			sprintf(legs, "MC PYTHIA: %.4f^{ + %.3f}_{ - %.3f}", TrkAbsEta0[k][i][0], TrkAbsEta0[k][i][1], TrkAbsEta0[k][i][2]);
 			leg1->AddEntry(ComPt0[k][i], legs, "pl");
 			sprintf(legs, "Data: %.4f^{ + %.3f}_{ - %.3f}", TrkAbsEta1[k][i][0], TrkAbsEta1[k][i][1], TrkAbsEta1[k][i][2]);
 			leg1->AddEntry(ComPt1[k][i], legs, "pl");
@@ -508,7 +588,7 @@ cout << "point5" << endl;
 
 			lt1->SetTextSize(0.05);
 			lt1->DrawLatex(0.43, 0.55, "CMS Preliminary");
-			lt1->DrawLatex(0.43, 0.49, collTag + "  #sqrt{s_{NN}} = 8.16 TeV");
+			lt1->DrawLatex(0.43, 0.49, collTag + "  #sqrt{s_{NN}} = 5.02 TeV");
 
 			// now take care of the data/mc ratio panel
 			c1->cd();
@@ -573,6 +653,8 @@ cout << "point6" << endl;
 			gratio->SetLineWidth(1);
 			gratio->Draw("pz same");
 
+			ComSFPt[k].push_back(gratio);
+
 			// save (nominal only)
 			if (k == 0) {
 				c1->SaveAs(cutTag + Form("Eff%i_", i) + collTag + "_RD_MC_PT.root");
@@ -583,7 +665,7 @@ cout << "point6" << endl;
 cout << "point7" << endl;
 
 			// in case we are looking at muon Id + trigger: get the scale factor at the same time
-#if defined MUIDTRG || defined STA || defined MUID || defined TRG
+#if defined MUIDTRG || defined STA || defined MUID || defined TRG || defined MUIDTRGfromTM || defined TM || defined GLB || defined TRK
 			pad1->cd();
 			ptmax = ((RooRealVar*)daPtData0[k][i]->get()->find("pt"))->getMax();
 			TLatex tchi; tchi.SetNDC();
@@ -679,15 +761,52 @@ cout << "point7" << endl;
 				file_sfs << formula(fmc, 5) << endl;
 				file_sfs << endl;
 
-				// print the binned ratio to the other file
-				file_binnedsfs << "// " << etamin << " < |eta| < " << etamax << endl;
-				for (int i = 0; i<gratio->GetN(); i++) {
-					if (i>0) file_binnedsfs << "else ";
-					file_binnedsfs << "if (pt<" << gratio->GetX()[i] + gratio->GetEXhigh()[i] << ") return " << gratio->GetY()[i] << ";" << endl;
-				}
-				file_binnedsfs << endl;
+				// // print the binned ratio to the other file
+				// file_binnedsfs << "// " << etamin << " < |eta| < " << etamax << endl;
+				// for (int i = 0; i<gratio->GetN(); i++) {
+				// 	if (i>0) file_binnedsfs << "else ";
+				// 	file_binnedsfs << "if (pt<" << gratio->GetX()[i] + gratio->GetEXhigh()[i] << ") return " << gratio->GetY()[i] << ";" << endl;
+				// }
+				// file_binnedsfs << endl;
 			}
 		}
+
+		//Calculate the systematic error from the maximal variation in each Pt bin
+		int nPtBins = ComSFPt[0][i]->GetN();
+		double MaxVar[nPtBins];
+		for (int l = 0; l<nPtBins; l++) {
+		  MaxVar[l] = 0;
+		  for (int k = 1; k < nSyst; k++)
+		    {
+		      if(l<ComSFPt[k][i]->GetN())
+			{
+			  double var = fabs(ComSFPt[k][i]->GetY()[l] - ComSFPt[0][i]->GetY()[l]);
+			  if(var>MaxVar[l]) MaxVar[l] = var;
+			}
+		    }
+		  cout<<"Systematic error on SF for Pt bin #"<<l<<" = "<< MaxVar[l] <<endl;
+		}
+
+		//Print the binned ratio, and its stat,syst, and tot errors, and record everything for the final output TGraph2DErrors
+		file_binnedsfs << "//Central scale-factor value, statistical error, systematic error, total error" << endl;
+		file_binnedsfs << "// " << etamin << " < |eta| < " << etamax << endl;
+		double etaval = (etamax+etamin)/2;
+		double etaerr = (etamax-etamin)/2;
+		for (int l = 0; l<nPtBins; l++) {
+		  eta.push_back(etaval); etaErr.push_back(etaerr);
+		  pt.push_back(ComSFPt[0][i]->GetX()[l] + (ComSFPt[0][i]->GetEXhigh()[l] - ComSFPt[0][i]->GetEXlow()[l])/2);//force value to be at the center of the bin (symmetric errors)
+		  ptErr.push_back((ComSFPt[0][i]->GetEXhigh()[l] + ComSFPt[0][i]->GetEXlow()[l])/2);
+
+		  SF.push_back(ComSFPt[0][i]->GetY()[l]);
+		  SFstatErr.push_back(ComSFPt[0][i]->GetEYhigh()[l]);
+		  SFsysErr.push_back(MaxVar[l]);
+		  SFtotErr.push_back(sqrt(SFsysErr[nPtsFinal]*SFsysErr[nPtsFinal] + SFstatErr[nPtsFinal]*SFstatErr[nPtsFinal]));
+
+		  if (l>0) file_binnedsfs << "else ";
+		  file_binnedsfs << "if (pt<" << ComSFPt[0][i]->GetX()[l] + ComSFPt[0][i]->GetEXhigh()[l] << ") return std::tuple(" << SF[nPtsFinal] <<", "<< SFstatErr[nPtsFinal] <<", "<< SFsysErr[nPtsFinal]<<", "<<SFtotErr[nPtsFinal] << ");" << endl;
+		  nPtsFinal += 1;
+		}
+		file_binnedsfs << endl;
 
 cout << "point8-endofmaincode" << endl;
 
@@ -700,6 +819,10 @@ cout << "point8-endofmaincode" << endl;
 		TGraphAsymmErrors *graphssyst_mc[nSyst];
 		for (int k = 0; k < nSyst; k++) graphssyst_mc[k] = ComPt0[k][i];
 		plotSysts(graphssyst_mc, c1, pad1, hPad_syst, pad2, hPadr_syst, header, Form("syst_mc_pt_%i", i));
+		//Scale factors
+		TGraphAsymmErrors *graphssyst_sf[nSyst];
+		for (int k = 0; k < nSyst; k++) graphssyst_sf[k] = ComSFPt[k][i];
+		plotSysts(graphssyst_sf, c1, pad1, hPad_SFsyst, pad2, hPadr_syst, header, Form("syst_SF_pt_%i", i));
 
 		// toys study 
 		if (doToys) toyStudy(nSyst, graphssyst_data, graphssyst_mc, fdata, fmc, cutTag + Form("toys%i_", i) + collTag + "_RD_MC_PT", 0);
@@ -707,6 +830,23 @@ cout << "point8-endofmaincode" << endl;
 	}
 #endif // ifdef MUIDTRG or STA
 	}
+
+//Plot the 2D graph final output of scale factors
+if(nPtsFinal>0)
+  {
+    TFile *fout =new TFile("Scale_factors_graphs.root", "RECREATE");
+
+    map<int,vector<double> > whichErr = { {0,SFstatErr} , {1,SFsysErr} , {2,SFtotErr}};
+    map<int,TString > whichErr_str = { {0,"statistical"} , {1,"systematical"} , {2,"total"}};
+    for(int e=0;e<3;e++){
+      TGraph2DErrors *g_SF = new TGraph2DErrors(nPtsFinal, eta.data(), pt.data(), SF.data(), etaErr.data(), ptErr.data(), whichErr[e].data());
+      g_SF->SetName("Scale_factors_with_"+whichErr_str[e]+"_errors");
+      g_SF->SetTitle("Scale factors with "+whichErr_str[e]+" errors;|#eta|;p_{T};SF");
+      g_SF->SetMarkerSize(1);
+      g_SF->Write();
+    }
+    fout->Close();
+  }
 
 cout << "point9" << endl;
 
@@ -729,7 +869,7 @@ cout << "point9" << endl;
 		leg1->SetTextSize(0.035);
 		double ptmin = ((RooRealVar*)daEtaData0[k]->get()->find("pt"))->getBinning().binLow(0);
 		leg1->SetHeader(TString("#splitline{") + cutLegend + Form(" Efficiency}{(p^{#mu}_{T}>%.1f)}", ptmin));
-		sprintf(legs, "MC PYTHIA+EvtGen: %.4f^{ + %.3f}_{ - %.3f}", Trk0[k][0], Trk0[k][1], Trk0[k][2]);
+		sprintf(legs, "MC PYTHIA: %.4f^{ + %.3f}_{ - %.3f}", Trk0[k][0], Trk0[k][1], Trk0[k][2]);
 		leg1->AddEntry(ComPt0[k][0], legs, "pl");
 		sprintf(legs, "Data: %.4f^{ + %.3f}_{ - %.3f}", Trk1[k][0], Trk1[k][1], Trk1[k][2]);
 		leg1->AddEntry(ComPt1[k][0], legs, "pl");
@@ -739,7 +879,7 @@ cout << "point9" << endl;
 		lt1->SetTextSize(0.05);
 		lt1->DrawLatex(0.43, 0.50, "CMS Preliminary");
 		//lt1->DrawLatex(0.43,0.54,"pp  #sqrt{s} = 5.02 TeV");
-		lt1->DrawLatex(0.43, 0.44, collTag + "  #sqrt{s_{NN}} = 8.16 TeV");
+		lt1->DrawLatex(0.43, 0.44, collTag + "  #sqrt{s_{NN}} = 5.02 TeV");
 
 		// now take care of the data/mc ratio panel
 		c1->cd();
@@ -826,7 +966,7 @@ cout << "point10" << endl;
 		lt1->SetTextSize(0.05);
 		lt1->DrawLatex(0.43, 0.50, "CMS Preliminary");
 		//lt1->DrawLatex(0.43,0.54,"pp  #sqrt{s} = 5.02 TeV");
-		lt1->DrawLatex(0.43, 0.44, collTag + "  #sqrt{s_{NN}} = 8.16 TeV");
+		lt1->DrawLatex(0.43, 0.44, collTag + "  #sqrt{s_{NN}} = 5.02 TeV");
 
 		// now take care of the data/mc ratio panel
 		c1->cd();
@@ -1192,13 +1332,13 @@ void CalEffErr(vector<TGraphAsymmErrors*> a, double **b) {
 
 	for (int vbin = 0; vbin < vsize; vbin++)
 	{
-		double x[nbins], y[nbins];
+	  	double x[nbins], y[nbins];
 		double sum = 0, errHighSum = 0, errLowSum = 0, sqSumHigh = 0, sqSumLow = 0;
 		//double b[3] = 0;
 
 		int nBins = a[vbin]->GetN();
 		for (int i = 0;i < a[vbin]->GetN();i++) {
-			a[vbin]->GetPoint(i, x[i], y[i]);
+		        a[vbin]->GetPoint(i, x[i], y[i]);
 			//cout<<"Eff x = "<<x[i]<<" y = "<<y[i]<<endl;
 			double eHigh = a[vbin]->GetErrorYhigh(i);
 			double eLow = a[vbin]->GetErrorYlow(i);
@@ -1209,6 +1349,7 @@ void CalEffErr(vector<TGraphAsymmErrors*> a, double **b) {
 			errLowSum += eLow;
 			sqSumLow += eLow*eLow;
 		}
+
 		b[vbin][0] = sum / nBins;
 		b[vbin][1] = sqrt(sqSumHigh) / nBins;
 		b[vbin][2] = sqrt(sqSumLow) / nBins;
