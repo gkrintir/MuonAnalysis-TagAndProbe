@@ -44,7 +44,7 @@ using namespace std;
 
 // Choose the efficiency type.
 // Possible values: MUIDTRG, TRK, STA, MUID, TRG
-#define TRK
+#define GLB
 
 // pp or PbPb?
 bool isPbPb = false; // if true, will compute the centrality dependence
@@ -74,7 +74,7 @@ const char* fMCName[nSyst] = {
 
 // names for systematics
 const char* systName[nSyst] = {
-  "nominal (3Gauss+pol3)","Background_pol2","Signal_VoigtGauss","MassRange_narrow"//,"TightAcceptance"
+  "nominal","Background_pol3","Signal_CB+Gauss","MassRange_narrow"//,"LooseAcceptance"
 };
 //GLB:   "nominal","Background_pol3","Signal_CB+Gauss","MassRange_narrow","LooseAcceptance"
 //MUID:  "nominal (CB+pol2)","Background_pol2","Signal_CB","MassRange_narrow","TightAcceptance"
@@ -85,6 +85,7 @@ const double rsystrange = 0.02;
 //GLB:0.02
 //MUID:0.005
 //MUIDTRG:0.018
+//TRK: 0.02
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -789,7 +790,7 @@ cout << "point7" << endl;
 
 		//Print the binned ratio, and its stat,syst, and tot errors, and record everything for the final output TGraph2DErrors
 		file_binnedsfs << "//Central scale-factor value, statistical error, systematic error, total error" << endl;
-		file_binnedsfs << "// " << etamin << " < |eta| < " << etamax << endl;
+		file_binnedsfs << "if( (fabs(eta) > " << etamin << ") && (fabs(eta) < " << etamax << ") ){" << endl;
 		double etaval = (etamax+etamin)/2;
 		double etaerr = (etamax-etamin)/2;
 		for (int l = 0; l<nPtBins; l++) {
@@ -803,10 +804,10 @@ cout << "point7" << endl;
 		  SFtotErr.push_back(sqrt(SFsysErr[nPtsFinal]*SFsysErr[nPtsFinal] + SFstatErr[nPtsFinal]*SFstatErr[nPtsFinal]));
 
 		  if (l>0) file_binnedsfs << "else ";
-		  file_binnedsfs << "if (pt<" << ComSFPt[0][i]->GetX()[l] + ComSFPt[0][i]->GetEXhigh()[l] << ") return std::tuple(" << SF[nPtsFinal] <<", "<< SFstatErr[nPtsFinal] <<", "<< SFsysErr[nPtsFinal]<<", "<<SFtotErr[nPtsFinal] << ");" << endl;
+		  file_binnedsfs << "if (pt<" << ComSFPt[0][i]->GetX()[l] + ComSFPt[0][i]->GetEXhigh()[l] << ") return std::make_tuple(" << SF[nPtsFinal] <<", "<< SFstatErr[nPtsFinal] <<", "<< SFsysErr[nPtsFinal]<<", "<<SFtotErr[nPtsFinal] << ");" << endl;
 		  nPtsFinal += 1;
 		}
-		file_binnedsfs << endl;
+		file_binnedsfs << "}" << endl;;
 
 cout << "point8-endofmaincode" << endl;
 
