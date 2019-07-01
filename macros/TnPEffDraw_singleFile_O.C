@@ -102,28 +102,28 @@ const char* fDataName[nSyst] = { "tnp_Ana_RD_PbPb_MuIDTrg_AllMB.root" };
 const char* fMCName[nSyst] = { "tnp_Ana_MC_PbPb_MuIDTrg_AllMB.root" };
 #endif
 
-//#ifdef MUID
-//TString etaTag("MuId_etadep");
-//TString absetaTag("MuId_absetadep");
-//TString centTag("MuId_centdep");
-////TString centTag("MuId_centdepHF");
-//const int nAbsEtaBins = 8;
-//TString ptTag[nAbsEtaBins] = {"MuId_pt","MuId_abseta00_09","MuId_abseta09_12", "MuId_abseta00_12", "MuId_abseta12_16", "MuId_abseta16_21", "MuId_abseta12_21", "MuId_abseta21_24" };
-//TString allTag("MuId_1bin");
-//TString absetaVar("abseta");
-//TString centVar("tag_hiNtracks");
-////TString centVar("tag_hiHF");
-//ofstream file_sfs("correction_functions.txt");
-//ofstream file_Eta("EtaValues_MuId.txt");
-//ofstream file_Cent("CentValues_MuId.txt");
-//ofstream file_TestErr("MuId_ExpErr.txt");
-//TString cutTag("tpTree");
-//TString cutLegend("Soft ID");
-//const double effmin = 0.9;
-//const double sfrange = 0.05;
-//const char* fDataName[nSyst] = { "tnp_Ana_RD_MuId_pPb.root" };
-//const char* fMCName[nSyst] = { "tnp_Ana_MC_MuId_pPb.root" };
-//#endif
+#ifdef MUID
+TString etaTag("MuId_etadep");
+TString absetaTag("MuId_absetadep");
+TString centTag("MuId_centdep");
+//TString centTag("MuId_centdepHF");
+const int nAbsEtaBins = 8;
+TString ptTag[nAbsEtaBins] = {"MuId_pt","MuId_abseta00_09","MuId_abseta09_12", "MuId_abseta00_12", "MuId_abseta12_16", "MuId_abseta16_21", "MuId_abseta12_21", "MuId_abseta21_24" };
+TString allTag("MuId_1bin");
+TString absetaVar("abseta");
+TString centVar("tag_hiNtracks");
+//TString centVar("tag_hiHF");
+ofstream file_sfs("correction_functions.txt");
+ofstream file_Eta("EtaValues_MuId.txt");
+ofstream file_Cent("CentValues_MuId.txt");
+ofstream file_TestErr("MuId_ExpErr.txt");
+TString cutTag("tpTree");
+TString cutLegend("Soft ID");
+const double effmin = 0.9;
+const double sfrange = 0.05;
+const char* fDataName[nSyst] = { "tnp_Ana_RD_MuId_pPb_0.root" };
+const char* fMCName[nSyst] = { "tnp_Ana_MC_MuId_pPb_0.root" };
+#endif
 
 //#ifdef MUID
 //TString etaTag("Iso_etadep");
@@ -149,26 +149,26 @@ const char* fMCName[nSyst] = { "tnp_Ana_MC_PbPb_MuIDTrg_AllMB.root" };
 //#endif
 
 
-#ifdef MUID
-TString etaTag("MuId_etadep");
-TString absetaTag("TightId_absetadep");
-TString centTag("TightId_centdep");
-const int nAbsEtaBins = 3;
-TString ptTag[nAbsEtaBins] = {"TightId_abseta00_12", "TightId_abseta12_21", "TightId_abseta21_24"};
-TString allTag("TightId_1bin");
-TString absetaVar("abseta");
-TString centVar("tag_hiNtracks");
-ofstream file_sfs("correction_functions.txt");
-ofstream file_Eta("EtaValues_TightId.txt");
-ofstream file_Cent("CentValues_TightId.txt");
-ofstream file_TestErr("TightId_ExpErr.txt");
-TString cutTag("tpTree");
-TString cutLegend("TightId");
-const double effmin = 0.9;
-const double sfrange = 0.05;
-const char* fDataName[nSyst] = { "tnp_Ana_RD_TightId_pPb_0.root" };
-const char* fMCName[nSyst] = { "tnp_Ana_MC_TightId_pPb_0.root" };
-#endif
+//#ifdef MUID
+//TString etaTag("MuId_etadep");
+//TString absetaTag("TightId_absetadep");
+//TString centTag("TightId_centdep");
+//const int nAbsEtaBins = 3;
+//TString ptTag[nAbsEtaBins] = {"TightId_abseta00_12", "TightId_abseta12_21", "TightId_abseta21_24"};
+//TString allTag("TightId_1bin");
+//TString absetaVar("abseta");
+//TString centVar("tag_hiNtracks");
+//ofstream file_sfs("correction_functions.txt");
+//ofstream file_Eta("EtaValues_TightId.txt");
+//ofstream file_Cent("CentValues_TightId.txt");
+//ofstream file_TestErr("TightId_ExpErr.txt");
+//TString cutTag("tpTree");
+//TString cutLegend("TightId");
+//const double effmin = 0.9;
+//const double sfrange = 0.05;
+//const char* fDataName[nSyst] = { "tnp_Ana_RD_TightId_pPb_0.root" };
+//const char* fMCName[nSyst] = { "tnp_Ana_MC_TightId_pPb_0.root" };
+//#endif
 
 
 #ifdef TRG

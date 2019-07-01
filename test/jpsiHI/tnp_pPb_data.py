@@ -5,12 +5,12 @@ process = cms.Process("TagProbe")
 process.load('Configuration.StandardSequences.Services_cff')
 process.load('FWCore.MessageService.MessageLogger_cfi')
 process.options   = cms.untracked.PSet(wantSummary = cms.untracked.bool(True))
-process.MessageLogger.cerr.FwkReport.reportEvery = 100
+process.MessageLogger.cerr.FwkReport.reportEvery = 1000
 
 process.source = cms.Source("PoolSource",
     fileNames = cms.untracked.vstring('file:/afs/cern.ch/work/o/okukral/TnP_pPb/CMSSW_8_0_30/src/MuonAnalysis/TagAndProbe/test/jpsiHI/0249A3C5-A2B1-E611-8E3E-FA163ED701FA.root')
 )
-process.maxEvents = cms.untracked.PSet(input = cms.untracked.int32(10000))
+process.maxEvents = cms.untracked.PSet(input = cms.untracked.int32(-1))
 
 process.load('Configuration.StandardSequences.GeometryRecoDB_cff')
 process.load('Configuration.StandardSequences.MagneticField_cff')
@@ -50,7 +50,9 @@ process.fastFilter = cms.Sequence(process.hfCoincFilter + process.primaryVertexF
 ##
 ## ==== Merge CaloMuons and Tracks into the collection of reco::Muons  ====
 
-InAcceptance = '((abs(eta)<1.2 && pt>=3.5) || (1.2<=abs(eta) && abs(eta)<2.1 && pt>=5.77-1.89*abs(eta)) || (2.1<=abs(eta) && abs(eta)<2.4 && pt>=1.8))'
+#InAcceptance = '((abs(eta)<1.2 && pt>=3.5) || (1.2<=abs(eta) && abs(eta)<2.1 && pt>=5.77-1.89*abs(eta)) || (2.1<=abs(eta) && abs(eta)<2.4 && pt>=1.8))'
+InAcceptance = '(p>=2.9)' # Updated to go to low pt
+
 
 from RecoMuon.MuonIdentification.calomuons_cfi import calomuons;
 process.mergedMuons = cms.EDProducer("CaloMuonMerger",
@@ -195,7 +197,7 @@ process.tpTree = cms.EDAnalyzer("TagProbeFitTreeProducer",
         dxyPVdzmin = cms.InputTag("muonDxyPVdzmin","dxyPVdzmin"),
         dzPV = cms.InputTag("muonDxyPVdzmin","dzPV"),
         dxyPV = cms.InputTag("muonDxyPVdzmin","dxyPV"),
-        trackAlgo=cms.InputTag("innerTrack.originalAlgo"),
+        trackAlgo = cms.string("innerTrack.originalAlgo"),
     ),
     flags = cms.PSet(
        TrackQualityFlags,
@@ -280,4 +282,4 @@ process.schedule = cms.Schedule(
    process.tagAndProbe
 )
 
-process.TFileService = cms.Service("TFileService", fileName = cms.string("tnpJPsi_Data_pPb_AOD_test.root"))
+process.TFileService = cms.Service("TFileService", fileName = cms.string("tnpJPsi_Data_pPb_AOD.root"))

@@ -50,7 +50,8 @@ process.fastFilter = cms.Sequence(process.hfCoincFilter + process.primaryVertexF
 ##
 ## ==== Merge CaloMuons and Tracks into the collection of reco::Muons  ====
 
-InAcceptance = '((abs(eta)<1.2 && pt>=3.5) || (1.2<=abs(eta) && abs(eta)<2.1 && pt>=5.77-1.89*abs(eta)) || (2.1<=abs(eta) && abs(eta)<2.4 && pt>=1.8))'
+#InAcceptance = '((abs(eta)<1.2 && pt>=3.5) || (1.2<=abs(eta) && abs(eta)<2.1 && pt>=5.77-1.89*abs(eta)) || (2.1<=abs(eta) && abs(eta)<2.4 && pt>=1.8))'
+InAcceptance = '(p>=2.9)' # Updated to go to low pt
 
 from RecoMuon.MuonIdentification.calomuons_cfi import calomuons;
 process.mergedMuons = cms.EDProducer("CaloMuonMerger",
@@ -195,19 +196,20 @@ process.tpTree = cms.EDAnalyzer("TagProbeFitTreeProducer",
         dxyPVdzmin = cms.InputTag("muonDxyPVdzmin","dxyPVdzmin"),
         dzPV = cms.InputTag("muonDxyPVdzmin","dzPV"),
         dxyPV = cms.InputTag("muonDxyPVdzmin","dxyPV"),
+        trackAlgo = cms.string("innerTrack.originalAlgo"),
     ),
     flags = cms.PSet(
        TrackQualityFlags,
        MuonIDFlags,
        TrigProbeFlags,
-       TightHINoDz = cms.string(TightIdReco),
+       TightHINoDxyz = cms.string(TightIdReco),
        HybridSoftHINoDxyz = cms.string(HybridSoftId),
        SoftHINoDxyz = cms.string(SoftId),
        InAcceptance = cms.string(InAcceptance),
        Custom_track_cuts = cms.string(track_cuts),
        StaTkSameCharge = cms.string("outerTrack.isNonnull && innerTrack.isNonnull && (outerTrack.charge == innerTrack.charge)"),
        outerValidHits = cms.string("outerTrack.isNonnull && outerTrack.numberOfValidHits > 0"),
-       isMuonSeeded = cms.string("innerTrack.isNonnull && innerTrack.originalAlgo<13"), #   muonSeededStepInOut = 13,
+       isNotMuonSeeded = cms.string("innerTrack.isNonnull && innerTrack.originalAlgo!=13 && innerTrack.originalAlgo!=14"), #   muonSeededStepInOut = 13,
     ),
     tagVariables = cms.PSet(
         KinematicVariables,
