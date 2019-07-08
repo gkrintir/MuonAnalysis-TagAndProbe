@@ -44,7 +44,7 @@ using namespace std;
 
 // Choose the efficiency type.
 // Possible values: MUIDTRG, TRK, STA, MUID, TRG
-#define TRK
+#define TRG
 
 // pp or PbPb?
 bool isPbPb = true; // if true, will compute the centrality dependence
@@ -140,8 +140,10 @@ TString cutTag("tpTree");
 TString cutLegend("Trigger");
 const double effmin = 0.;
 const double sfrange = 0.35;
-const char* fDataName[nSyst] = { "tnp_Ana_RD_PbPb_Trg_AllMB.root" };
-const char* fMCName[nSyst] = { "tnp_Ana_MC_PbPb_Trg_AllMB.root" };
+//const char* fDataName[nSyst] = { "tnp_Ana_RD_PbPb_Trg_AllMB.root" };
+//const char* fMCName[nSyst] = { "tnp_Ana_MC_PbPb_Trg_AllMB.root" };
+const char* fDataName[nSyst] = { "tnp_Ana_RD_Trig_pPb_bothDir_merged.root" };
+const char* fMCName[nSyst] = { "tnp_Ana_MC_Trig_pPb_bothDir_merged.root" };
 #endif
 
 
