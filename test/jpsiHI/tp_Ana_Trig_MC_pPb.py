@@ -206,13 +206,15 @@ if scenario == "0": EFFICIENCYSET = cms.PSet(VEFFICIENCYSET[0],VEFFICIENCYSET[1]
 process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
     # IO parameters:
     #Old:
-    InputFileNames = cms.vstring("file:/eos/cms/store/group/phys_heavyions/okukral/TagAndProbe2016/LowPt/Old/tnpJPsi_MC_bothDir.root"),
+    #InputFileNames = cms.vstring("file:/eos/cms/store/group/phys_heavyions/okukral/TagAndProbe2016/LowPt/Old/tnpJPsi_MC_bothDir.root"),
+    ###
     #New:
-    #InputFileNames = cms.vstring("file:/eos/cms/store/group/phys_heavyions/okukral/TagAndProbe2016/LowPt/----"),
+    InputFileNames = cms.vstring("file:/eos/cms/store/group/phys_heavyions/okukral/TagAndProbe2016/LowPt/tnpJPsi_MC_bothDir.root"),
     # pPb:
-    #InputFileNames = cms.vstring("file:/afs/cern.ch/work/j/jjay/public/TagAndProbe_pPb/CMSSW_8_0_30/src/MuonAnalysis/TagAndProbe/macros/Weighting/weights_pPb_20190708/tnpJPsi_MC_pPb-Weighted.root"),
+    #InputFileNames = cms.vstring("file:/eos/cms/store/group/phys_heavyions/okukral/TagAndProbe2016/LowPt/tnpJPsi_MC_pPb-merged.root"),
     # Pbp:
-    #InputFileNames = cms.vstring("file:/afs/cern.ch/work/j/jjay/public/TagAndProbe_pPb/CMSSW_8_0_30/src/MuonAnalysis/TagAndProbe/macros/Weighting/weights_Pbp_20190708/tnpJPsi_MC_Pbp-Weighted.root"),
+    #InputFileNames = cms.vstring("file:/eos/cms/store/group/phys_heavyions/okukral/TagAndProbe2016/LowPt/tnpJPsi_MC_Pbp-merged.root"),
+    ###
     InputDirectoryName = cms.string("tpTree"),
     InputTreeName = cms.string("fitter_tree"),
     OutputFileName = cms.string("tnp_Ana_MC_Trig_pPb_%s.root" % (scenario)),
