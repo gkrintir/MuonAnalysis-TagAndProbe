@@ -1,38 +1,37 @@
 executable            = condorExec.sh
 arguments             = RD 1 
-output                = output/condor.$(ClusterId).$(ProcId).out
-error                 = error/condor.$(ClusterId).$(ProcId).err
-log                   = log/condor.$(ClusterId).log
-request_cpus          = 15 
+output                = outputRD/condor.$(ClusterId).$(ProcId).out
+error                 = errorRD/condor.$(ClusterId).$(ProcId).err
+log                   = logRD/condor.$(ClusterId).log
+request_cpus          = 8
+request_memory        = 20g
 +JobFlavour           = "tomorrow"
 queue
 
-request_cpus = 1
+request_cpus = 8
 arguments = RD 2
 queue
 
+request_cpus = 8
 arguments = RD 3
 queue
 
+request_cpus = 8
 arguments = RD 4
 queue
 
+request_cpus = 8
 arguments = RD 5
 queue
 
-request_cpus = 15
+request_cpus = 8
 arguments = RD 6
 queue
 
+request_cpus = 8
 arguments = RD 7
 queue
 
+request_cpus = 8
 arguments = RD 8
-queue
-
-request_cpus = 15
-arguments = RD 9
-queue
-
-arguments = RD 10
 queue

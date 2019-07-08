@@ -3,4 +3,4 @@
 #eval `scramv1 runtime -sh`
 cd ../
 cmsenv
-cmsRun tp_Ana_Trig_$1_pPb.py $2
+cmsRun tp_Ana_Trig_${1}_pPb.py $2
