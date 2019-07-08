@@ -5,7 +5,9 @@
 
 TTree* trimTree(TTree* told)
 {
-  std::vector<std::string> varVec = {"pt", "eta", "mass", "tag_hiNtracks", "isTrkM", "isMuonID", "isTrg"};
+  std::vector<std::string> varVec = {"pt", "eta", "mass", "dzPV", "dxyPV", "tag_hiNtracks","isNotMuonSeeded", "TM", "SoftHINoDxyz", "HLT_PAL1DoubleMuOpen"}; //without flags
+  //std::vector<std::string> varVec = { "pt", "eta", "mass", "tag_hiNtracks","isNotMuonSeeded", "TM", "SoftID", "HLT_PAL1DoubleMuOpen" }; //with flags
+
 
   told->SetBranchStatus("*",0);
   for (auto& v : varVec) {

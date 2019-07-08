@@ -7,34 +7,35 @@
 TTree* copyTree(TTree* told, int nentries=0) {
    TTree *tnew = told->CloneTree(0);
    tnew->SetAutoSave(0);
-   tnew->SetAutoFlush(0);
+  // tnew->SetAutoFlush(10000000);
    int passedDXY,passedDZ, isNotMuonSeeded, SoftID, SoftHINoDxyz;
-   int isMuonSeeded; //fix to naming in MC - the *Not* was omitted.
+  // int isMuonSeeded; //fix to naming in MC - the *Not* was omitted.
    float dzPV, dxyPV, dB;
 
    told->SetBranchAddress("dzPV",&dzPV);
    told->SetBranchAddress("dxyPV",&dxyPV);
   // told->SetBranchAddress("isNotMuonSeeded", &isNotMuonSeeded);
-   told->SetBranchAddress("isMuonSeeded", &isMuonSeeded);
-   told->SetBranchAddress("dB", &dB);
+  // told->SetBranchAddress("isMuonSeeded", &isMuonSeeded);
+  // told->SetBranchAddress("dB", &dB);
    told->SetBranchAddress("SoftHINoDxyz", &SoftHINoDxyz);
 
 
    tnew->Branch("SoftID", &SoftID, "SoftID/I");
    tnew->Branch("passedDXY", &passedDXY, "passedDXY/I");
    tnew->Branch("passedDZ", &passedDZ, "passedDZ/I");
-   tnew->Branch("isNotMuonSeeded", &isNotMuonSeeded);
+   //tnew->Branch("isNotMuonSeeded", &isNotMuonSeeded);
  
    if (nentries == 0)
    {
 	   nentries = told->GetEntries();
    }
-   for (int i=0; i<nentries; i++) {
+   for (long i=0; i<nentries; i++) {
       told->GetEntry(i);
 
+	  if (i % 100000 == 0) { cout << "event: " << i << " done: " << 100 * i / nentries << "%" << endl; }
 
 	  //SoftMuonID
-	  isNotMuonSeeded = isMuonSeeded;
+	  //isNotMuonSeeded = isMuonSeeded;
 	  passedDXY = (fabs(dxyPV) < DXYCUT);
 	  passedDZ = (fabs(dzPV) < DZCUT);
 	  SoftID = (passedDXY && passedDZ && SoftHINoDxyz);
@@ -53,7 +54,7 @@ TTree* justCopyTree(TTree* told, int nentries=0) {
 	{
 		nentries = told->GetEntries();
 	}
-	for (int i = 0; i<nentries; i++) {
+	for (long i = 0; i<nentries; i++) {
 		told->GetEntry(i);
 		tnew->Fill();
 	}
