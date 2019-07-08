@@ -1,0 +1,30 @@
+executable            = condorExec.sh
+arguments             = RD TrkM 1 
+output                = outputTrkMRD/condor.$(ClusterId).$(ProcId).out
+error                 = errorTrkMRD/condor.$(ClusterId).$(ProcId).err
+log                   = logTrkMRD/condor.$(ClusterId).log
+request_cpus          = 8
+request_memory        = 20g
++JobFlavour           = "tomorrow"
+queue
+
+arguments = RD TrkM 2
+queue
+
+arguments = RD TrkM 3
+queue
+
+arguments = RD TrkM 4
+queue
+
+arguments = RD TrkM 5
+queue
+
+arguments = RD TrkM 6
+queue
+
+arguments = RD TrkM 7
+queue
+
+arguments = RD TrkM 8
+queue
