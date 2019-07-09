@@ -255,7 +255,7 @@ process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
     InputTreeName = cms.string("fitter_tree"),
     OutputFileName = cms.string("tnp_Ana_MC_MuId_pPb_%s.root" % scenario),
     #number of CPUs to use for fitting
-    NumCPU = cms.uint32(1),
+    NumCPU = cms.uint32(12),
     # specifies whether to save the RooWorkspace containing the data for each bin and
     # the pdf object with the initial and final state snapshots
     binnedFit = cms.bool(True),
