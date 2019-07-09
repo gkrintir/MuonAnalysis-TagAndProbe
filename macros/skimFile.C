@@ -17,7 +17,7 @@ TTree* skimTree(TTree* told, const std::string& type, const int& ps)
   for (auto& v : varVec) { if (told->GetBranch(v.c_str())) told->SetBranchStatus(v.c_str(), 1); }
   const Long64_t& entries = told->GetEntriesFast()/ps;
 
-  const auto tnew = (sel!="" ? told->CopyTree(sel.c_str(), 0, entries) : told->CloneTree((ps>1 ? Long64_t(entries/ps) : -1),"fast"));
+  const auto tnew = (sel!="" ? told->CopyTree(sel.c_str(), 0, entries) : told->CloneTree((ps>1 ? entries : -1),"fast"));
 
   return tnew;
 }
