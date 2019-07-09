@@ -3,34 +3,30 @@
 #include <iostream>
 #include <math.h>
 
-TTree* skimTree(TTree* told, const std::string& type, const int& ps)
+TTree* trimTree(TTree* told)
 {
-  //std::vector<std::string> varVec = {"pt", "eta", "mass", "dzPV", "dxyPV", "tag_hiNtracks","isNotMuonSeeded", "TM", "SoftHINoDxyz", "HLT_PAL1DoubleMuOpen"}; //without flags
-  std::vector<std::string> varVec = { "pt", "eta", "mass", "tag_hiNtracks","isNotMuonSeeded", "TM", "SoftID", "HLT_PAL1DoubleMuOpen" }; //with flags
-  
-  std::string sel = "";
-  if      (type=="Trg" ) { sel = ("SoftID==1 && (mass>=2.6 && mass<=3.6)"); }
-  else if (type=="MuID") { sel = ("TM==1 && (mass>=2.6 && mass<=3.6)"); }
-  else if (type=="Trk" ) { sel = ("isNotMuonSeeded==1 && (mass>=2.6 && mass<=3.6)"); }
+	//std::vector<std::string> varVec = { "pt", "eta", "abseta", "mass", "dzPV", "dxyPV", "tag_hiNtracks","isNotMuonSeeded", "TM", "SoftHINoDxyz", "HLT_PAL1DoubleMuOpen" }; //without flags
+	std::vector<std::string> varVec = { "pt", "eta","abseta", "mass", "tag_hiNtracks","isNotMuonSeeded", "TM", "SoftID", "HLT_PAL1DoubleMuOpen" }; //with flags
 
-  told->SetBranchStatus("*",0);
-  for (auto& v : varVec) { if (told->GetBranch(v.c_str())) told->SetBranchStatus(v.c_str(), 1); }
-  const Long64_t& entries = told->GetEntriesFast()/ps;
 
-  const auto tnew = (sel!="" ? told->CopyTree(sel.c_str(), 0, entries) : told->CloneTree((ps>1 ? entries : -1),"fast"));
+	told->SetBranchStatus("*", 0);
+	for (auto& v : varVec) {
+		if (told->GetBranch(v.c_str())) told->SetBranchStatus(v.c_str(), 1);
+	}
+	const auto& tnew = told->CloneTree(-1, "fast");
 
-  return tnew;
+	return tnew;
 }
 
-void skimFile(const char *filein, const char *fileout, const std::string& type="", const int& ps=1) {
-   TFile fin(filein);
-   TFile fout(fileout,"RECREATE");
+void skimFile(const char *filein, const char *fileout) {
+	TFile fin(filein);
+	TFile fout(fileout, "RECREATE");
 
-   fout.cd();
-   const auto& tdir = fout.mkdir("tpTree");
-   tdir->cd();
-   const auto& tree = skimTree((TTree*)fin.Get("tpTree/fitter_tree"), type, ps);
+	fout.cd();
+	const auto& tdir_muidtrg = fout.mkdir("tpTree");
+	tdir_muidtrg->cd();
+	const auto& tr_muidtrg = trimTree((TTree*)fin.Get("tpTree/fitter_tree"));
 
-   fout.Write();
-   fout.Close();
+	fout.Write();
+	fout.Close();
 }
