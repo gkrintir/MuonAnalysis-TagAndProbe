@@ -40,7 +40,7 @@ VEFFICIENCYSET =cms.VPSet(
            EfficiencyCategoryAndState = cms.vstring("SoftID","true"),
            UnbinnedVariables = cms.vstring("mass"),
            BinnedVariables = cms.PSet(
-               pt = cms.vdouble(0.5, 1.5, 2.5, 3.5, 4.5, 5.5, 6.5, 8.0, 10.5, 14.0, 18.0, 25.0, 30.0),
+               pt = cms.vdouble(0.5, 1.5, 2.5, 3.5, 4.5, 5.5, 6.5, 8.0, 10.5, 14.0, 18.0, 25.0),
                eta = cms.vdouble(-2.4,2.4),
                #tag_nVertices    = cms.vdouble(0.9,1.1),
                #TM = cms.vstring("true"),
@@ -56,7 +56,7 @@ VEFFICIENCYSET =cms.VPSet(
             EfficiencyCategoryAndState = cms.vstring("SoftID","true"),
             UnbinnedVariables = cms.vstring("mass"),
             BinnedVariables = cms.PSet(
-                pt = cms.vdouble(2.0, 2.5, 3.5, 4.5, 5.5, 6.5, 8.0, 10.5, 14.0, 18.0, 25.0, 30.0),
+                pt = cms.vdouble(2.5, 3.5, 4.5, 5.5, 6.5, 8.0, 10.5, 14.0, 18.0, 25.0),
                 abseta = cms.vdouble(0, 0.9),
                 #tag_nVertices    = cms.vdouble(0.9,1.1),
                 #TM = cms.vstring("true"),
@@ -72,7 +72,7 @@ VEFFICIENCYSET =cms.VPSet(
             EfficiencyCategoryAndState = cms.vstring("SoftID","true"),
             UnbinnedVariables = cms.vstring("mass"),
             BinnedVariables = cms.PSet(
-                pt = cms.vdouble(1.6, 2.5, 3.5, 4.5, 5.5, 6.5, 8.0, 10.5, 14.0, 18.0, 25.0, 30.0),
+                pt = cms.vdouble(2.5, 3.5, 4.5, 5.5, 6.5, 8.0, 10.5, 14.0, 18.0, 25.0),
                 abseta = cms.vdouble(0.9, 1.2),
                 #tag_nVertices    = cms.vdouble(0.9,1.1),
                 #TM = cms.vstring("true"),
@@ -88,7 +88,7 @@ VEFFICIENCYSET =cms.VPSet(
             EfficiencyCategoryAndState = cms.vstring("SoftID","true"),
             UnbinnedVariables = cms.vstring("mass"),
             BinnedVariables = cms.PSet(
-                pt = cms.vdouble(1.6, 2.5, 3.5, 4.5, 5.5, 6.5, 8.0, 10.5, 14.0, 18.0, 25.0, 30.0),
+                pt = cms.vdouble(2.5, 3.5, 4.5, 5.5, 6.5, 8.0, 10.5, 14.0, 18.0, 25.0),
                 abseta = cms.vdouble(0, 1.2),
                 #tag_nVertices    = cms.vdouble(0.9,1.1),
                 #TM = cms.vstring("true"),
@@ -104,7 +104,7 @@ VEFFICIENCYSET =cms.VPSet(
              EfficiencyCategoryAndState = cms.vstring("SoftID","true"),
              UnbinnedVariables = cms.vstring("mass"),
              BinnedVariables = cms.PSet(
-                pt = cms.vdouble(1.1, 2.0, 3.0, 4.5, 6.0,8.0, 10.5, 14.0, 20.0, 30.0),
+                pt = cms.vdouble(2.0, 3.0, 4.5, 6.5, 10.0, 14.0, 25.0),
                 abseta = cms.vdouble(1.2,1.6),
                 #tag_nVertices    = cms.vdouble(0.9,1.1),
                 #TM = cms.vstring("true"),
@@ -120,7 +120,7 @@ VEFFICIENCYSET =cms.VPSet(
              EfficiencyCategoryAndState = cms.vstring("SoftID","true"),
              UnbinnedVariables = cms.vstring("mass"),
              BinnedVariables = cms.PSet(
-                pt = cms.vdouble(0.7, 2.0, 3.0, 4.5, 6.0,8.0, 10.5, 14.0, 20.0, 30.0),
+                pt = cms.vdouble(1.0, 2.0, 3.0, 4.5, 6.5, 10.0, 14.0, 25.0),
                 abseta = cms.vdouble(1.6,2.1),
                 #tag_nVertices    = cms.vdouble(0.9,1.1),
                 #TM = cms.vstring("true"),
@@ -136,7 +136,7 @@ VEFFICIENCYSET =cms.VPSet(
              EfficiencyCategoryAndState = cms.vstring("SoftID","true"),
              UnbinnedVariables = cms.vstring("mass"),
              BinnedVariables = cms.PSet(
-                pt = cms.vdouble(0.7, 1.5, 3.0, 4.5, 6.0,8.0, 10.5, 14.0, 20.0, 30.0),
+                pt = cms.vdouble(1.0, 2.0, 3.0, 4.5, 6.5, 10.0, 14.0, 25.0),
                 abseta = cms.vdouble(1.2,2.1),
                 #tag_nVertices    = cms.vdouble(0.9,1.1),
                 #TM = cms.vstring("true"),
@@ -152,7 +152,7 @@ VEFFICIENCYSET =cms.VPSet(
             EfficiencyCategoryAndState = cms.vstring("SoftID","true"),
             UnbinnedVariables = cms.vstring("mass"),
             BinnedVariables = cms.PSet(
-                pt = cms.vdouble(0.5, 1.5, 3.0, 4.5, 6.0, 8.0, 12.0, 20.0, 30.0),
+                pt = cms.vdouble(0.5, 2.0, 3.5, 5.5, 8.0, 12.0, 25.0),
                 abseta = cms.vdouble(2.1,2.4),
                 #tag_nVertices    = cms.vdouble(0.9,1.1),
                 #TM = cms.vstring("true"),
@@ -168,7 +168,7 @@ VEFFICIENCYSET =cms.VPSet(
             EfficiencyCategoryAndState = cms.vstring("SoftID","true"),
             UnbinnedVariables = cms.vstring("mass"),
             BinnedVariables = cms.PSet(
-                pt = cms.vdouble(0.0, 25.0),
+                pt = cms.vdouble(1.5, 25.0),
                 abseta = cms.vdouble(0,0.9,1.2,1.6,2.1,2.4),
                 #tag_nVertices    = cms.vdouble(0.9,1.1),
                 #TM = cms.vstring("true"),
@@ -184,7 +184,7 @@ VEFFICIENCYSET =cms.VPSet(
             EfficiencyCategoryAndState = cms.vstring("SoftID","true"),
             UnbinnedVariables = cms.vstring("mass"),
             BinnedVariables = cms.PSet(
-                pt = cms.vdouble(0.0, 25.0),
+                pt = cms.vdouble(1.5, 25.0),
                 eta = cms.vdouble(-2.4,-2.1,-1.6,-1.2,-0.9,-0.6,-0.3,0,0.3,0.6,0.9,1.2,1.6,2.1,2.4),
                 #tag_nVertices    = cms.vdouble(0.9,1.1),
                 #TM = cms.vstring("true"),
@@ -200,7 +200,7 @@ VEFFICIENCYSET =cms.VPSet(
             EfficiencyCategoryAndState = cms.vstring("SoftID","true"),
             UnbinnedVariables = cms.vstring("mass"),
             BinnedVariables = cms.PSet(
-                pt = cms.vdouble(0.0, 25.0),
+                pt = cms.vdouble(1.5, 25.0),
                 eta = cms.vdouble(-2.4,2.4),
                 #tag_nVertices    = cms.vdouble(0.9,1.1),
                 tag_hiNtracks = cms.vdouble(0,30,50,75,100,125,150,175,400),
@@ -235,7 +235,7 @@ VEFFICIENCYSET =cms.VPSet(
             EfficiencyCategoryAndState = cms.vstring("SoftID","true"),
             UnbinnedVariables = cms.vstring("mass"),
             BinnedVariables = cms.PSet(
-                pt = cms.vdouble(0.0, 25.0),
+                pt = cms.vdouble(1.5, 25.0),
                 eta = cms.vdouble(-2.4,-2.1,-1.6,-1.2,-0.9,-0.6,-0.3,0,0.3,0.6,0.9,1.2,1.6,2.1,2.4),
                 tag_hiNtracks = cms.vdouble(0,30),
                 #tag_nVertices    = cms.vdouble(0.9,1.1),
@@ -252,7 +252,7 @@ VEFFICIENCYSET =cms.VPSet(
             EfficiencyCategoryAndState = cms.vstring("SoftID","true"),
             UnbinnedVariables = cms.vstring("mass"),
             BinnedVariables = cms.PSet(
-                pt = cms.vdouble(0.0, 25.0),
+                pt = cms.vdouble(1.5, 25.0),
                 eta = cms.vdouble(-2.4,-2.1,-1.6,-1.2,-0.9,-0.6,-0.3,0,0.3,0.6,0.9,1.2,1.6,2.1,2.4),
                 tag_hiNtracks = cms.vdouble(30,75),
                 #tag_nVertices    = cms.vdouble(0.9,1.1),
@@ -269,7 +269,7 @@ VEFFICIENCYSET =cms.VPSet(
             EfficiencyCategoryAndState = cms.vstring("SoftID","true"),
             UnbinnedVariables = cms.vstring("mass"),
             BinnedVariables = cms.PSet(
-                pt = cms.vdouble(0.0, 25.0),
+                pt = cms.vdouble(1.5, 25.0),
                 eta = cms.vdouble(-2.4,-2.1,-1.6,-1.2,-0.9,-0.6,-0.3,0,0.3,0.6,0.9,1.2,1.6,2.1,2.4),
                 tag_hiNtracks = cms.vdouble(75,400),
                 #tag_nVertices    = cms.vdouble(0.9,1.1),
@@ -332,18 +332,103 @@ VEFFICIENCYSET =cms.VPSet(
            BinToPDFmap = cms.vstring(PDFName)
        )
     ),
-
+    cms.PSet( #19
+        MuId_centdepHighPt = cms.PSet(
+            EfficiencyCategoryAndState = cms.vstring("SoftID","true"),
+            UnbinnedVariables = cms.vstring("mass"),
+            BinnedVariables = cms.PSet(
+                pt = cms.vdouble(1.5, 25.0),
+                eta = cms.vdouble(-2.4,2.4),
+                #tag_nVertices    = cms.vdouble(0.9,1.1),
+                tag_hiNtracks = cms.vdouble(0,35,60,120,250),
+                #TM = cms.vstring("true"),
+                #isNotMuonSeeded = cms.vstring("true"),
+                #Glb = cms.vstring("true"),
+                #PF = cms.vstring("true"),
+            ),
+            BinToPDFmap = cms.vstring(PDFName)
+        )
+    ), 
+    cms.PSet( #20
+        MuId_centdepLowPt = cms.PSet(
+            EfficiencyCategoryAndState = cms.vstring("SoftID","true"),
+            UnbinnedVariables = cms.vstring("mass"),
+            BinnedVariables = cms.PSet(
+                pt = cms.vdouble(0.0, 1.5),
+                eta = cms.vdouble(-2.4,2.4),
+                #tag_nVertices    = cms.vdouble(0.9,1.1),
+                tag_hiNtracks = cms.vdouble(0,35,60,120,250),
+                #TM = cms.vstring("true"),
+                #isNotMuonSeeded = cms.vstring("true"),
+                #Glb = cms.vstring("true"),
+                #PF = cms.vstring("true"),
+            ),
+            BinToPDFmap = cms.vstring(PDFName)
+        )
+    ), 
+    cms.PSet( #21
+        MuId_centdepNB = cms.PSet(
+            EfficiencyCategoryAndState = cms.vstring("SoftID","true"),
+            UnbinnedVariables = cms.vstring("mass"),
+            BinnedVariables = cms.PSet(
+                pt = cms.vdouble(0.0, 25),
+                eta = cms.vdouble(-2.4,2.4),
+                #tag_nVertices    = cms.vdouble(0.9,1.1),
+                tag_hiNtracks = cms.vdouble(0,35,60,120,250),
+                #TM = cms.vstring("true"),
+                #isNotMuonSeeded = cms.vstring("true"),
+                #Glb = cms.vstring("true"),
+                #PF = cms.vstring("true"),
+            ),
+            BinToPDFmap = cms.vstring(PDFName)
+        )
+    ), 
+    cms.PSet( 
+        MuId_centdepLowPt12_16 = cms.PSet(
+            EfficiencyCategoryAndState = cms.vstring("SoftID","true"),
+            UnbinnedVariables = cms.vstring("mass"),
+            BinnedVariables = cms.PSet(
+                pt = cms.vdouble(0.0, 1.5),
+                abseta = cms.vdouble(1.2,1.6),
+                #tag_nVertices    = cms.vdouble(0.9,1.1),
+                tag_hiNtracks = cms.vdouble(0,35,60,120,250),
+                #TM = cms.vstring("true"),
+                #isNotMuonSeeded = cms.vstring("true"),
+                #Glb = cms.vstring("true"),
+                #PF = cms.vstring("true"),
+            ),
+            BinToPDFmap = cms.vstring(PDFName)
+        )
+    ), 
+    cms.PSet( 
+        MuId_centdepLowPt16_21 = cms.PSet(
+            EfficiencyCategoryAndState = cms.vstring("SoftID","true"),
+            UnbinnedVariables = cms.vstring("mass"),
+            BinnedVariables = cms.PSet(
+                pt = cms.vdouble(0.0, 1.5),
+                abseta = cms.vdouble(1.6,2.1),
+                #tag_nVertices    = cms.vdouble(0.9,1.1),
+                tag_hiNtracks = cms.vdouble(0,35,60,120,250),
+                #TM = cms.vstring("true"),
+                #isNotMuonSeeded = cms.vstring("true"),
+                #Glb = cms.vstring("true"),
+                #PF = cms.vstring("true"),
+            ),
+            BinToPDFmap = cms.vstring(PDFName)
+        )
+    ), 
 )
 
 #Actual selection 
-if scenario == "1": EFFICIENCYSET = cms.PSet(VEFFICIENCYSET[0], VEFFICIENCYSET[1])
+#if scenario == "1": EFFICIENCYSET = cms.PSet(VEFFICIENCYSET[0], VEFFICIENCYSET[1])
 #if scenario == "1": EFFICIENCYSET = cms.PSet(VEFFICIENCYSET[1])
-#if scenario == "2": EFFICIENCYSET = cms.PSet(VEFFICIENCYSET[2], VEFFICIENCYSET[3])
-#if scenario == "3": EFFICIENCYSET = cms.PSet(VEFFICIENCYSET[5], VEFFICIENCYSET[6])
-if scenario == "2": EFFICIENCYSET = cms.PSet(VEFFICIENCYSET[13], VEFFICIENCYSET[14],VEFFICIENCYSET[15])
-if scenario == "3": EFFICIENCYSET = cms.PSet(VEFFICIENCYSET[16], VEFFICIENCYSET[17],VEFFICIENCYSET[18])
+if scenario == "1": EFFICIENCYSET = cms.PSet(VEFFICIENCYSET[19], VEFFICIENCYSET[20], VEFFICIENCYSET[21], VEFFICIENCYSET[22], VEFFICIENCYSET[23])
+if scenario == "2": EFFICIENCYSET = cms.PSet(VEFFICIENCYSET[2], VEFFICIENCYSET[3])
+if scenario == "3": EFFICIENCYSET = cms.PSet(VEFFICIENCYSET[5], VEFFICIENCYSET[6])
+#if scenario == "2": EFFICIENCYSET = cms.PSet(VEFFICIENCYSET[13], VEFFICIENCYSET[14],VEFFICIENCYSET[15])
+#if scenario == "3": EFFICIENCYSET = cms.PSet(VEFFICIENCYSET[16], VEFFICIENCYSET[17],VEFFICIENCYSET[18])
 if scenario == "4": EFFICIENCYSET = cms.PSet(VEFFICIENCYSET[4], VEFFICIENCYSET[7])
-if scenario == "5": EFFICIENCYSET = cms.PSet(VEFFICIENCYSET[8])
+if scenario == "5": EFFICIENCYSET = cms.PSet(VEFFICIENCYSET[1], VEFFICIENCYSET[8])
 if scenario == "6": EFFICIENCYSET = cms.PSet(VEFFICIENCYSET[9])
 if scenario == "7": EFFICIENCYSET = cms.PSet(VEFFICIENCYSET[10])
 if scenario == "8": EFFICIENCYSET = cms.PSet(VEFFICIENCYSET[11])#, VEFFICIENCYSET[12])
