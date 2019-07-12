@@ -124,8 +124,6 @@ std::tuple<double,double,double,double> tnp_weight_HybridSoftID_LooseAcceptance_
     else if (pt<30) return std::make_tuple(0.998398, 0.00112506, 0.000231803, 0.00114869);
   }
 
-  //Central scale-factor value, statistical error, systematic error, total error
-  // 2.1 < |eta| < 2.4
   if( (fabs(eta) > 2.1) && (fabs(eta) < 2.4) ){
     if (pt<1.9) return std::make_tuple(0.99387, 0.00114168, 0.000306098, 0.001182);
     else if (pt<2.5) return std::make_tuple(0.996848, 0.00781191, 0.000367591, 0.00782055);
@@ -209,8 +207,6 @@ std::tuple<double,double,double,double> tnp_weight_HybridSoftIDTrigger_TightAcce
     else if (pt<30) return std::make_tuple(0.985428, 0.0130435, 0.012101, 0.0177923);
   }
 
-  //Central scale-factor value, statistical error, systematic error, total error
-  // 2.1 < |eta| < 2.4
   if( (fabs(eta) > 2.1) && (fabs(eta) < 2.4) ){
     if (pt<1.9) return std::make_tuple(1.10953, 0.00325122, 0.000888127, 0.00337034);
     else if (pt<2.3) return std::make_tuple(1.04759, 0.00205232, 0.00049553, 0.00211129);

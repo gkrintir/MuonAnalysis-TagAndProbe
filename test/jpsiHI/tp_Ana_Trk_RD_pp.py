@@ -8,7 +8,7 @@ process.source = cms.Source("EmptySource")
 
 process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(1) )    
 
-PDFName = "triGaussPlusPol3"
+PDFName = "triGaussPlusPol2"
 
 process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
     # IO parameters:
@@ -17,7 +17,7 @@ process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
     InputDirectoryName = cms.string("tpTreeSta"),
     InputTreeName = cms.string("fitter_tree"),
     #numbrer of CPUs to use for fitting
-    OutputFileName = cms.string("file:./tnp_fitOutput_Tracking_data_pp_triGaussPlusPol3_narrowMrange.root"),#file:/afs/cern.ch/work/v/vabdulla/private/TnP/Trk/tnp_Ana_Trk_RD_pp_etapT_220217_ValHits.root"), #wPsi2Spol2
+    OutputFileName = cms.string("file:./tnp_fitOutput_Tracking_data_pp_triGaussPlusPol2_narrowMrange.root"),#file:/afs/cern.ch/work/v/vabdulla/private/TnP/Trk/tnp_Ana_Trk_RD_pp_etapT_220217_ValHits.root"), #wPsi2Spol2
     NumCPU = cms.uint32(16),
     # specifies wether to save the RooWorkspace containing the data for each bin and
     # the pdf object with the initial and final state snapshots
@@ -29,7 +29,7 @@ process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
     
     # defines all the real variables of the probes available in the input tree; can be used to select a subset of the probes
     Variables = cms.PSet(
-        mass             = cms.vstring("Tag-Probe Mass", "2.3", "4.7", "GeV/c^{2}"),
+        mass             = cms.vstring("Tag-Probe Mass", "2", "5", "GeV/c^{2}"),
         pt               = cms.vstring("Probe p_{T}", "0.0", "1000", "GeV/c"),
         p                = cms.vstring("Probe p", "0", "1000", "GeV/c"),
         eta              = cms.vstring("Probe #eta", "-2.4", "2.4", ""),
@@ -42,6 +42,7 @@ process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
         tag_pt           = cms.vstring("Tag p_{T}", "0.0", "1000", "GeV/c"),
         tag_eta          = cms.vstring("Tag #eta", "-2.4", "2.4", ""),
         tag_abseta       = cms.vstring("Tag |#eta|", "0", "2.5", ""),
+        tag_nVertices    = cms.vstring("Tag nVtx", "0", "30", ""),
         pair_pt          = cms.vstring("Pair p_{T}", "0.0", "1000", "GeV/c"),
         pair_absy        = cms.vstring("Pair |Y|", "-2.4", "2.4", ""),
         pair_y           = cms.vstring("Pair Y", "0", "2.5", ""),
@@ -50,6 +51,9 @@ process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
     # defines all the Flags on which one can test the probe against (if true, is 'pass', if false is 'failed')
     Categories = cms.PSet(
         Glb        = cms.vstring("Glb", "dummy[true=1,false=0]"),
+        tk         = cms.vstring("tk", "dummy[true=1,false=0]"),
+        outerValidHits          = cms.vstring("outerValidHits", "dummy[true=1,false=0]"),
+        staAtLeastTwoStations   = cms.vstring("staAtLeastTwoStations", "dummy[true=1,false=0]"),
         InAcceptance_2018_Tight = cms.vstring("InAcceptance_2018_Tight","dummy[true=1,false=0]"),
         InAcceptance_2018_Loose = cms.vstring("InAcceptance_2018_Loose","dummy[true=1,false=0]"),
     ),
@@ -81,12 +85,22 @@ process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
             "signalFractionInPassing[0.9]"
         ),
         
-        VoigtGaussPlusPol3 = cms.vstring(
+        VoigtGaussPlusPol3= cms.vstring(
             "Voigtian::signal1(mass, mean[3.1,3.0,3.2],width[0.05,0.04,0.15], sigma1[0.15, 0.03, 0.25])",
             "Gaussian::signal2(mass, mean, sigma2[0.2,0.1,0.34])",
             "SUM::signal(vFrac[0.5,0,1]*signal1, signal2)",
             "Chebychev::backgroundPass(mass, {zP[0.0,-1.0,1.0], zP2[0.0,-1.0,1.0], zP3[0,-1.0,1.0]})", ### good
             "Chebychev::backgroundFail(mass, {zF[-0.0,-1.0,1.0], zF2[0.0,-1.0,1.0], zF3[0.01,-0.14,0.14]})", ### good
+            "efficiency[0.9,0,1]",
+            "signalFractionInPassing[0.9]"
+        ),
+
+        VoigtGaussPlusPol2= cms.vstring(
+            "Voigtian::signal1(mass, mean[3.1,3.0,3.2],width[0.05,0.04,0.15], sigma1[0.15, 0.03, 0.25])",
+            "Gaussian::signal2(mass, mean, sigma2[0.2,0.1,0.34])",
+            "SUM::signal(vFrac[0.5,0,1]*signal1, signal2)",
+            "Chebychev::backgroundPass(mass, {zP[0.0,-1.0,1.0], zP2[0.0,-1.0,1.0]})", ### good
+            "Chebychev::backgroundFail(mass, {zF[-0.0,-1.0,1.0], zF2[0.0,-1.0,1.0]})", ### good
             "efficiency[0.9,0,1]",
             "signalFractionInPassing[0.9]"
         ),
@@ -114,6 +128,7 @@ process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
                     pt  = cms.vdouble(1.5,30),
                     eta = cms.vdouble(-2.4,2.4),
                     InAcceptance_2018_Tight = cms.vstring("true"),
+                    staAtLeastTwoStations = cms.vstring("true"),
                 ),
                 BinToPDFmap = cms.vstring(PDFName)
             ),
@@ -125,6 +140,7 @@ process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
                     pt = cms.vdouble(1.5, 2.5, 3.5, 4.8, 6.5, 8.5, 12, 30),
                     eta = cms.vdouble(-2.4,2.4),
                     InAcceptance_2018_Tight = cms.vstring("true"),
+                    staAtLeastTwoStations = cms.vstring("true"),
                 ),
                 BinToPDFmap = cms.vstring(PDFName)
             ),
@@ -136,6 +152,7 @@ process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
                     eta = cms.vdouble(-2.4,-1.8,-1.2,-0.9,-0.6,-0.2,0.2,0.6,0.9,1.2,1.8,2.4),
                     pt = cms.vdouble(1.5,30.0),
                     InAcceptance_2018_Tight = cms.vstring("true"),
+                    staAtLeastTwoStations = cms.vstring("true"),
                 ),
                 BinToPDFmap = cms.vstring(PDFName)
             ),
@@ -147,6 +164,20 @@ process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
                     abseta = cms.vdouble(0.,0.3,0.6,0.9,1.2,1.8,2.4),
                     pt = cms.vdouble(1.5,30.0),
                     InAcceptance_2018_Tight = cms.vstring("true"),
+                    staAtLeastTwoStations = cms.vstring("true"),
+                ),
+                BinToPDFmap = cms.vstring(PDFName)
+            ),
+            Trk_nVtx = cms.PSet(
+                EfficiencyCategoryAndState = cms.vstring("Glb","true"),
+                UnbinnedVariables = cms.vstring("mass"),
+                BinnedVariables = cms.PSet(
+                    #eta = cms.vdouble(-2.4,-1.6,-1.2,-0.9,0.9,1.2,1.6,2.4),
+                    #abseta = cms.vdouble(0.,0.3,0.6,0.9,1.2,1.8,2.4),
+                    tag_nVertices = cms.vdouble(0.5,1.5,2.5,3.5,4.5,5.5,7.5,29.5),
+                    pt = cms.vdouble(1.5,30.0),
+                    InAcceptance_2018_Tight = cms.vstring("true"),
+                    staAtLeastTwoStations = cms.vstring("true"),
                 ),
                 BinToPDFmap = cms.vstring(PDFName)
             ),

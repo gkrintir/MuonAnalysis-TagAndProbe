@@ -106,15 +106,18 @@ TTree* copyTreeAndAddWeight(TTree* told, int nentries=0)
   return tnew;
 }
 
-TTree* justCopyTreeAndAddWeight(TTree* told, int nentries=0) {
+TTree* justCopyTreeAndAddWeight(TTree* told, int nentries=0, bool addStaFlag=false) {
   TTree *tnew = told->CloneTree(0);
   tnew->SetAutoSave(0);
   tnew->SetAutoFlush(0);
-  float hiBin=-1., genWeight=-999., weight=1.0;
+  float hiBin=-1., genWeight=-999., weight=1.0, staValidStations=-1;
+  int staAtLeastTwoStations=-1;
 
+  if (told->GetBranch("staValidStations")!=NULL) { told->SetBranchAddress("staValidStations", &staValidStations); }
   if (told->GetBranch("tag_hiBin")!=NULL) { told->SetBranchAddress("tag_hiBin", &hiBin); }
   if (told->GetBranch("pair_genWeight")!=NULL) { told->SetBranchAddress("pair_genWeight", &genWeight); }
   tnew->Branch("weight", &weight, "weight/F");
+  if(addStaFlag){ tnew->Branch("staAtLeastTwoStations", &staAtLeastTwoStations, "staAtLeastTwoStations/I"); }
 
   if (nentries == 0) nentries = told->GetEntries();
   float sumWeight = nentries;
@@ -134,6 +137,7 @@ TTree* justCopyTreeAndAddWeight(TTree* told, int nentries=0) {
     told->GetEntry(i);
     //Weight
     weight = (nentries/sumWeight);
+    if(addStaFlag){ staAtLeastTwoStations = staValidStations>1.5; }
     const float nColl = ((hiBin>=0 && hiBin<200) ? findNcoll(hiBin) : 1.);
     if (genWeight!=-999.) { weight *= genWeight*nColl; }
     tnew->Fill();
@@ -151,7 +155,7 @@ void addFlagsToFile(const std::string filein, const std::string fileout) {
   fout->cd();
   TDirectory *tdir_trk = fout->mkdir("tpTreeSta");
   tdir_trk->cd();
-  TTree *tr_trk = justCopyTreeAndAddWeight((TTree*)fin->Get("tpTreeSta/fitter_tree"),0);
+  TTree *tr_trk = justCopyTreeAndAddWeight((TTree*)fin->Get("tpTreeSta/fitter_tree"),0,true);
 
   fout->cd();
   TDirectory *tdir_muidtrg = fout->mkdir("tpTree");

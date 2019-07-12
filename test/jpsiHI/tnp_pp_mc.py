@@ -10,7 +10,7 @@ process.MessageLogger.cerr.FwkReport.reportEvery = 1000
 process.source = cms.Source("PoolSource",
     fileNames = cms.untracked.vstring('/store/himc/RunIIpp5Spring18DR/JPsiMM_TuneCUETP8M1_5p02TeV_pythia8/AODSIM/94X_mc2017_realistic_forppRef5TeV-v2/60000/FC0EFD70-DC46-E911-BF6B-1418774117C7.root')
 )
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(1000) )
 
 process.load('Configuration.StandardSequences.GeometryRecoDB_cff')
 process.load('Configuration.StandardSequences.MagneticField_cff')
@@ -247,7 +247,7 @@ process.tpTree = cms.EDAnalyzer("TagProbeFitTreeProducer",
         BestJPsi = cms.InputTag("bestPairByJpsiMass"),
     ),
     isMC = cms.bool(False),
-    addRunLumiInfo = cms.bool(True),
+    #addRunLumiInfo = cms.bool(True),
 )
 
 process.nverticesModule = cms.EDProducer("VertexMultiplicityCounter",
@@ -502,6 +502,7 @@ process.tpTreeTrk = cms.EDAnalyzer("TagProbeFitTreeProducer",
     ),
     pairFlags = cms.PSet(),
     isMC = cms.bool(False)
+    #addRunLumiInfo = cms.bool(True),
 )
 
 process.muonDxyPVdzminTrk = process.muonDxyPVdzmin.clone(

@@ -8,15 +8,15 @@ process.source = cms.Source("EmptySource")
 
 process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(1) )    
 
-PDFName = "twoGaussPlusPol1"
+PDFName = "twoGaussPlusPol2"
 
 process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
     # IO parameters:
     #InputFileNames = cms.vstring("root://cms-xrd-global.cern.ch//store/group/phys_heavyions/dileptons/TNPTagAndProbe2015/Data2015/pp502TeV/TTrees/tnpJPsi_Data_pp5TeV_AOD.root"),
-    InputFileNames = cms.vstring("file:/home/llr/cms/falmagne/tuples/pp17/TnP/TNP_JpsiMM_5p02TeV_TuneCUETP8M1_RunIIpp5Spring18DR-94X_AODSIM_20190327/tnpJpsi_mc_pp5TeV_PromptJpsi_wAddedFlags.root"),
+    InputFileNames = cms.vstring("file:/home/llr/cms/falmagne/tuples/pp17/TnP/data/tnpJpsi_pp5TeVRun2017G_PromptReco_20190415_SingleMuTnP_and_SingleMu_NoDuplicates_wAddedFlags.root"),
     InputDirectoryName = cms.string("tpTreeTrk"),
     InputTreeName = cms.string("fitter_tree"),
-    OutputFileName = cms.string("file:./tnp_fitOutput_STA_MC_pp_pol1.root"),
+    OutputFileName = cms.string("file:./tnp_fitOutput_TM_data_pp_pol2.root"),
     NumCPU = cms.uint32(16),
     # specifies wether to save the RooWorkspace containing the data for each bin and
     # the pdf object with the initial and final state snapshots
@@ -36,112 +36,125 @@ process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
     ),
     # defines all the discrete variables of the probes available in the input tree and intended for use in the efficiency calculations
     Categories = cms.PSet(
-        isSTA = cms.vstring("isSTA", "dummy[true=1,false=0]"),
-        outerValidHits = cms.vstring("outerValidHits", "dummy[true=1,false=0]"),
+        TM = cms.vstring("TM", "dummy[true=1,false=0]"),
+        InAcceptance_2018_Tight = cms.vstring("InAcceptance_2018_Tight","dummy[true=1,false=0]"),
+        InAcceptance_2018_Loose = cms.vstring("InAcceptance_2018_Loose","dummy[true=1,false=0]"),
     ),
 
     # defines all the PDFs that will be available for the efficiency calculations; uses RooFit's "factory" syntax;
     # each pdf needs to define "signal", "backgroundPass", "backgroundFail" pdfs, "efficiency[0.9,0,1]" and "signalFractionInPassing[0.9]" are used for initial values  
     PDFs = cms.PSet(
         twoGaussPlusPol2 = cms.vstring(
-            "Gaussian::signal1(mass, mean[3.1,3.0,3.2], sigma1[0.025, 0.008, 0.1])",
-            "Gaussian::signal2(mass, mean, sigma2[0.04, 0.01, 0.3])",
+            "Gaussian::signal1(mass, mean[3.1,3.0,3.2], sigma1[0.025, 0.0017, 0.08])",
+            "Gaussian::signal2(mass, mean, sigma2[0.05, 0.018, 0.12])",
             "SUM::signal(vFrac[0.8,0,1]*signal1, signal2)",
-            "Chebychev::backgroundPass(mass, {cPass[0,-2.0,2.0], cPass2[0,-2.0,2.0]})",
-            "Chebychev::backgroundFail(mass, {cFail[0,-2.0,2.0], cFail2[0,-2.0,2.0]})",
-            "efficiency[0.9,0.0,1.0]",
+            "Chebychev::backgroundPass(mass, {cPass[0,-1.0,1.0], cPass2[0,-0.1,0.1]})",
+            "Chebychev::backgroundFail(mass, {cFail[0,-1.0,1.0], cFail2[0.02,-0.18,0.18]})",
+            "efficiency[0.99,0.7,1.0]",
             "signalFractionInPassing[0.9]"
              ),
         twoGaussPlusPol1 = cms.vstring(
-            "Gaussian::signal1(mass, mean[3.1,3.0,3.2], sigma1[0.025, 0.019, 0.1])",
-            "Gaussian::signal2(mass, mean, sigma2[0.04, 0.012, 0.3])",
+            "Gaussian::signal1(mass, mean[3.1,3.0,3.2], sigma1[0.025, 0.018, 0.08])",
+            "Gaussian::signal2(mass, mean, sigma2[0.04, 0.012, 0.25])",
             "SUM::signal(vFrac[0.8,0,1]*signal1, signal2)",
             "Chebychev::backgroundPass(mass, {cPass[0,-2.0,2.0]})",
             "Chebychev::backgroundFail(mass, {cFail[0,-2.0,2.0]})",
             "efficiency[0.9,0.0,1.0]",
             "signalFractionInPassing[0.9]"
-        ),
+             ),
     ),
     # defines a set of efficiency calculations, what PDF to use for fitting and how to bin the data;
     # there will be a separate output directory for each calculation that includes a simultaneous fit, side band subtraction and counting. 
     Efficiencies = cms.PSet(
         #the name of the parameter set becomes the name of the directory
-        STA_Trg_abseta00_12 = cms.PSet(
-            EfficiencyCategoryAndState = cms.vstring("isSTA","true","outerValidHits","true"),
+        TM_abseta00_12 = cms.PSet(
+            EfficiencyCategoryAndState = cms.vstring("TM","true"),
             UnbinnedVariables = cms.vstring("mass"),
             BinnedVariables = cms.PSet(
                 #pt = cms.vdouble(3.5, 3.65, 3.8, 4, 4.25, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 9.5, 10.5, 11.5, 13, 16, 30),
-                pt = cms.vdouble(3.3, 3.7, 4, 4.25, 4.5, 4.75, 5, 5.25, 5.5, 5.75, 6, 6.5, 7, 7.5, 8, 8.5, 9, 11.5, 14, 22, 30),
-                pair_pt = cms.vdouble(2.5, 50),
+                pt = cms.vdouble(3.4, 3.8, 4.4, 5.2, 7, 30),
+                pair_pt = cms.vdouble(2.5, 30),
                 abseta = cms.vdouble(0.0, 1.2), 
+                InAcceptance_2018_Loose = cms.vstring("true"),
             ),
             BinToPDFmap = cms.vstring(PDFName)
         ),
-        STA_Trg_abseta12_18 = cms.PSet(
-            EfficiencyCategoryAndState = cms.vstring("isSTA","true","outerValidHits","true"),
+        TM_abseta12_18 = cms.PSet(
+            EfficiencyCategoryAndState = cms.vstring("TM","true"),
             UnbinnedVariables = cms.vstring("mass"),
             BinnedVariables = cms.PSet(
-                #pt = cms.vdouble(2.4, 2.55, 2.7, 2.85, 3, 3.25, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 8, 9.5, 15, 30),                         
-                pt = cms.vdouble(1.75, 2.1, 2.4, 2.7, 3, 3.25, 3.5, 3.75, 4, 4.25, 4.5, 4.75, 5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 11.5, 14, 22, 30),
-                pair_pt = cms.vdouble(2.5,50),
+                #pt = cms.vdouble(2.4, 2.55, 2.7, 2.85, 3, 3.25, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 8, 9.5, 15, 30), 
+                pt = cms.vdouble(1.75, 2.75, 4, 20),
+                #pt = cms.vdouble(1.75, 2.1, 2.4, 2.7, 3, 3.25, 3.5, 3.75, 4, 4.25, 4.5, 4.75, 5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 11.5, 14, 22, 30),
+                pair_pt = cms.vdouble(2.5,30),
                 abseta = cms.vdouble(1.2, 1.8),
+                InAcceptance_2018_Loose = cms.vstring("true"),
             ),
             BinToPDFmap = cms.vstring(PDFName)
         ),
-        STA_Trg_abseta18_21 = cms.PSet(
-            EfficiencyCategoryAndState = cms.vstring("isSTA","true","outerValidHits","true"),
+        TM_abseta18_24 = cms.PSet(
+            EfficiencyCategoryAndState = cms.vstring("TM","true"),
             UnbinnedVariables = cms.vstring("mass"),
             BinnedVariables = cms.PSet(
-                #pt = cms.vdouble(1.8, 2, 2.25, 2.5, 2.75, 3, 3.25, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 8, 9.5, 15, 30),
-                pt = cms.vdouble(1.33, 1.6, 1.9, 2.2, 2.5, 2.75, 3, 3.25, 3.5, 3.75, 4, 4.25, 4.5, 4.75, 5, 5.5, 6, 6.5, 7, 8.5, 10, 20, 30),
-                pair_pt = cms.vdouble(2.5,50),
-                abseta = cms.vdouble(1.8, 2.1),
+                #pt = cms.vdouble(1.8, 2.5, 3, 3.5, 4, 4.5, 5, 6, 7, 10, 30),
+                pt = cms.vdouble(1.2, 2.5, 3.7, 20),
+                #pt = cms.vdouble(1.33, 1.6, 1.9, 2.2, 2.5, 2.75, 3, 3.25, 3.5, 3.75, 4, 4.25, 4.5, 4.75, 5, 5.5, 6, 6.5, 7, 8.5, 10, 20, 30),
+                pair_pt = cms.vdouble(2.5,30),
+                abseta = cms.vdouble(1.8, 2.4),
+                InAcceptance_2018_Loose = cms.vstring("true"),
             ),
             BinToPDFmap = cms.vstring(PDFName)
         ),
-        STA_Trg_abseta21_24 = cms.PSet(
-            EfficiencyCategoryAndState = cms.vstring("isSTA","true","outerValidHits","true"),
-            UnbinnedVariables = cms.vstring("mass"),
-            BinnedVariables = cms.PSet(
-                #pt = cms.vdouble(1.8, 2, 2.25, 2.5, 2.75, 3, 3.25, 3.5, 4, 4.5, 5, 5.5, 6, 7.5, 12, 30),
-                pt = cms.vdouble(1.2, 1.5, 1.8, 2.15, 2.5, 2.75, 3, 3.25, 3.5, 3.75, 4, 4.25, 4.5, 4.75, 5, 5.5, 6, 6.5, 7, 8.5, 10, 20, 30),
-                pair_pt = cms.vdouble(2.5,50),
-                abseta = cms.vdouble(2.1, 2.4),
-            ),
-            BinToPDFmap = cms.vstring(PDFName)
-        ),
-        STA_1bin = cms.PSet(
-            EfficiencyCategoryAndState = cms.vstring("isSTA","true","outerValidHits","true"),
+        TM_1bin = cms.PSet(
+            EfficiencyCategoryAndState = cms.vstring("TM","true"),
             UnbinnedVariables = cms.vstring("mass"),
             BinnedVariables = cms.PSet(
                 pt = cms.vdouble(1.2,30.),
                 eta = cms.vdouble(-2.4,2.4),
+                InAcceptance_2018_Loose = cms.vstring("true"),
             ),
             BinToPDFmap = cms.vstring(PDFName)
         ),
-        STA_etadep = cms.PSet(
-            EfficiencyCategoryAndState = cms.vstring("isSTA","true","outerValidHits","true"),
+        TM_etadep = cms.PSet(
+            EfficiencyCategoryAndState = cms.vstring("TM","true"),
             UnbinnedVariables = cms.vstring("mass"),
             BinnedVariables = cms.PSet(
-               eta = cms.vdouble(-2.4,-2.1,-1.8,-1.2,0,1.2,1.8,2.1,2.4),
-               pair_pt = cms.vdouble(2.5,50),
-               pt = cms.vdouble(1.2,30.),
+                #eta = cms.vdouble(-2.4,-2.1,-1.8,-1.2,0,1.2,1.8,2.1,2.4),
+                eta = cms.vdouble(-2.4,-1.8,-1.2,0,1.2,1.8,2.4),
+                pair_pt = cms.vdouble(2.5,30),
+                pt = cms.vdouble(1.2,30.),
+                InAcceptance_2018_Loose = cms.vstring("true"),
             ),
             BinToPDFmap = cms.vstring(PDFName)
         ),
-        STA_absetadep = cms.PSet(
-            EfficiencyCategoryAndState = cms.vstring("isSTA","true","outerValidHits","true"),
+        TM_absetadep = cms.PSet(
+            EfficiencyCategoryAndState = cms.vstring("TM","true"),
             UnbinnedVariables = cms.vstring("mass"),
             BinnedVariables = cms.PSet(
-                abseta = cms.vdouble(0,1.2,1.8,2.1,2.4),
-                pair_pt = cms.vdouble(2.5,50),
+                abseta = cms.vdouble(0,1.2,1.8,2.4),
+                pair_pt = cms.vdouble(2.5,30),
                 pt = cms.vdouble(1.2,30),
+                InAcceptance_2018_Loose = cms.vstring("true"),
             ),
             BinToPDFmap = cms.vstring(PDFName)
         ),
 
     )
 )
+
+'''
+        TM_Trg_abseta21_24 = cms.PSet(
+            EfficiencyCategoryAndState = cms.vstring("TM","true"),
+            UnbinnedVariables = cms.vstring("mass"),
+            BinnedVariables = cms.PSet(
+                #pt = cms.vdouble(1.8, 2.5, 3, 3.5, 4, 4.5, 5, 6, 7, 10, 30),
+                pt = cms.vdouble(1.2, 1.5, 1.8, 2.15, 2.5, 2.75, 3, 3.25, 3.5, 3.75, 4, 4.25, 4.5, 4.75, 5, 5.5, 6, 6.5, 7, 8.5, 10, 20, 30),
+                pair_pt = cms.vdouble(2.5,30),
+                abseta = cms.vdouble(2.1, 2.4),
+            ),
+            BinToPDFmap = cms.vstring(PDFName)
+        ),
+'''
 
 
 process.fitness = cms.Path(

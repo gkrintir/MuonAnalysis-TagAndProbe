@@ -2,7 +2,7 @@ from CRABClient.UserUtilities import config, getUsernameFromSiteDB
 config = config()
 
 config.section_('General')
-config.General.requestName = 'TNP_SingleMu_pp5TeVRun2017G_PromptReco_v1_AOD_20190327'
+config.General.requestName = 'TNP_SingleMu_pp5TeVRun2017G_PromptReco_v1_AOD_20190415'
 config.General.workArea = 'crab_projects'
 config.General.transferOutputs = True
 config.General.transferLogs = True
@@ -16,7 +16,7 @@ config.JobType.psetName = './jpsiHI/tnp_pp_data.py'
 config.section_('Data')
 config.Data.inputDataset = '/SingleMuon/Run2017G-17Nov2017-v1/AOD'
 config.Data.inputDBS = 'global'
-config.Data.unitsPerJob = 25
+config.Data.unitsPerJob = 26
 config.Data.splitting = 'LumiBased'
 config.Data.runRange = '306546-306657'
 config.Data.lumiMask = 'https://cms-service-dqm.web.cern.ch/cms-service-dqm/CAF/certification/Collisions17/5TeV/PromptReco/Cert_306546-306657_5TeV_PromptReco_Collisions17_JSON_MuonPhys.txt'

@@ -44,7 +44,7 @@ using namespace std;
 
 // Choose the efficiency type.
 // Possible values: MUIDTRG, TRK, STA, MUID, TRG
-#define GLB
+#define MUID
 
 // pp or PbPb?
 bool isPbPb = false; // if true, will compute the centrality dependence
@@ -74,14 +74,14 @@ const char* fMCName[nSyst] = {
 
 // names for systematics
 const char* systName[nSyst] = {
-  "nominal","Background_pol3","Signal_CB+Gauss","MassRange_narrow"//,"LooseAcceptance"
+  "nominal (CB+pol2)","Background_pol2","Signal_CB","MassRange_narrow"//,"TightAcceptance"
 };
 //GLB:   "nominal","Background_pol3","Signal_CB+Gauss","MassRange_narrow","LooseAcceptance"
 //MUID:  "nominal (CB+pol2)","Background_pol2","Signal_CB","MassRange_narrow","TightAcceptance"
 //MUIDTRG:   "nominal (CB+pol2)","Background_pol2","Signal_CB","MassRange_narrow"
-//TRK:"nominal (3Gauss+pol3)","Background_pol2","Signal_VoigtGauss","MassRange_narrow"
+//TRK:  "nominal (3Gauss+pol2)","Background_pol3","Signal_Voigt+Gauss","MassRange_narrow"//,"LooseAcceptance"
 
-const double rsystrange = 0.02;
+const double rsystrange = 0.0035;
 //GLB:0.02
 //MUID:0.005
 //MUIDTRG:0.018
@@ -144,9 +144,9 @@ ofstream file_Eta("EtaValues_MuId.txt");
 ofstream file_Cent("CentValues_MuId.txt");
 ofstream file_TestErr("MuId_ExpErr.txt");
 TString cutTag("tpTree");
-TString cutLegend("Soft ID");
+TString cutLegend("HybridSoft ID");
 const double effmin = 0.85;
-const double sfrange = 0.015;
+const double sfrange = 0.013;
 const char* fDataName[nSyst] = { "../../tnp_fitOutput_HybridSoftID_data_pp_CBGPlusPol1.root", "../../tnp_fitOutput_HybridSoftID_data_pp_CBGPlusPol2.root", "../../tnp_fitOutput_HybridSoftID_data_pp_CBPlusPol1.root", "../../tnp_fitOutput_HybridSoftID_data_pp_CBGPlusPol1_narrowMrange.root" };// , "../../tnp_fitOutput_HybridSoftID_data_pp_TightAcceptance_CBGPlusPol1.root"
 const char* fMCName[nSyst] = { "../../tnp_fitOutput_HybridSoftID_MC_pp_CBGPlusPol1.root", "../../tnp_fitOutput_HybridSoftID_MC_pp_CBGPlusPol2.root", "../../tnp_fitOutput_HybridSoftID_MC_pp_CBPlusPol1.root", "../../tnp_fitOutput_HybridSoftID_MC_pp_CBGPlusPol1_narrowMrange.root" } ;//"../../tnp_fitOutput_HybridSoftID_MC_pp_TightAcceptance_CBGPlusPol1.root"
 #endif
@@ -212,8 +212,8 @@ TString cutTag("tpTreeSta");
 TString cutLegend("Inner tracking - Global");
 const double effmin = 0.8;
 const double sfrange = 0.04;
-const char* fDataName[nSyst] = { "../../tnp_fitOutput_Tracking_data_pp_triGaussPlusPol3.root", "../../tnp_fitOutput_Tracking_data_pp_triGaussPlusPol2.root","../../tnp_fitOutput_Tracking_data_pp_VoigtGaussPlusPol3.root", "../../tnp_fitOutput_Tracking_data_pp_triGaussPlusPol3_narrowMrange.root"};
-const char* fMCName[nSyst] = { "../../tnp_fitOutput_Tracking_MC_pp_triGaussPlusPol3.root", "../../tnp_fitOutput_Tracking_MC_pp_triGaussPlusPol2.root","../../tnp_fitOutput_Tracking_MC_pp_VoigtGaussPlusPol3.root", "../../tnp_fitOutput_Tracking_MC_pp_triGaussPlusPol3_narrowMrange.root"};
+const char* fDataName[nSyst] = { "../../tnp_fitOutput_Tracking_data_pp_triGaussPlusPol2.root", "../../tnp_fitOutput_Tracking_data_pp_triGaussPlusPol3.root","../../tnp_fitOutput_Tracking_data_pp_VoigtGaussPlusPol2.root", "../../tnp_fitOutput_Tracking_data_pp_triGaussPlusPol2_narrowMrange.root"};
+const char* fMCName[nSyst] = { "../../tnp_fitOutput_Tracking_MC_pp_triGaussPlusPol2.root", "../../tnp_fitOutput_Tracking_MC_pp_triGaussPlusPol3.root","../../tnp_fitOutput_Tracking_MC_pp_VoigtGaussPlusPol2.root", "../../tnp_fitOutput_Tracking_MC_pp_triGaussPlusPol2_narrowMrange.root"};
 #endif
 
 #ifdef TM

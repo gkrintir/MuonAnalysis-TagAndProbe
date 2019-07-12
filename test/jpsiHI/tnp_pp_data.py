@@ -10,7 +10,7 @@ process.MessageLogger.cerr.FwkReport.reportEvery = 1000
 process.source = cms.Source("PoolSource",
     fileNames = cms.untracked.vstring('/store/data/Run2017G/SingleMuon/AOD/17Nov2017-v1/910000/E4B056C8-3031-E811-9D14-001E67E6F490.root')
 )
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(1000) )
 
 process.load('Configuration.StandardSequences.GeometryRecoDB_cff')
 process.load('Configuration.StandardSequences.MagneticField_cff')
@@ -482,7 +482,8 @@ process.tpTreeTrk = cms.EDAnalyzer("TagProbeFitTreeProducer",
       deltaR = cms.string("deltaR(daughter(0).eta, daughter(0).phi, daughter(1).eta, daughter(1).phi)"),
     ),
     pairFlags = cms.PSet(),
-    isMC = cms.bool(False)
+    isMC = cms.bool(False),
+    addRunLumiInfo = cms.bool(True),
 )
 
 process.muonDxyPVdzminTrk = process.muonDxyPVdzmin.clone(
