@@ -1,0 +1,60 @@
+//Central scale-factor value, statistical error, systematic error, total error
+if( (fabs(eta) > -2.4) && (fabs(eta) < 2.4) ){
+if (pt<2.5) return std::make_tuple(1.00122, 2.73199e-07, 0.000177809, 0.000177809);
+else if (pt<3.5) return std::make_tuple(0.991879, 0.00100195, 0.0025514, 0.00274109);
+else if (pt<4.8) return std::make_tuple(0.986642, 0.000796652, 0.00293426, 0.00304048);
+else if (pt<6.5) return std::make_tuple(0.984938, 0.000775606, 0.00473396, 0.00479708);
+else if (pt<8.5) return std::make_tuple(0.984748, 0.000994276, 0.00227212, 0.00248014);
+else if (pt<12) return std::make_tuple(1.00245, 2.81902e-09, 0.00540922, 0.00540922);
+else if (pt<30) return std::make_tuple(0.999916, 0.00079333, 0.000540808, 0.000960128);
+}
+//Central scale-factor value, statistical error, systematic error, total error
+if( (fabs(eta) > -2.4) && (fabs(eta) < 2.4) ){
+if (pt<2.5) return std::make_tuple(1.00122, 2.73199e-07, 0.000177809, 0.000177809);
+else if (pt<3.5) return std::make_tuple(0.991879, 0.00100195, 0.0025514, 0.00274109);
+else if (pt<4.8) return std::make_tuple(0.986642, 0.000796652, 0.00293426, 0.00304048);
+else if (pt<6.5) return std::make_tuple(0.984938, 0.000775606, 0.00473396, 0.00479708);
+else if (pt<8.5) return std::make_tuple(0.984748, 0.000994276, 0.00227212, 0.00248014);
+else if (pt<12) return std::make_tuple(1.00245, 2.81902e-09, 0.00540922, 0.00540922);
+else if (pt<30) return std::make_tuple(0.999916, 0.00079333, 0.000540808, 0.000960128);
+}
+//Central scale-factor value, statistical error, systematic error, total error
+if( (fabs(eta) > -2.4) && (fabs(eta) < 2.4) ){
+if (pt<2.5) return std::make_tuple(1.00122, 2.73199e-07, 0.000177809, 0.000177809);
+else if (pt<3.5) return std::make_tuple(0.991879, 0.00100195, 0.0025514, 0.00274109);
+else if (pt<4.8) return std::make_tuple(0.986642, 0.000796652, 0.00293426, 0.00304048);
+else if (pt<6.5) return std::make_tuple(0.984938, 0.000775606, 0.00473396, 0.00479708);
+else if (pt<8.5) return std::make_tuple(0.984748, 0.000994276, 0.00227212, 0.00248014);
+else if (pt<12) return std::make_tuple(1.00245, 2.81902e-09, 0.00540922, 0.00540922);
+else if (pt<30) return std::make_tuple(0.999916, 0.00079333, 0.000540808, 0.000960128);
+}
+//Central scale-factor value, statistical error, systematic error, total error
+if( (fabs(eta) > -2.4) && (fabs(eta) < 2.4) ){
+if (pt<2.5) return std::make_tuple(1.00122, 2.73199e-07, 0.000177809, 0.000177809);
+else if (pt<3.5) return std::make_tuple(0.991879, 0.00100195, 0.0025514, 0.00274109);
+else if (pt<4.8) return std::make_tuple(0.986642, 0.000796652, 0.00293426, 0.00304048);
+else if (pt<6.5) return std::make_tuple(0.984938, 0.000775606, 0.00473396, 0.00479708);
+else if (pt<8.5) return std::make_tuple(0.984748, 0.000994276, 0.00227212, 0.00248014);
+else if (pt<12) return std::make_tuple(1.00245, 2.81902e-09, 0.00540922, 0.00540922);
+else if (pt<30) return std::make_tuple(0.999916, 0.00079333, 0.000540808, 0.000960128);
+}
+//Central scale-factor value, statistical error, systematic error, total error
+if( (fabs(eta) > -2.4) && (fabs(eta) < 2.4) ){
+if (pt<2.5) return std::make_tuple(1.00122, 2.73199e-07, 0.000177809, 0.000177809);
+else if (pt<3.5) return std::make_tuple(0.991879, 0.00100195, 0.0025514, 0.00274109);
+else if (pt<4.8) return std::make_tuple(0.986642, 0.000796652, 0.00293426, 0.00304048);
+else if (pt<6.5) return std::make_tuple(0.984938, 0.000775606, 0.00473396, 0.00479708);
+else if (pt<8.5) return std::make_tuple(0.984748, 0.000994276, 0.00227212, 0.00248014);
+else if (pt<12) return std::make_tuple(1.00245, 2.81902e-09, 0.00540922, 0.00540922);
+else if (pt<30) return std::make_tuple(0.999916, 0.00079333, 0.000540808, 0.000960128);
+}
+//Central scale-factor value, statistical error, systematic error, total error
+if( (fabs(eta) > -2.4) && (fabs(eta) < 2.4) ){
+if (pt<2.5) return std::make_tuple(1.00122, 2.73199e-07, 0.000177809, 0.000177809);
+else if (pt<3.5) return std::make_tuple(0.991879, 0.00100195, 0.0025514, 0.00274109);
+else if (pt<4.8) return std::make_tuple(0.986642, 0.000796652, 0.00293426, 0.00304048);
+else if (pt<6.5) return std::make_tuple(0.984938, 0.000775606, 0.00473396, 0.00479708);
+else if (pt<8.5) return std::make_tuple(0.984748, 0.000994276, 0.00227212, 0.00248014);
+else if (pt<12) return std::make_tuple(1.00245, 2.81902e-09, 0.00540922, 0.00540922);
+else if (pt<30) return std::make_tuple(0.999916, 0.00079333, 0.000540808, 0.000960128);
+}
