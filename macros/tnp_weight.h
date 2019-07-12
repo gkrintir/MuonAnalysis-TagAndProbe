@@ -410,37 +410,36 @@ double tnp_weight_muid_ppb(double pt, double eta, int idx=0) {
    if (idx == -10) {
       if (fabs(eta)<1.2) {
          // 0 < |eta| < 1.2
-         if (pt<15) return 0.981114;
-         else if (pt<25) return 1.00118;
-         else if (pt<30) return 0.99319;
-         else if (pt<35) return 0.994709;
-         else if (pt<40) return 0.991174;
-         else if (pt<45) return 0.993454;
-         else if (pt<50) return 0.987039;
-         else if (pt<80) return 0.992419;
-         else if (pt<200) return 0.971874;
+		  if (pt < 3.5) return 0.995434;
+		  else if (pt < 4.5) return 0.996824;
+		  else if (pt < 5.5) return 0.997548;
+		  else if (pt < 6.5) return 0.998022;
+		  else if (pt < 8) return 0.997625;
+		  else if (pt < 10.5) return 0.997302;
+		  else if (pt < 14) return 0.996757;
+		  else if (pt < 18) return 0.999137;
+		  else if (pt < 25) return 0.99837;
       } else if (fabs(eta)<2.1) {
-         // 1.2 < |eta| < 2.1
-         if (pt<15) return 1.0036;
-         else if (pt<25) return 0.998054;
-         else if (pt<30) return 0.995244;
-         else if (pt<35) return 0.992706;
-         else if (pt<40) return 0.999179;
-         else if (pt<45) return 0.999337;
-         else if (pt<50) return 0.995187;
-         else if (pt<80) return 1.00077;
-         else if (pt<200) return 1.00301;
+		  // 1.2 < |eta| < 2.1
+		  if (pt < 2) return 0.978781;
+		  else if (pt < 3) return 0.991077;
+		  else if (pt < 4.5) return 1.00259;
+		  else if (pt < 6.5) return 0.996977;
+		  else if (pt < 10) return 1.00119;
+		  else if (pt < 14) return 1.00213;
+		  else if (pt < 25) return 1.00352;
       } else {
          // 2.1 < |eta| < 2.4
-         if (pt<15) return 1.00886;
-         else if (pt<25) return 1.00277;
-         else if (pt<40) return 0.9927;
-         else if (pt<80) return 0.985097;
-         else if (pt<200) return 0.974808;
+		  if (pt < 2) return 1.00306;
+		  else if (pt < 3.5) return 0.992941;
+		  else if (pt < 5.5) return 0.994036;
+		  else if (pt < 8) return 1.00566;
+		  else if (pt < 12) return 0.985825;
+		  else if (pt < 25) return 1.00203;
       }
    }
 
-   double num = 1, den = 1;
+   //double num = 1, den = 1;
 
    //// nominal
    //if (fabs(eta)<1.2) {

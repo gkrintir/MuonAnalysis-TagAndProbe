@@ -451,7 +451,7 @@ void TnPEffDraw_singleFile_O() {
 
 	TH1F *hPad = new TH1F("hPad", ";p^{#mu}_{T} [GeV/c];Single #mu Efficiency", 5, 0, c_ptRange);
 	TH1F *hPad1 = new TH1F("hPad1", ";#eta^{#mu};Single #mu Efficiency", 5, -2.4, 2.4);
-	TH1F *hPad2 = new TH1F("hPad2", ";Centrality - hiBin ;Single #mu Efficiency", 5, 0, c_centralityRange);
+	TH1F *hPad2 = new TH1F("hPad2", ";N tracks ;Single #mu Efficiency", 5, 0, c_centralityRange);
 	hPad->GetXaxis()->CenterTitle();
 	hPad1->GetXaxis()->CenterTitle();
 	hPad2->GetXaxis()->CenterTitle();
