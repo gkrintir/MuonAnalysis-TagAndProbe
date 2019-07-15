@@ -47,8 +47,8 @@ using namespace std;
 #define TRG
 
 // pp or PbPb?
-bool isPbPb = true; // if true, will compute the centrality dependence
-TString collTag = "pPb"; // isPbPb ? "PbPb" : "pp";
+bool isCentrality = false; // if true, will compute the centrality dependence
+TString collTag = "pPb"; //Collision system
 
 // how to fit efficiencies?
 // 0 = [0]*Erf((x-[1])/[2])
@@ -56,21 +56,15 @@ TString collTag = "pPb"; // isPbPb ? "PbPb" : "pp";
 // 2 = ([0]*Erf((x-[1])/[2]))*Exp([4]*x)+ [3]
 // 3 = [0]
 // 
-int fitfcn = 1;
+int fitfcn = 2;
 
 // Location of the files
 const int nSyst = 1;//5;
 // the first file is for the nominal case, the following ones are for the systematics
-/*const char* fDataName[nSyst] = {
-	//"tnp_Ana_RD_PbPb_MuonIDTrg_AllMB.root",
-	"tnp_Ana_RD_PbPb_MuonTrk_AllMB_isGlbPol2.root", 
-};
-const char* fMCName[nSyst] = {
-   //"tnp_Ana_MC_PbPb_MuonIDTrg_AllMB.root",
-	"tnp_Ana_MC_PbPb_MuonTrk_AllMB_isGlbPol2.root",
-};// */
+/*const char* fDataName[nSyst] = { "RDrootfile_with_fits.root", ... };
+const char* fMCName[nSyst] = { "MCrootfile_with_fits.root", ...}; // */
 
-const bool bPlotAbseta = false;
+const bool bPlotAbseta = true;
 bool bPlotSyst = false;
 
 // do the toy study for the correction factors?
@@ -149,10 +143,10 @@ ofstream file_Cent("NtracksValues_Trig.txt");
 ofstream file_TestErr("Trig_ExpErr.txt");
 TString treeTag("tpTree");
 TString cutLegend("Trigger");
-const double effmin = 0.5;
-const double effmax = 1.5;
-const double sfrange = 0.05;
-const double c_ptRange = 25; // how far to plot the pt
+const double effmin = 0.0;
+const double effmax = 1.2;
+const double sfrange = 0.5;
+const double c_ptRange = 30; // how far to plot the pt
 const double c_centralityRange = 400; // how far to plot the centrality (hibin goes to 200)
 const char* fDataName[nSyst] = {"../test/jpsiHI/tnp_Ana_RD_Trig_pPb_merged.root"}; //{ "tnp_Ana_RD_Trig_pPb_bothDir_merged.root" };
 const char* fMCName[nSyst] = {"../test/jpsiHI/tnp_Ana_MC_Trig_pPb_merged.root"}; //{ "tnp_Ana_MC_Trig_pPb_bothDir_merged.root" };
@@ -329,7 +323,7 @@ void TnPEffDraw_singleFile_O() {
 		rds_bin0_RD[i] = (RooDataSet*)fData[i]->Get(treeTag + "/" + allTag + "/fit_eff");
 		rds_abseta_MC[i] = (RooDataSet*)fMC[i]->Get(treeTag + "/" + absetaTag + "/fit_eff");
 		rds_abseta_RD[i] = (RooDataSet*)fData[i]->Get(treeTag + "/" + absetaTag + "/fit_eff");
-		if (isPbPb) {
+		if (isCentrality) {
 			rds_cent_MC[i] = (RooDataSet*)fMC[i]->Get(treeTag + "/" + centTag + "/fit_eff");
 			rds_cent_RD[i] = (RooDataSet*)fData[i]->Get(treeTag + "/" + centTag + "/fit_eff");
 		}
@@ -358,7 +352,7 @@ void TnPEffDraw_singleFile_O() {
 		eff1bin_RD[k] = plotEff_1bin(rds_bin0_RD[k], 0, "eta");
 		effAbsEta_MC[k] = plotEff_Nbins(rds_abseta_MC[k], 0, "pt", absetaVar);
 		effAbsEta_RD[k] = plotEff_Nbins(rds_abseta_RD[k], 0, "pt", absetaVar);
-		if (isPbPb && k == 0) {
+		if (isCentrality && k == 0) {
 			effCentMC = plotEff_1bin(rds_cent_MC[k], 0, centVar);
 			effCentData = plotEff_1bin(rds_cent_RD[k], 0, centVar);
 		}
@@ -367,7 +361,7 @@ void TnPEffDraw_singleFile_O() {
 	cout << endl<< "Loading of roo data sets and efficiencies done " << endl << endl;
 
 	// loading done, set style
-	if (isPbPb) {
+	if (isCentrality) {
 		effCentMC->SetMarkerStyle(20);
 		effCentMC->SetMarkerSize(1.4);
 		effCentMC->SetMarkerColor(kRed + 1);
@@ -424,7 +418,7 @@ void TnPEffDraw_singleFile_O() {
 
 		for (int i = 0; i < nbins_abseta; i++)
 		{
-			TrkAbsEta0[k][i] = new double[4]; //	b[0] = sum / nBins;			b[1] = sqrt(sqSumHigh) / nBins; 		b[2] = sqrt(sqSumLow) / nBins;     b[3] unused
+			TrkAbsEta0[k][i] = new double[4]; //	b[0] = sum / nBins; b[1] = sqrt(sqSumHigh) / nBins; b[2] = sqrt(sqSumLow) / nBins; b[3] unused
 			TrkAbsEta1[k][i] = new double[4];
 		}
 		
@@ -489,7 +483,7 @@ void TnPEffDraw_singleFile_O() {
 
 	pad2->cd();
 	pad2->SetGridy();
-	double tsize = (1. / 0.36)*hPad->GetYaxis()->GetTitleSize(); // 1./0.36
+	double tsize = (1. / 0.36)*hPad->GetYaxis()->GetTitleSize();
 	TH1F *hPadr = (TH1F*)hPad->Clone("hPadr"); hPadr->GetYaxis()->SetRangeUser(1. - sfrange, 1. + sfrange);
 	hPadr->GetYaxis()->SetTitle("Scale Factor");
 	hPadr->GetXaxis()->SetTitleSize(tsize);
@@ -554,7 +548,7 @@ void TnPEffDraw_singleFile_O() {
 				header = TString("#splitline{") + cutLegend + Form(" Efficiency}{(p^{#mu}_{T}>%.1f, #eta #in [%.1f, %.1f])}", ptmin, etamin, etamax);
 			}
 			leg1->SetHeader(header);
-			sprintf(legs, "MC PYTHIA + HYDJET: %.4f^{ + %.3f}_{ - %.3f}", TrkAbsEta0[k][i][0], TrkAbsEta0[k][i][1], TrkAbsEta0[k][i][2]);
+			sprintf(legs, "MC PYTHIA: %.4f^{ + %.3f}_{ - %.3f}", TrkAbsEta0[k][i][0], TrkAbsEta0[k][i][1], TrkAbsEta0[k][i][2]); // + HYDJET for embedded
 			//sprintf(legs, "MC Pbp: %.4f^{ + %.3f}_{ - %.3f}", TrkAbsEta0[k][i][0], TrkAbsEta0[k][i][1], TrkAbsEta0[k][i][2]);
 			leg1->AddEntry(ComPt_MC[k][i], legs, "pl");
 			sprintf(legs, "Data: %.4f^{ + %.3f}_{ - %.3f}", TrkAbsEta1[k][i][0], TrkAbsEta1[k][i][1], TrkAbsEta1[k][i][2]);
@@ -567,8 +561,7 @@ void TnPEffDraw_singleFile_O() {
 
 			lt1->SetTextSize(0.05);
 			lt1->DrawLatex(0.20, 0.30, "CMS Preliminary");
-			//lt1->DrawLatex(0.20, 0.24, collTag + "  #sqrt{s_{NN}} = 8.16 TeV");
-			lt1->DrawLatex(0.20, 0.24, collTag + "  #sqrt{s_{NN}} = 5.02 TeV");
+			lt1->DrawLatex(0.20, 0.24, collTag + "  #sqrt{s_{NN}} = 8.16 TeV"); //Change energy if needed
 
 			// now take care of the data/mc ratio panel
 			c1->cd();
@@ -675,12 +668,11 @@ void TnPEffDraw_singleFile_O() {
 					//fmc = (TF1*)fdata->Clone("fmc");
 					fmc = initfcn("fmc", fitfcn, ptmin, ptmax, 0.8);
 					// Initialize the normalization to the efficiency in the last point
-					//if (isPbPb) fmc->SetParameters(ComPt_MC[k][i]->GetX()[ComPt_MC[k][i]->GetN() - 1], 0.5, 2.5);
+					//if (isCentrality) fmc->SetParameters(ComPt_MC[k][i]->GetX()[ComPt_MC[k][i]->GetN() - 1], 0.5, 2.5);
 					//else fmc->SetParameters(ComPt_MC[k][i]->GetX()[ComPt_MC[k][i]->GetN() - 1], 2.2, 1.5);
 					fmc->SetLineColor(kRed);
 					//ComPt_MC[k][i]->Fit(fmc, "WRME");
 					ComPt_MC[k][i]->Fit(fmc, "RME");
-
 
 
 					//Errors on exponential
@@ -796,7 +788,7 @@ void TnPEffDraw_singleFile_O() {
 			leg1->SetTextSize(0.035);
 			double ptmin = ((RooRealVar*)rds_abseta_MC[k]->get()->find("pt"))->getBinning().binLow(0);
 			leg1->SetHeader(TString("#splitline{") + cutLegend + Form(" Efficiency}{(p^{#mu}_{T}>%.1f)}", ptmin));
-			sprintf(legs, "MC PYTHIA + HYDJET: %.4f^{ + %.3f}_{ - %.3f}", Trk0[k][0], Trk0[k][1], Trk0[k][2]);
+			sprintf(legs, "MC PYTHIA: %.4f^{ + %.3f}_{ - %.3f}", Trk0[k][0], Trk0[k][1], Trk0[k][2]);
 			//sprintf(legs, "MC Pbp: %.4f^{ + %.3f}_{ - %.3f}", Trk0[k][0], Trk0[k][1], Trk0[k][2]);
 			leg1->AddEntry(ComPt_MC[k][0], legs, "pl");
 			sprintf(legs, "Data: %.4f^{ + %.3f}_{ - %.3f}", Trk1[k][0], Trk1[k][1], Trk1[k][2]);
@@ -807,8 +799,7 @@ void TnPEffDraw_singleFile_O() {
 
 			lt1->SetTextSize(0.05);
 			lt1->DrawLatex(0.43, 0.40, "CMS Preliminary");
-			lt1->DrawLatex(0.43, 0.34, collTag + "  #sqrt{s_{NN}} = 5.02 TeV");
-			//lt1->DrawLatex(0.43, 0.34, collTag + "  #sqrt{s_{NN}} = 8.16 TeV");
+			lt1->DrawLatex(0.43, 0.34, collTag + "  #sqrt{s_{NN}} = 8.16 TeV"); // Change energy if needed
 
 			// now take care of the data/mc ratio panel
 			c1->cd();
@@ -876,7 +867,7 @@ void TnPEffDraw_singleFile_O() {
 		leg1->SetTextSize(0.035);
 		double ptmin = ((RooRealVar*)rds_eta_MC[k]->get()->find("pt"))->getBinning().binLow(0);
 		leg1->SetHeader(TString("#splitline{") + cutLegend + Form(" Efficiency}{(p^{#mu}_{T}>%.1f)}", ptmin));
-		sprintf(legs, "MC PYTHIA + HYDJET: %.4f^{ + %.3f}_{ - %.3f}", Trk0[k][0], Trk0[k][1], Trk0[k][2]);
+		sprintf(legs, "MC PYTHIA: %.4f^{ + %.3f}_{ - %.3f}", Trk0[k][0], Trk0[k][1], Trk0[k][2]);
 		//sprintf(legs, "MC Pbp: %.4f^{ + %.3f}_{ - %.3f}", Trk0[k][0], Trk0[k][1], Trk0[k][2]);
 		leg1->AddEntry(ComPt_MC[k][0], legs, "pl");
 		sprintf(legs, "Data: %.4f^{ + %.3f}_{ - %.3f}", Trk1[k][0], Trk1[k][1], Trk1[k][2]);
@@ -887,8 +878,7 @@ void TnPEffDraw_singleFile_O() {
 
 		lt1->SetTextSize(0.05);
 		lt1->DrawLatex(0.43, 0.40, "CMS Preliminary");
-		lt1->DrawLatex(0.43, 0.34, collTag + "  #sqrt{s_{NN}} = 5.02 TeV");
-		//lt1->DrawLatex(0.43, 0.34, collTag + "  #sqrt{s_{NN}} = 8.16 TeV");
+		lt1->DrawLatex(0.43, 0.34, collTag + "  #sqrt{s_{NN}} = 8.16 TeV"); // Change energy if needed
 
 		// now take care of the data/mc ratio panel
 		c1->cd();
@@ -964,7 +954,7 @@ void TnPEffDraw_singleFile_O() {
 	}
 
 	//-------- This is for centrality dependence
-	if (isPbPb) {
+	if (isCentrality) {
 		pad1->cd();
 		hPad2->Draw();
 
@@ -975,8 +965,7 @@ void TnPEffDraw_singleFile_O() {
 
 		lt1->SetTextSize(0.05);
 		lt1->DrawLatex(0.43, 0.45, "CMS Preliminary");
-		lt1->DrawLatex(0.43, 0.39, collTag + "  #sqrt{s_{NN}} = 5.02 TeV");
-		//lt1->DrawLatex(0.43, 0.39, collTag + "  #sqrt{s_{NN}} = 8.16 TeV");
+		lt1->DrawLatex(0.43, 0.39, collTag + "  #sqrt{s_{NN}} = 8.16 TeV"); //Change energy if needed
 
 		// now take care of the data/mc ratio panel
 		c1->cd();
@@ -1394,8 +1383,7 @@ void plotSysts(TGraphAsymmErrors *graphs[nSyst], TCanvas *c1, TPad *p1, TH1F *h1
 
 	// lt1->SetTextSize(0.05);
 	// lt1->DrawLatex(0.43,0.60,"CMS Preliminary");
-	// //lt1->DrawLatex(0.43,0.54,"pp  #sqrt{s} = 5.02 TeV");
-	// lt1->DrawLatex(0.43,0.54,collTag + "  #sqrt{s_{NN}} = 5.02 TeV");
+	// lt1->DrawLatex(0.43,0.54,collTag + "  #sqrt{s_{NN}} = 8.16 TeV");
 
 	// now take care of the data/mc ratio panel
 	c1->cd();
@@ -1454,6 +1442,7 @@ void plotSysts(TGraphAsymmErrors *graphs[nSyst], TCanvas *c1, TPad *p1, TH1F *h1
 	c1->SaveAs(tag + ".png");
 }
 
+// Setting the fit function for data and MC efficiencies as requested using fitfcn (0, 1, 2, or 3)
 TF1 *initfcn(const char* fname, int ifcn, double ptmin, double ptmax, double effguess) {
 	TString formula;
 	if (ifcn == 0) formula = "[0]*TMath::Erf((x-[1])/[2])";
@@ -1461,6 +1450,7 @@ TF1 *initfcn(const char* fname, int ifcn, double ptmin, double ptmax, double eff
 	else if (ifcn == 2) formula = "[0]*(TMath::Erf((x-[1])/[2])*TMath::Exp([4]*x)) + [3]";
 	else if (ifcn == 3) formula = "[0]";
 	else formula = "[0]";
+	// Defining the fit function:
 	TF1 *ans = new TF1(fname, formula, ptmin, ptmax);
 	if (ifcn == 0) {
 		ans->SetParNames("eff0", "x0", "m");
@@ -1497,6 +1487,7 @@ TF1 *initfcn(const char* fname, int ifcn, double ptmin, double ptmax, double eff
 	return ans;
 }
 
+// Defining the fit function for the ratio pannel as the ratio of the numerator and denominator fit functions.
 TF1 *ratiofunc(const char* fname, TF1 *fnum, TF1 *fden) {
 	TString formnum = fnum->GetExpFormula();
 	TString formden = fden->GetExpFormula();
@@ -1515,6 +1506,7 @@ TF1 *ratiofunc(const char* fname, TF1 *fnum, TF1 *fden) {
 		formden.ReplaceAll(Form("[%s]", fden->GetParName(i)), Form("[%i]", i + nparnum));
 	}
 	double xmin, xmax; fnum->GetRange(xmin, xmax);
+	// function definition:
 	TF1 *ans = new TF1(fname, TString("(") + formnum + ")/(" + formden + ")", xmin, xmax);
 	for (int i = 0; i<nparnum; i++) ans->SetParameter(i, fnum->GetParameter(i));
 	for (int i = 0; i<nparden; i++) ans->SetParameter(i + nparnum, fden->GetParameter(i));
