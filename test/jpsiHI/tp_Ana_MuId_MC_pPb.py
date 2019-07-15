@@ -51,13 +51,29 @@ VEFFICIENCYSET =cms.VPSet(
            BinToPDFmap = cms.vstring(PDFName)
        )
     ),
+    cms.PSet(         
+         MuId_abseta00_08 = cms.PSet(
+             EfficiencyCategoryAndState = cms.vstring("SoftID","true"),
+             UnbinnedVariables = cms.vstring("mass", "weight"),
+             BinnedVariables = cms.PSet(
+                pt = cms.vdouble(3.3, 4.5, 5.5, 6.5, 8.0, 10.5, 14.0, 18.0, 25.0),
+                abseta = cms.vdouble(0, 0.8),
+                tag_nVertices    = cms.vdouble(0.9,1.1),
+                TM = cms.vstring("true"),
+                isNotMuonSeeded = cms.vstring("true"),
+                #Glb = cms.vstring("true"),
+                #PF = cms.vstring("true"),
+             ),
+             BinToPDFmap = cms.vstring(PDFName)
+        )
+    ),
     cms.PSet(
-        MuId_abseta00_09 = cms.PSet(
+        MuId_abseta08_15 = cms.PSet(
             EfficiencyCategoryAndState = cms.vstring("SoftID","true"),
             UnbinnedVariables = cms.vstring("mass", "weight"),
             BinnedVariables = cms.PSet(
-                pt = cms.vdouble(2.5, 3.5, 4.5, 5.5, 6.5, 8.0, 10.5, 14.0, 18.0, 25.0),
-                abseta = cms.vdouble(0, 0.9),
+                pt = cms.vdouble(1.1, 2.5, 3.5, 4.5, 5.5, 6.5, 8.0, 10.5, 14.0, 18.0, 25.0),
+                abseta = cms.vdouble(0.8, 1.5),
                 tag_nVertices    = cms.vdouble(0.9,1.1),
                 TM = cms.vstring("true"),
                 isNotMuonSeeded = cms.vstring("true"),
@@ -67,7 +83,7 @@ VEFFICIENCYSET =cms.VPSet(
             BinToPDFmap = cms.vstring(PDFName)
         )
     ), 
-    cms.PSet(
+    cms.PSet( #4 unused
         MuId_abseta09_12 = cms.PSet(
             EfficiencyCategoryAndState = cms.vstring("SoftID","true"),
             UnbinnedVariables = cms.vstring("mass", "weight"),
@@ -83,7 +99,7 @@ VEFFICIENCYSET =cms.VPSet(
             BinToPDFmap = cms.vstring(PDFName)
         )
     ), 
-    cms.PSet(
+    cms.PSet( #5 unused
         MuId_abseta00_12 = cms.PSet(
             EfficiencyCategoryAndState = cms.vstring("SoftID","true"),
             UnbinnedVariables = cms.vstring("mass", "weight"),
@@ -100,12 +116,12 @@ VEFFICIENCYSET =cms.VPSet(
         )
     ), 
     cms.PSet(
-         MuId_abseta12_16 = cms.PSet(
+         MuId_abseta15_21 = cms.PSet(
              EfficiencyCategoryAndState = cms.vstring("SoftID","true"),
              UnbinnedVariables = cms.vstring("mass", "weight"),
              BinnedVariables = cms.PSet(
-                pt = cms.vdouble(1.5, 3.0, 4.5, 6.5, 10.0, 14.0, 25.0),
-                abseta = cms.vdouble(1.2,1.6),
+                pt = cms.vdouble(0.8, 2.0, 3.0, 4.5, 6.5, 10.0, 14.0, 25.0),
+                abseta = cms.vdouble(1.5,2.1),
                 tag_nVertices    = cms.vdouble(0.9,1.1),
                 TM = cms.vstring("true"),
                 isNotMuonSeeded = cms.vstring("true"),
@@ -116,12 +132,12 @@ VEFFICIENCYSET =cms.VPSet(
         )
     ), 
     cms.PSet(         
-         MuId_abseta16_21 = cms.PSet(
+         MuId_abseta08_21 = cms.PSet(
              EfficiencyCategoryAndState = cms.vstring("SoftID","true"),
              UnbinnedVariables = cms.vstring("mass", "weight"),
              BinnedVariables = cms.PSet(
                 pt = cms.vdouble(0.8, 2.0, 3.0, 4.5, 6.5, 10.0, 14.0, 25.0),
-                abseta = cms.vdouble(1.6,2.1),
+                abseta = cms.vdouble(0.8,2.1),
                 tag_nVertices    = cms.vdouble(0.9,1.1),
                 TM = cms.vstring("true"),
                 isNotMuonSeeded = cms.vstring("true"),
@@ -130,23 +146,7 @@ VEFFICIENCYSET =cms.VPSet(
              ),
              BinToPDFmap = cms.vstring(PDFName)
         )
-    ), 
-    cms.PSet(         
-         MuId_abseta12_21 = cms.PSet(
-             EfficiencyCategoryAndState = cms.vstring("SoftID","true"),
-             UnbinnedVariables = cms.vstring("mass", "weight"),
-             BinnedVariables = cms.PSet(
-                pt = cms.vdouble(0.8, 2.0, 3.0, 4.5, 6.5, 10.0, 14.0, 25.0),
-                abseta = cms.vdouble(1.2,2.1),
-                tag_nVertices    = cms.vdouble(0.9,1.1),
-                TM = cms.vstring("true"),
-                isNotMuonSeeded = cms.vstring("true"),
-                #Glb = cms.vstring("true"),
-                #PF = cms.vstring("true"),
-             ),
-             BinToPDFmap = cms.vstring(PDFName)
-        )
-    ), 
+    ),  
     cms.PSet(
         MuId_abseta21_24 = cms.PSet(
             EfficiencyCategoryAndState = cms.vstring("SoftID","true"),
@@ -168,7 +168,7 @@ VEFFICIENCYSET =cms.VPSet(
             EfficiencyCategoryAndState = cms.vstring("SoftID","true"),
             UnbinnedVariables = cms.vstring("mass", "weight"),
             BinnedVariables = cms.PSet(
-                pt = cms.vdouble(1.5, 25.0),
+                pt = cms.vdouble(0.8, 25.0),
                 abseta = cms.vdouble(0,0.9,1.2,1.6,2.1,2.4),
                 tag_nVertices    = cms.vdouble(0.9,1.1),
                 TM = cms.vstring("true"),
@@ -184,7 +184,7 @@ VEFFICIENCYSET =cms.VPSet(
             EfficiencyCategoryAndState = cms.vstring("SoftID","true"),
             UnbinnedVariables = cms.vstring("mass", "weight"),
             BinnedVariables = cms.PSet(
-                pt = cms.vdouble(1.5, 25.0),
+                pt = cms.vdouble(0.8, 25.0),
                 eta = cms.vdouble(-2.4,-2.1,-1.6,-1.2,-0.9,-0.6,-0.3,0,0.3,0.6,0.9,1.2,1.6,2.1,2.4),
                 tag_nVertices    = cms.vdouble(0.9,1.1),
                 TM = cms.vstring("true"),
@@ -200,7 +200,7 @@ VEFFICIENCYSET =cms.VPSet(
             EfficiencyCategoryAndState = cms.vstring("SoftID","true"),
             UnbinnedVariables = cms.vstring("mass", "weight"),
             BinnedVariables = cms.PSet(
-                pt = cms.vdouble(1.5, 25.0),
+                pt = cms.vdouble(0.8, 25.0),
                 eta = cms.vdouble(-2.4,2.4),
                 tag_nVertices    = cms.vdouble(0.9,1.1),
                 tag_hiNtracks = cms.vdouble(0,30,50,75,100,125,150,175,400),
@@ -233,10 +233,10 @@ VEFFICIENCYSET =cms.VPSet(
 
 #Actual selection 
 if scenario == "1": EFFICIENCYSET = cms.PSet(VEFFICIENCYSET[0])
-if scenario == "2": EFFICIENCYSET = cms.PSet(VEFFICIENCYSET[2], VEFFICIENCYSET[3])
-if scenario == "3": EFFICIENCYSET = cms.PSet(VEFFICIENCYSET[5], VEFFICIENCYSET[6])
-if scenario == "4": EFFICIENCYSET = cms.PSet(VEFFICIENCYSET[4], VEFFICIENCYSET[7])
-if scenario == "5": EFFICIENCYSET = cms.PSet(VEFFICIENCYSET[1], VEFFICIENCYSET[8])
+if scenario == "2": EFFICIENCYSET = cms.PSet(VEFFICIENCYSET[1], VEFFICIENCYSET[2])
+if scenario == "3": EFFICIENCYSET = cms.PSet(VEFFICIENCYSET[3], VEFFICIENCYSET[6])
+if scenario == "4": EFFICIENCYSET = cms.PSet(VEFFICIENCYSET[7])
+if scenario == "5": EFFICIENCYSET = cms.PSet(VEFFICIENCYSET[8])
 if scenario == "6": EFFICIENCYSET = cms.PSet(VEFFICIENCYSET[9])
 if scenario == "7": EFFICIENCYSET = cms.PSet(VEFFICIENCYSET[10])
 if scenario == "8": EFFICIENCYSET = cms.PSet(VEFFICIENCYSET[11])#, VEFFICIENCYSET[12])
@@ -269,7 +269,7 @@ process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
                          mass             = cms.vstring("Tag-Probe Mass", "2.6", "3.6", "GeV/c^{2}"), # mass range syst: 2.8-3.4
                          pt               = cms.vstring("Probe p_{T}", "0.0", "30", "GeV/c"),
                          eta              = cms.vstring("Probe #eta", "-2.4", "2.4", ""),
-                         abseta           = cms.vstring("Probe |#eta|", "0", "2.5", ""),
+                         abseta           = cms.vstring("Probe |#eta|", "0", "2.4", ""),
                          tag_hiNtracks    = cms.vstring("N Tracks", "0", "400", ""),
                          #tag_hiHF         = cms.vstring("HF", "0", "500", ""),
                          tag_nVertices    = cms.vstring("PU - nVertices", "0", "10", ""),
@@ -390,6 +390,16 @@ process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
         "SUM::signal(frac[0.8,0.5,1.]*signal1,signal2)",
         "Chebychev::backgroundPass(mass, {cPass[0.,-1.1,1.1], cPass2[0.,-1.1,1.1], cPass3[0.,-1.1,1.1]})",
         "Chebychev::backgroundFail(mass, {cFail[0.,-1.1,1.1], cFail2[0.,-1.1,1.1], cPass3[0.,-1.1,1.1]})",
+        "efficiency[0.9,0,1]",
+        "signalFractionInPassing[0.9]"
+    ),
+    cbFixedNGausExp3 = cms.vstring( #n fixed to average value in the MC abseta fits
+        "CBShape::signal1(mass, mean[3.08,3.00,3.3], sigma1[0.03, 0.01, 0.10], alpha[1.85, 0.1, 50], n[1.3])",
+        "RooFormulaVar::sigma2('@0*@1',{fracS[1.8,1.2,2.4],sigma1})",
+        "Gaussian::signal2(mass, mean, sigma2)",
+        "SUM::signal(frac[0.8,0.5,1.]*signal1,signal2)",
+        "Exponential::backgroundPass(RooFormulaVar::mass3('@1*@0 + @2*@0*@0 + @2*@0*@0*@0',{mass, lp1[0,-5,5], lp2[0,-5,5], lp3[0,-5,5])), One[1.0])",
+        "Exponential::backgroundPass(RooFormulaVar::mass3('@1*@0 + @2*@0*@0 + @2*@0*@0*@0',{mass, lf1[0,-5,5], lf2[0,-5,5], lf3[0,-5,5])), One[1.0])",
         "efficiency[0.9,0,1]",
         "signalFractionInPassing[0.9]"
     ),

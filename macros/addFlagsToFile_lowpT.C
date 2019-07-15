@@ -8,7 +8,7 @@ TTree* copyTree(TTree* told, int nentries=0) {
    TTree *tnew = told->CloneTree(0);
    tnew->SetAutoSave(0);
   // tnew->SetAutoFlush(10000000);
-   int passedDXY,passedDZ, isNotMuonSeeded, SoftID, SoftHINoDxyz, tag_acceptance, probe_acceptance;
+   int passedDXY,passedDZ, isNotMuonSeeded, SoftID, SoftHINoDxyz, tag_acceptance, probe_acceptance, probe_trg_acceptance;
   // int isMuonSeeded; //fix to naming in MC - the *Not* was omitted.
    float dzPV, dxyPV, dB, pt, eta, tag_pt, p;
 
@@ -29,6 +29,7 @@ TTree* copyTree(TTree* told, int nentries=0) {
    //tnew->Branch("isNotMuonSeeded", &isNotMuonSeeded);
    tnew->Branch("tag_acceptance", &tag_acceptance, "tag_acceptance/I");
    tnew->Branch("probe_acceptance", &probe_acceptance, "probe_acceptance/I");
+   tnew->Branch("probe_trg_acceptance", &probe_trg_acceptance, "probe_trg_acceptance/I");
 
 
    if (nentries == 0)
@@ -50,8 +51,12 @@ TTree* copyTree(TTree* told, int nentries=0) {
 	  if (tag_pt > 3.5) { tag_acceptance = 1; }
 	  else tag_acceptance = 0;
 
-	  if ((fabs(eta) < 1. && pt >= 3.3) || (fabs(eta) >= 1.0 && fabs(eta) < 2.2 && p >= 2.9) || (fabs(eta >= 2.2) && pt >= 0.8)) { probe_acceptance = 1; }
+	  //if ((fabs(eta) < 1. && pt >= 3.3) || (fabs(eta) >= 1.0 && fabs(eta) < 2.2 && p >= 2.9) || (fabs(eta >= 2.2) && pt >= 0.8)) { probe_acceptance = 1; }  //old acceptance
+	  if (fabs(eta) < 2.4 && ((fabs(eta) < 0.8 && pt >= 3.3) || (0.8 <= fabs(eta) && fabs(eta) < 1.5 && pt >= 5.81 - 3.14*fabs(eta)) ||  (1.5 <= fabs(eta) && pt >= 0.8 && pt >= 1.89 - 0.526*fabs(eta)))) { probe_acceptance = 1; }
 	  else probe_acceptance = 0;
+
+	  if (fabs(eta) < 2.4 && ((fabs(eta) < 1.2 && pt >= 3.3) ||  (1.2 <= fabs(eta) && fabs(eta) < 2.1 && pt >= 3.93 - 1.11*fabs(eta)) ||  (2.1 <= fabs(eta) && fabs(eta) < 2.4 && pt >= 1.3))) { probe_trg_acceptance = 1; }
+	  else probe_trg_acceptance = 0;
 
       tnew->Fill();
    }
