@@ -5,13 +5,12 @@
 
 TTree* skimTree(TTree* told, const std::string& type, const int& ps)
 {
-	//std::vector<std::string> varVec = {"pt", "eta", "abseta", "mass", "dzPV", "dxyPV", "tag_hiNtracks","isNotMuonSeeded", "TM", "SoftHINoDxyz", "HLT_PAL1DoubleMuOpen"}; //without flags
-	std::vector<std::string> varVec = { "pt", "eta", "abseta", "mass", "tag_hiNtracks","isNotMuonSeeded", "TM", "SoftID", "HLT_PAL1DoubleMuOpen" }; //with flags
+	std::vector<std::string> varVec = { "pt", "eta", "abseta", "mass", "tag_nVertices", "tag_acceptance", "probe_acceptance", "tag_hiNtracks","isNotMuonSeeded", "TM", "SoftID", "HLT_PAL1DoubleMuOpen" }; //with flags
 
 	std::string sel = "";
-	if (type == "Trg") { sel = ("isNotMuonSeeded == 1 && TM==1 && SoftID==1 && (mass>=2.6 && mass<=3.6)"); }
-	else if (type == "MuID") { sel = ("isNotMuonSeeded == 1 && TM==1 && (mass>=2.6 && mass<=3.6)"); }
-	else if (type == "Trk") { sel = ("isNotMuonSeeded==1 && (mass>=2.6 && mass<=3.6)"); }
+	if (type == "Trg") { sel = ("isNotMuonSeeded == 1 && TM==1 && SoftID==1 && tag_acceptance == 1 && probe_acceptance==1 && (mass>=2.6 && mass<=3.6)"); }
+	else if (type == "MuID") { sel = ("isNotMuonSeeded == 1 && TM==1 && tag_acceptance == 1 && probe_acceptance==1 && (mass>=2.6 && mass<=3.6)"); }
+	else if (type == "Trk") { sel = ("isNotMuonSeeded==1 && tag_acceptance == 1 && probe_acceptance==1 && (mass>=2.6 && mass<=3.6)"); }
 
 	told->SetBranchStatus("*", 0);
 	for (auto& v : varVec) { if (told->GetBranch(v.c_str())) told->SetBranchStatus(v.c_str(), 1); }
@@ -22,7 +21,7 @@ TTree* skimTree(TTree* told, const std::string& type, const int& ps)
 	return tnew;
 }
 
-void cutThingsFromSkim(const char *filein, const char *fileout, const std::string& type = "", const int& ps = 1) {
+void cutThingsFromSkim(const char *filein, const char *fileout, const std::string& type = "Trk", const int& ps = 1) {
 	TFile fin(filein);
 	TFile fout(fileout, "RECREATE");
 

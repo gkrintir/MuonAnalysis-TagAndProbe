@@ -8,9 +8,9 @@ TTree* copyTree(TTree* told, int nentries=0) {
    TTree *tnew = told->CloneTree(0);
    tnew->SetAutoSave(0);
   // tnew->SetAutoFlush(10000000);
-   int passedDXY,passedDZ, isNotMuonSeeded, SoftID, SoftHINoDxyz;
+   int passedDXY,passedDZ, isNotMuonSeeded, SoftID, SoftHINoDxyz, tag_acceptance, probe_acceptance;
   // int isMuonSeeded; //fix to naming in MC - the *Not* was omitted.
-   float dzPV, dxyPV, dB;
+   float dzPV, dxyPV, dB, pt, eta, tag_pt, p;
 
    told->SetBranchAddress("dzPV",&dzPV);
    told->SetBranchAddress("dxyPV",&dxyPV);
@@ -18,13 +18,19 @@ TTree* copyTree(TTree* told, int nentries=0) {
   // told->SetBranchAddress("isMuonSeeded", &isMuonSeeded);
   // told->SetBranchAddress("dB", &dB);
    told->SetBranchAddress("SoftHINoDxyz", &SoftHINoDxyz);
-
+   told->SetBranchAddress("p", &p);
+   told->SetBranchAddress("pt", &pt);
+   told->SetBranchAddress("eta", &eta);
+   told->SetBranchAddress("tag_pt", &tag_pt);
 
    tnew->Branch("SoftID", &SoftID, "SoftID/I");
    tnew->Branch("passedDXY", &passedDXY, "passedDXY/I");
    tnew->Branch("passedDZ", &passedDZ, "passedDZ/I");
    //tnew->Branch("isNotMuonSeeded", &isNotMuonSeeded);
- 
+   tnew->Branch("tag_acceptance", &tag_acceptance, "tag_acceptance/I");
+   tnew->Branch("probe_acceptance", &probe_acceptance, "probe_acceptance/I");
+
+
    if (nentries == 0)
    {
 	   nentries = told->GetEntries();
@@ -32,13 +38,21 @@ TTree* copyTree(TTree* told, int nentries=0) {
    for (long i=0; i<nentries; i++) {
       told->GetEntry(i);
 
-	  if (i % 100000 == 0) { cout << "event: " << i << " done: " << 100 * i / nentries << "%" << endl; }
+	  if (i % 1000000 == 0) { cout << "event: " << i << " done: " << 100 * i / nentries << "%" << endl; }
 
 	  //SoftMuonID
 	  //isNotMuonSeeded = isMuonSeeded;
 	  passedDXY = (fabs(dxyPV) < DXYCUT);
 	  passedDZ = (fabs(dzPV) < DZCUT);
 	  SoftID = (passedDXY && passedDZ && SoftHINoDxyz);
+
+	  // add acceptance conditions
+	  if (tag_pt > 3.5) { tag_acceptance = 1; }
+	  else tag_acceptance = 0;
+
+	  if ((fabs(eta) < 1. && pt >= 3.3) || (fabs(eta) >= 1.0 && fabs(eta) < 2.2 && p >= 2.9) || (fabs(eta >= 2.2) && pt >= 0.8)) { probe_acceptance = 1; }
+	  else probe_acceptance = 0;
+
       tnew->Fill();
    }
 
