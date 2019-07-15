@@ -9,9 +9,29 @@ request_memory        = 20g
 queue
 
 request_cpus= 8
+arguments = MC 2
+queue
+
+request_cpus= 8
+arguments = MC 3
+queue
+
+request_cpus= 8
+arguments = MC 4
+queue
+
+request_cpus= 8
+arguments = MC 5
+queue
+
+request_cpus= 8
 arguments = MC 6
 queue
 
 request_cpus= 8
 arguments = MC 7
+queue
+
+request_cpus= 8
+arguments = MC 8
 queue
