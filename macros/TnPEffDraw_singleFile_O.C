@@ -148,8 +148,8 @@ const double effmax = 1.2;
 const double sfrange = 0.5;
 const double c_ptRange = 30; // how far to plot the pt
 const double c_centralityRange = 400; // how far to plot the centrality (hibin goes to 200)
-const char* fDataName[nSyst] = {"../test/jpsiHI/TnPFits_July14/tnp_Ana_RD_Trig_pPb_merged.root"}; // both dir
-const char* fMCName[nSyst] = {"../test/jpsiHI/TnPFits_July14/tnp_Ana_MC_Trig_pPb_merged.root"}; // both dir
+const char* fDataName[nSyst] = {"../test/jpsiHI/tnp_Ana_RD_Trig_pPb_merged.root"}; // both dir
+const char* fMCName[nSyst] = {"../test/jpsiHI/tnp_Ana_MC_Trig_pPb_merged.root"}; // both dir
 /*
 const char* systName[nSyst] = {
    "Nominal",
@@ -788,7 +788,7 @@ void TnPEffDraw_singleFile_O() {
 
 	if (bPlotAbseta)
 	{
-		TLegend *leg1 = new TLegend(0.43, 0.08, 0.66, 0.30);
+		TLegend *leg1 = new TLegend(0.18, 0.08, 0.41, 0.30);
 		TLatex *lt1 = new TLatex();
 		for (int k = 0; k < nSyst; k++)
 		{
@@ -816,8 +816,8 @@ void TnPEffDraw_singleFile_O() {
 			leg1->Draw("same");
 
 			lt1->SetTextSize(0.05);
-			lt1->DrawLatex(0.43, 0.40, "CMS Preliminary");
-			lt1->DrawLatex(0.43, 0.34, collTag + "  #sqrt{s_{NN}} = 8.16 TeV"); // Change energy if needed
+			lt1->DrawLatex(0.18, 0.40, "CMS Preliminary");
+			lt1->DrawLatex(0.18, 0.34, collTag + "  #sqrt{s_{NN}} = 8.16 TeV"); // Change energy if needed
 
 			// now take care of the data/mc ratio panel
 			c1->cd();
@@ -867,7 +867,7 @@ void TnPEffDraw_singleFile_O() {
 	//---------- This is for eta dependence
 	//
 	
-	TLegend *leg1 = new TLegend(0.43, 0.08, 0.66, 0.30);
+	TLegend *leg1 = new TLegend(0.35, 0.08, 0.60, 0.30);
 	TLatex *lt1 = new TLatex();
 	for (int k = 0; k < nSyst; k++)
 	{
@@ -895,8 +895,8 @@ void TnPEffDraw_singleFile_O() {
 		leg1->Draw("same");
 
 		lt1->SetTextSize(0.05);
-		lt1->DrawLatex(0.43, 0.40, "CMS Preliminary");
-		lt1->DrawLatex(0.43, 0.34, collTag + "  #sqrt{s_{NN}} = 8.16 TeV"); // Change energy if needed
+		lt1->DrawLatex(0.35, 0.40, "CMS Preliminary");
+		lt1->DrawLatex(0.35, 0.34, collTag + "  #sqrt{s_{NN}} = 8.16 TeV"); // Change energy if needed
 
 		// now take care of the data/mc ratio panel
 		c1->cd();
