@@ -1,0 +1,18 @@
+executable            = condorExec.sh
+arguments             = RD MuId 0 bkg
+output                = output/condor.$(ClusterId).$(ProcId).out
+error                 = error/condor.$(ClusterId).$(ProcId).err
+log                   = log/condor.$(ClusterId).log
+request_cpus          = 8 
+request_memory		  = 16 GB
++JobFlavour           = "tomorrow"
+queue
+
+arguments = RD MuId 0 sig
+queue
+
+arguments = RD MuId 0 mass
+queue
+
+
+

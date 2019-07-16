@@ -14,7 +14,7 @@ process.load('FWCore.MessageService.MessageLogger_cfi')
 process.source = cms.Source("EmptySource")
 process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(1) )    
 #PDFName = "cbFixedNGausExp"
-PDFName = "cbFixedNGausPol3"
+PDFName = "VoigtPol3"
 
 
 VEFFICIENCYSET =cms.VPSet(
@@ -445,7 +445,7 @@ process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
     InputFileNames = cms.vstring("file:/eos/cms/store/group/phys_heavyions/okukral/TagAndProbe2016/LowPt/tnpJPsi_Data_bothDirMuId.root"),
     InputDirectoryName = cms.string("tpTree"),
     InputTreeName = cms.string("fitter_tree"),
-    OutputFileName = cms.string("tnp_Ana_RD_MuId_pPb_%s.root" % (scenario)),
+    OutputFileName = cms.string("tnp_Ana_RD_MuId_pPb_sig_%s.root" % (scenario)),
     #number of CPUs to use for fitting
     NumCPU = cms.uint32(12),
     # specifies whether to save the RooWorkspace containing the data for each bin and
