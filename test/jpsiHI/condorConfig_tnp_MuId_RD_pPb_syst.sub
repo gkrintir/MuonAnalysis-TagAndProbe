@@ -1,4 +1,4 @@
-executable            = condorExec.sh
+executable            = condorExec_syst.sh
 arguments             = RD MuId 0 bkg
 output                = output/condor.$(ClusterId).$(ProcId).out
 error                 = error/condor.$(ClusterId).$(ProcId).err
@@ -14,5 +14,6 @@ queue
 arguments = RD MuId 0 mass
 queue
 
-
+arguments = RD MuId 0 nom
+queue
 
