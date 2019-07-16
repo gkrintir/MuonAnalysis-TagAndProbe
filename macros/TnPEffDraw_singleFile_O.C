@@ -148,8 +148,8 @@ const double effmax = 1.2;
 const double sfrange = 0.5;
 const double c_ptRange = 30; // how far to plot the pt
 const double c_centralityRange = 400; // how far to plot the centrality (hibin goes to 200)
-const char* fDataName[nSyst] = {"../test/jpsiHI/tnp_Ana_RD_Trig_pPb_merged.root"}; //{ "tnp_Ana_RD_Trig_pPb_bothDir_merged.root" };
-const char* fMCName[nSyst] = {"../test/jpsiHI/tnp_Ana_MC_Trig_pPb_merged.root"}; //{ "tnp_Ana_MC_Trig_pPb_bothDir_merged.root" };
+const char* fDataName[nSyst] = {"../test/jpsiHI/TnPFits_July14/tnp_Ana_RD_Trig_pPb_merged.root"}; // both dir
+const char* fMCName[nSyst] = {"../test/jpsiHI/TnPFits_July14/tnp_Ana_MC_Trig_pPb_merged.root"}; // both dir
 /*
 const char* systName[nSyst] = {
    "Nominal",
@@ -453,9 +453,11 @@ void TnPEffDraw_singleFile_O() {
 
 	TH1F *hPad = new TH1F("hPad", ";p^{#mu}_{T} [GeV/c];Single #mu Efficiency", 5, 0, c_ptRange);
 	TH1F *hPad1 = new TH1F("hPad1", ";#eta^{#mu};Single #mu Efficiency", 5, -2.4, 2.4);
+	TH1F *hPad1a = new TH1F("hPad1a", ";|#eta^{#mu}|;Single #mu Efficiency", 5, 0, 2.4);
 	TH1F *hPad2 = new TH1F("hPad2", ";N tracks ;Single #mu Efficiency", 5, 0, c_centralityRange);
 	hPad->GetXaxis()->CenterTitle();
 	hPad1->GetXaxis()->CenterTitle();
+	hPad1a->GetXaxis()->CenterTitle();
 	hPad2->GetXaxis()->CenterTitle();
 	hPad->GetXaxis()->SetLabelSize(0.05);
 	hPad->GetXaxis()->SetTitleSize(0.05);
@@ -469,6 +471,12 @@ void TnPEffDraw_singleFile_O() {
 	hPad1->GetYaxis()->SetLabelSize(0.05);
 	hPad1->GetYaxis()->SetTitleSize(0.05);
 	hPad1->GetYaxis()->SetTitleOffset(1.);
+	hPad1a->GetXaxis()->SetLabelSize(0.05);
+        hPad1a->GetXaxis()->SetTitleSize(0.05);
+        hPad1a->GetXaxis()->SetTitleOffset(1.2);
+        hPad1a->GetYaxis()->SetLabelSize(0.05);
+        hPad1a->GetYaxis()->SetTitleSize(0.05);
+        hPad1a->GetYaxis()->SetTitleOffset(1.);
 	hPad2->GetXaxis()->SetLabelSize(0.);
 	hPad2->GetXaxis()->SetTitleSize(0.);
 	hPad2->GetXaxis()->SetTitleOffset(1.2);
@@ -479,6 +487,7 @@ void TnPEffDraw_singleFile_O() {
 
 	hPad->GetYaxis()->SetRangeUser(effmin, effmax);
 	hPad1->GetYaxis()->SetRangeUser(effmin, effmax);
+	hPad1a->GetYaxis()->SetRangeUser(effmin, effmax);
 	hPad2->GetYaxis()->SetRangeUser(effmin, effmax);
 
 	pad2->cd();
@@ -502,6 +511,15 @@ void TnPEffDraw_singleFile_O() {
 	hPad1r->GetYaxis()->SetNdivisions(504, kTRUE);
 	TH1F *hPad1r_syst = (TH1F*)hPad1r->Clone("hPad1r_syst");hPad1r_syst->GetYaxis()->SetRangeUser(1. - sfrange, 1. + sfrange);
 	TH1F *hPad1_syst = (TH1F*)hPad1->Clone("hPad1_syst");
+        TH1F *hPad1ar = (TH1F*)hPad1a->Clone("hPad1ar"); hPad1ar->GetYaxis()->SetRangeUser(1. - sfrange, 1. + sfrange);
+        hPad1ar->GetYaxis()->SetTitle("Scale Factor");
+        hPad1ar->GetXaxis()->SetTitleSize(tsize);
+        hPad1ar->GetXaxis()->SetLabelSize(tsize);
+        hPad1ar->GetYaxis()->SetTitleSize(tsize);
+        hPad1ar->GetYaxis()->SetLabelSize(tsize);
+        hPad1ar->GetYaxis()->SetNdivisions(504, kTRUE);
+        TH1F *hPad1ar_syst = (TH1F*)hPad1ar->Clone("hPad1ar_syst");hPad1ar_syst->GetYaxis()->SetRangeUser(1. - sfrange, 1. + sfrange);
+        TH1F *hPad1a_syst = (TH1F*)hPad1a->Clone("hPad1a_syst");
 	TH1F *hPad2r = (TH1F*)hPad2->Clone("hPad2r"); hPad2r->GetYaxis()->SetRangeUser(1. - sfrange, 1. + sfrange);
 	hPad2r->GetYaxis()->SetTitle("Scale Factor");
 	hPad2r->GetXaxis()->SetTitleSize(tsize);
@@ -528,7 +546,7 @@ void TnPEffDraw_singleFile_O() {
 			lt1->SetNDC();
 
 			char legs[512];
-			TLegend *leg1 = new TLegend(0.55, 0.10, 0.76, 0.33); //(x1, y1, x2, y2);
+			TLegend *leg1 = new TLegend(0.5, 0.07, 0.7, 0.37); //(x1, y1, x2, y2);
 			leg1->SetFillStyle(0);
 			leg1->SetFillColor(0);
 			leg1->SetBorderSize(0);
@@ -560,8 +578,8 @@ void TnPEffDraw_singleFile_O() {
 			ComPt_RD[k][i]->Draw("pz same");
 
 			lt1->SetTextSize(0.05);
-			lt1->DrawLatex(0.20, 0.30, "CMS Preliminary");
-			lt1->DrawLatex(0.20, 0.24, collTag + "  #sqrt{s_{NN}} = 8.16 TeV"); //Change energy if needed
+			lt1->DrawLatex(0.5, 0.49, "CMS Preliminary");
+			lt1->DrawLatex(0.5, 0.43, collTag + "  #sqrt{s_{NN}} = 8.16 TeV"); //Change energy if needed
 
 			// now take care of the data/mc ratio panel
 			c1->cd();
@@ -687,8 +705,8 @@ void TnPEffDraw_singleFile_O() {
 					//draw
 
 
-					leg1->AddEntry(fmc, formula(fmc, 5), "pl");
-					leg1->AddEntry(fdata, formula(fdata, 5), "pl");
+					leg1->AddEntry(fmc, formulaReadable(fmc, 2), "pl");
+					leg1->AddEntry(fdata, formulaReadable(fdata, 2), "pl");
 
 					chi2 = ComPt_RD[k][i]->Chisquare(fdata);
 					dof = ComPt_RD[k][i]->GetN() - fdata->GetNpar();
@@ -716,7 +734,7 @@ void TnPEffDraw_singleFile_O() {
 					pval = TMath::Prob(chi2, dof);
 					tchi.SetTextColor(kBlack);
 					tchi.SetTextSize(0.035*0.7 / 0.3);
-					tchi.DrawLatex(0.6, 0.8, Form("#chi^{2}/dof = %.1f/%d (p-value: %.2f)", chi2, dof, pval));
+					tchi.DrawLatex(0.52, 0.8, Form("#chi^{2}/dof = %.1E/%d (p-value: %.2E)", chi2, dof, pval));
 
 					// save (nominal only)
 					c1->SaveAs(saveDirName + "/" + treeTag + Form("SF%i_", i) + collTag + "_RD_MC_PT.root");
@@ -725,9 +743,9 @@ void TnPEffDraw_singleFile_O() {
 
 					// print the fit results to file
 					file_sfs << "Data " << etamin << " " << etamax << endl;
-					file_sfs << formula(fdata, 5) << endl;
+					file_sfs << formulaReadable(fdata, 5) << endl;
 					file_sfs << "MC " << etamin << " " << etamax << endl;
-					file_sfs << formula(fmc, 5) << endl;
+					file_sfs << formulaReadable(fmc, 5) << endl;
 					file_sfs << endl;
 
 					// print the binned ratio to the other file
@@ -775,7 +793,7 @@ void TnPEffDraw_singleFile_O() {
 		for (int k = 0; k < nSyst; k++)
 		{
 			pad1->cd();
-			hPad1->Draw();
+			hPad1a->Draw();
 
 			ComAbsEta_MC[k]->Draw("pz same");
 			ComAbsEta_RD[k]->Draw("pz same");
@@ -806,7 +824,7 @@ void TnPEffDraw_singleFile_O() {
 			// pad2->SetFrameFillStyle(4000);
 			pad2->Draw();
 			pad2->cd();
-			hPad1r->Draw();
+			hPad1ar->Draw();
 
 			int nbins = ComAbsEta_MC[k]->GetN();
 			double *xr = new double[nbins];

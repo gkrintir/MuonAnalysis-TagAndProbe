@@ -315,4 +315,16 @@ TString formula(TF1 *f, int digits) {
    return ans;
 }
 
+TString formulaReadable(TF1 *f, int digits) {
+   TString cs = TString("%") + Form(".%if",digits);
+   TString ans = f->GetExpFormula();
+   ans = ans.ReplaceAll("TMath::","");
+   for (int i=0; i<f->GetNpar(); i++) {
+      ans = ans.ReplaceAll(Form("[p%i]",i),Form(cs,f->GetParameter(i)));
+      ans = ans.ReplaceAll(Form("[%i]",i),Form(cs,f->GetParameter(i)));
+      ans = ans.ReplaceAll(Form("[%s]",f->GetParName(i)),Form(cs,f->GetParameter(i)));
+   }
+   return ans;
+}
+
 #endif // #ifndef toyStudy_h
