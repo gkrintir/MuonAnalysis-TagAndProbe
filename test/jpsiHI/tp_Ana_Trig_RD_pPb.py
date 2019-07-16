@@ -6,7 +6,7 @@ if len(args) < 2: scenario = "0"
 else: 
    scenario = args[1]
 print("Will run scenario " + scenario) 
-# scenario: 1 1bin and pT, 2-3 pT in detailed abseta bins (4 bins), 4 pT in merged abseta bins (2 bins), 5 pT in largest abseta bin, 6 abseta, 7 eta, 8 ntracks, 9 pt in 3 ntracks bins, 10 eta in 3 ntracks bins, 0 (or no parameter) run all
+# scenario: 1 1bin and pT, 2-3 pT in detailed abseta bins (4 bins), 4 pT in merged abseta bins (2 bins), 5 pT in largest abseta bin, 6 abseta, 7 eta, 8 ntracks and nvertices, 9 pt in 3 ntracks bins, 10 eta in 3 ntracks bins, 0 (or no parameter) run all
 
 
 process = cms.Process("TagProbe")
@@ -18,7 +18,7 @@ PDFName = "cbFixedNGausExp"
 
 
 VEFFICIENCYSET =cms.VPSet(
-# Order: 0 total, 1 pT, 2-8 pT fits in abseta bins, 9 abseta, 10 eta, 11 ntracks, 12-14 pt fits in 3 ntracks bins, 15-17 eta fits in 3 ntracks bins   NOTE: IS NOT SAME AS SCENARIO
+# Order: 0 total, 1 pT, 2-8 pT fits in abseta bins, 9 abseta, 10 eta, 11 ntracks, 12-14 pt fits in 3 ntracks bins, 15-17 eta fits in 3 ntracks bins, 18 nvertices   NOTE: IS NOT SAME AS SCENARIO
     cms.PSet(
         Trig_1bin = cms.PSet(
             EfficiencyCategoryAndState = cms.vstring("HLT_PAL1DoubleMuOpen","true"),
@@ -315,6 +315,24 @@ VEFFICIENCYSET =cms.VPSet(
             BinToPDFmap = cms.vstring(PDFName)
         )
     ),
+    # Efficiency 18
+    cms.PSet(
+        Trig_nVerticesdep = cms.PSet(
+            EfficiencyCategoryAndState = cms.vstring("HLT_PAL1DoubleMuOpen","true"),
+            UnbinnedVariables = cms.vstring("mass"),
+            BinnedVariables = cms.PSet(
+                pt = cms.vdouble(1.3 ,25.0),
+                eta = cms.vdouble(-2.4,2.4),
+                tag_hiNtracks = cms.vdouble(0,400),
+                tag_nVertices    = cms.vdouble(0.5,1.5,2.5,3.5,5.5,9.5),
+                #TM = cms.vstring("true"),
+                #isNotMuonSeeded = cms.vstring("true"),
+                probe_trg_acceptance = cms.vstring("true"),
+                SoftID = cms.vstring("true"),
+            ),
+            BinToPDFmap = cms.vstring(PDFName)
+        )
+    ),
 
 )
 
@@ -326,10 +344,10 @@ if scenario == "4": EFFICIENCYSET = cms.PSet(VEFFICIENCYSET[4], VEFFICIENCYSET[7
 if scenario == "5": EFFICIENCYSET = cms.PSet(VEFFICIENCYSET[8])
 if scenario == "6": EFFICIENCYSET = cms.PSet(VEFFICIENCYSET[9])
 if scenario == "7": EFFICIENCYSET = cms.PSet(VEFFICIENCYSET[10])
-if scenario == "8": EFFICIENCYSET = cms.PSet(VEFFICIENCYSET[11])
+if scenario == "8": EFFICIENCYSET = cms.PSet(VEFFICIENCYSET[11], VEFFICIENCYSET[18])
 if scenario == "9": EFFICIENCYSET = cms.PSet(VEFFICIENCYSET[12], VEFFICIENCYSET[13], VEFFICIENCYSET[14])
 if scenario == "10": EFFICIENCYSET = cms.PSet(VEFFICIENCYSET[15], VEFFICIENCYSET[16], VEFFICIENCYSET[17])
-if scenario == "0": EFFICIENCYSET = cms.PSet(VEFFICIENCYSET[0],VEFFICIENCYSET[1],VEFFICIENCYSET[2], VEFFICIENCYSET[3],VEFFICIENCYSET[4], VEFFICIENCYSET[5],VEFFICIENCYSET[6], VEFFICIENCYSET[7],VEFFICIENCYSET[8], VEFFICIENCYSET[9], VEFFICIENCYSET[10],VEFFICIENCYSET[11],VEFFICIENCYSET[12],VEFFICIENCYSET[13],VEFFICIENCYSET[14],VEFFICIENCYSET[15],VEFFICIENCYSET[16],VEFFICIENCYSET[17])
+if scenario == "0": EFFICIENCYSET = cms.PSet(VEFFICIENCYSET[0],VEFFICIENCYSET[1],VEFFICIENCYSET[2], VEFFICIENCYSET[3],VEFFICIENCYSET[4], VEFFICIENCYSET[5],VEFFICIENCYSET[6], VEFFICIENCYSET[7],VEFFICIENCYSET[8], VEFFICIENCYSET[9], VEFFICIENCYSET[10],VEFFICIENCYSET[11],VEFFICIENCYSET[12],VEFFICIENCYSET[13],VEFFICIENCYSET[14],VEFFICIENCYSET[15],VEFFICIENCYSET[16],VEFFICIENCYSET[17], VEFFICIENCYSET[18])
 
 
 

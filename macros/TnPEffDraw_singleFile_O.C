@@ -47,7 +47,7 @@ using namespace std;
 #define TRG
 
 // pp or PbPb?
-bool isCentrality = false; // if true, will compute the centrality dependence
+bool isCentrality = true; // if true, will compute the centrality dependence
 TString collTag = "pPb"; //Collision system
 
 // how to fit efficiencies?
@@ -143,10 +143,10 @@ ofstream file_Cent("NtracksValues_Trig.txt");
 ofstream file_TestErr("Trig_ExpErr.txt");
 TString treeTag("tpTree");
 TString cutLegend("Trigger");
-const double effmin = 0.0;
-const double effmax = 1.2;
-const double sfrange = 0.5;
-const double c_ptRange = 30; // how far to plot the pt
+const double effmin = 0.4;
+const double effmax = 1.05;
+const double sfrange = 0.3;
+const double c_ptRange = 25; // how far to plot the pt
 const double c_centralityRange = 400; // how far to plot the centrality (hibin goes to 200)
 const char* fDataName[nSyst] = {"../test/jpsiHI/tnp_Ana_RD_Trig_pPb_merged.root"}; // both dir
 const char* fMCName[nSyst] = {"../test/jpsiHI/tnp_Ana_MC_Trig_pPb_merged.root"}; // both dir
@@ -353,8 +353,8 @@ void TnPEffDraw_singleFile_O() {
 		effAbsEta_MC[k] = plotEff_Nbins(rds_abseta_MC[k], 0, "pt", absetaVar);
 		effAbsEta_RD[k] = plotEff_Nbins(rds_abseta_RD[k], 0, "pt", absetaVar);
 		if (isCentrality && k == 0) {
-			effCentMC = plotEff_1bin(rds_cent_MC[k], 0, centVar);
-			effCentData = plotEff_1bin(rds_cent_RD[k], 0, centVar);
+			effCentMC = plotEff_1bin(rds_cent_MC[k], 1, centVar);
+			effCentData = plotEff_1bin(rds_cent_RD[k], 1, centVar);
 		}
 	}
 
@@ -675,11 +675,11 @@ void TnPEffDraw_singleFile_O() {
 					tchi.DrawLatex(0.6, 0.92, Form("#chi^{2}/dof = %.1f/%d (p-value: %.2f)", chi2, dof, pval));*/
 
 					// in the case of the exponential fall at high pt, do the fit first without it
-					if (fitfcn == 2) {  //O: check whether not better to be removed
+					/*if (fitfcn == 2) {  //O: check whether not better to be removed
 						fdata->FixParameter(4, 0);
 						ComPt_RD[k][i]->Fit(fdata, "RME");
 						fdata->SetParLimits(4, -1.5, 0);
-					}
+					} // */
 					ComPt_RD[k][i]->Fit(fdata, "RME");
 
 					// fit mc
@@ -734,7 +734,7 @@ void TnPEffDraw_singleFile_O() {
 					pval = TMath::Prob(chi2, dof);
 					tchi.SetTextColor(kBlack);
 					tchi.SetTextSize(0.035*0.7 / 0.3);
-					tchi.DrawLatex(0.52, 0.8, Form("#chi^{2}/dof = %.1E/%d (p-value: %.2E)", chi2, dof, pval));
+					tchi.DrawLatex(0.52, 0.82, Form("#chi^{2}/dof = (%.1E)/%d (p-value: %.2E)", chi2, dof, pval));
 
 					// save (nominal only)
 					c1->SaveAs(saveDirName + "/" + treeTag + Form("SF%i_", i) + collTag + "_RD_MC_PT.root");
@@ -982,8 +982,8 @@ void TnPEffDraw_singleFile_O() {
 		leg1->Draw("same");
 
 		lt1->SetTextSize(0.05);
-		lt1->DrawLatex(0.43, 0.45, "CMS Preliminary");
-		lt1->DrawLatex(0.43, 0.39, collTag + "  #sqrt{s_{NN}} = 8.16 TeV"); //Change energy if needed
+		lt1->DrawLatex(0.35, 0.40, "CMS Preliminary");
+		lt1->DrawLatex(0.35, 0.34, collTag + "  #sqrt{s_{NN}} = 8.16 TeV"); //Change energy if needed
 
 		// now take care of the data/mc ratio panel
 		c1->cd();

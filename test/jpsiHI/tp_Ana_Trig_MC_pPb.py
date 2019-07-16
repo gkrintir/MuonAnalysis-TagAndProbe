@@ -6,7 +6,7 @@ if len(args) < 2: scenario = "0"
 else: 
    scenario = args[1]
 print("Will run scenario " + scenario) 
-# scenario: 1 1bin and pT, 2-3 pT in detailed abseta bins (4 bins), 4 pT in merged abseta bins (2 bins), 5 pT in largest abseta bin, 6 abseta, 7 eta, 8 ntracks, 0 (or no parameter) run all
+# scenario: 1 1bin and pT, 2-3 pT in detailed abseta bins (4 bins), 4 pT in merged abseta bins (2 bins), 5 pT in largest abseta bin, 6 abseta, 7 eta, 8 ntracks and nvertices, 0 (or no parameter) run all
 
 
 process = cms.Process("TagProbe")
@@ -18,7 +18,7 @@ PDFName = "cbFixedNGausExp"
 
 
 VEFFICIENCYSET =cms.VPSet(
-# Order: 0 total, 1 pT, 2-8 pT fits in abseta bins, 9 abseta, 10 eta, 11 ntracks   NOTE: IS NOT SAME AS SCENARIO
+# Order: 0 total, 1 pT, 2-8 pT fits in abseta bins, 9 abseta, 10 eta, 11 ntracks, 12 nVertices   NOTE: IS NOT SAME AS SCENARIO
     cms.PSet(
         Trig_1bin = cms.PSet(
             EfficiencyCategoryAndState = cms.vstring("HLT_PAL1DoubleMuOpen","true"),
@@ -28,7 +28,7 @@ VEFFICIENCYSET =cms.VPSet(
                 eta = cms.vdouble(-2.4, 2.4),
 		tag_nVertices    = cms.vdouble(0.9,1.1),
                 TM = cms.vstring("true"),
-		isNotMuonSeeded = cms.vstring("true"),
+		#isNotMuonSeeded = cms.vstring("true"),
 		probe_trg_acceptance = cms.vstring("true"),
                 SoftID = cms.vstring("true"),
             ),
@@ -44,7 +44,7 @@ VEFFICIENCYSET =cms.VPSet(
 		eta = cms.vdouble(-2.4,2.4),
 		tag_nVertices    = cms.vdouble(0.9,1.1),
 		TM = cms.vstring("true"),
-		isNotMuonSeeded = cms.vstring("true"),
+		#isNotMuonSeeded = cms.vstring("true"),
 		probe_trg_acceptance = cms.vstring("true"),
 		SoftID = cms.vstring("true"),
            ),
@@ -60,7 +60,7 @@ VEFFICIENCYSET =cms.VPSet(
 		abseta = cms.vdouble(0, 0.9),
                 tag_nVertices    = cms.vdouble(0.9,1.1),
 		TM = cms.vstring("true"),
-                isNotMuonSeeded = cms.vstring("true"),
+                #isNotMuonSeeded = cms.vstring("true"),
 		probe_trg_acceptance = cms.vstring("true"),
 		SoftID = cms.vstring("true"),
             ),
@@ -76,7 +76,7 @@ VEFFICIENCYSET =cms.VPSet(
 		abseta = cms.vdouble(0.9, 1.2),
                 tag_nVertices    = cms.vdouble(0.9,1.1),
                 TM = cms.vstring("true"),
-                isNotMuonSeeded = cms.vstring("true"),
+                #isNotMuonSeeded = cms.vstring("true"),
 		probe_trg_acceptance = cms.vstring("true"),
 		SoftID = cms.vstring("true"),
             ),
@@ -92,7 +92,7 @@ VEFFICIENCYSET =cms.VPSet(
 		abseta = cms.vdouble(0, 1.2),
                 tag_nVertices    = cms.vdouble(0.9,1.1),
 		TM = cms.vstring("true"),
-                isNotMuonSeeded = cms.vstring("true"),
+                #isNotMuonSeeded = cms.vstring("true"),
 		probe_trg_acceptance = cms.vstring("true"),
 		SoftID = cms.vstring("true"),
             ),
@@ -108,7 +108,7 @@ VEFFICIENCYSET =cms.VPSet(
 		abseta = cms.vdouble(1.2,1.6),
 		tag_nVertices    = cms.vdouble(0.9,1.1),
                 TM = cms.vstring("true"),
-                isNotMuonSeeded = cms.vstring("true"),
+                #isNotMuonSeeded = cms.vstring("true"),
 		probe_trg_acceptance = cms.vstring("true"),
 		SoftID = cms.vstring("true"),
              ),
@@ -124,7 +124,7 @@ VEFFICIENCYSET =cms.VPSet(
 		abseta = cms.vdouble(1.6,2.1),
 		tag_nVertices    = cms.vdouble(0.9,1.1),
                 TM = cms.vstring("true"),
-                isNotMuonSeeded = cms.vstring("true"),
+                #isNotMuonSeeded = cms.vstring("true"),
 		probe_trg_acceptance = cms.vstring("true"),
 		SoftID = cms.vstring("true"),
              ),
@@ -140,7 +140,7 @@ VEFFICIENCYSET =cms.VPSet(
 		abseta = cms.vdouble(1.2,2.1),
 		tag_nVertices    = cms.vdouble(0.9,1.1),
                 TM = cms.vstring("true"),
-		isNotMuonSeeded = cms.vstring("true"),
+		#isNotMuonSeeded = cms.vstring("true"),
 		probe_trg_acceptance = cms.vstring("true"),
                 SoftID = cms.vstring("true"),
              ),
@@ -156,7 +156,7 @@ VEFFICIENCYSET =cms.VPSet(
 		abseta = cms.vdouble(2.1,2.4),
 		tag_nVertices    = cms.vdouble(0.9,1.1),
                 TM = cms.vstring("true"),
-                isNotMuonSeeded = cms.vstring("true"),
+                #isNotMuonSeeded = cms.vstring("true"),
 		probe_trg_acceptance = cms.vstring("true"),
 		SoftID = cms.vstring("true"),
             ),
@@ -172,7 +172,7 @@ VEFFICIENCYSET =cms.VPSet(
                 abseta = cms.vdouble(0,0.9,1.2,1.6,2.1,2.4),
 		tag_nVertices    = cms.vdouble(0.9,1.1),
 		TM = cms.vstring("true"),
-                isNotMuonSeeded = cms.vstring("true"),
+                #isNotMuonSeeded = cms.vstring("true"),
 		probe_trg_acceptance = cms.vstring("true"),
 		SoftID = cms.vstring("true"),
             ),
@@ -188,7 +188,7 @@ VEFFICIENCYSET =cms.VPSet(
                 eta = cms.vdouble(-2.4,-2.1,-1.6,-1.2,-0.9,-0.6,-0.3,0,0.3,0.6,0.9,1.2,1.6,2.1,2.4),
                 tag_nVertices    = cms.vdouble(0.9,1.1),
 		TM = cms.vstring("true"),
-                isNotMuonSeeded = cms.vstring("true"),
+                #isNotMuonSeeded = cms.vstring("true"),
 		probe_trg_acceptance = cms.vstring("true"),
 		SoftID = cms.vstring("true"),
             ),
@@ -206,8 +206,25 @@ VEFFICIENCYSET =cms.VPSet(
                 tag_hiNtracks = cms.vdouble(0,30,50,75,100,125,150,175,400),
                 tag_nVertices    = cms.vdouble(0.9,1.1),
                 TM = cms.vstring("true"),
-                isNotMuonSeeded = cms.vstring("true"),
+                #isNotMuonSeeded = cms.vstring("true"),
 		probe_trg_acceptance = cms.vstring("true"),
+                SoftID = cms.vstring("true"),
+            ),
+            BinToPDFmap = cms.vstring(PDFName)
+        )
+    ),
+    cms.PSet(
+        Trig_nVerticesdep = cms.PSet(
+            EfficiencyCategoryAndState = cms.vstring("HLT_PAL1DoubleMuOpen","true"),
+            UnbinnedVariables = cms.vstring("mass","weight"),
+            BinnedVariables = cms.PSet(
+                pt = cms.vdouble(1.3 ,25.0),
+                eta = cms.vdouble(-2.4,2.4),
+                tag_hiNtracks = cms.vdouble(0,400),
+                tag_nVertices    = cms.vdouble(0.5,1.5,2.5,3.5,5.5,9.5),
+                TM = cms.vstring("true"),
+                #isNotMuonSeeded = cms.vstring("true"),
+                probe_trg_acceptance = cms.vstring("true"),
                 SoftID = cms.vstring("true"),
             ),
             BinToPDFmap = cms.vstring(PDFName)
@@ -224,8 +241,8 @@ if scenario == "4": EFFICIENCYSET = cms.PSet(VEFFICIENCYSET[4], VEFFICIENCYSET[7
 if scenario == "5": EFFICIENCYSET = cms.PSet(VEFFICIENCYSET[8])
 if scenario == "6": EFFICIENCYSET = cms.PSet(VEFFICIENCYSET[9])
 if scenario == "7": EFFICIENCYSET = cms.PSet(VEFFICIENCYSET[10])
-if scenario == "8": EFFICIENCYSET = cms.PSet(VEFFICIENCYSET[11])
-if scenario == "0": EFFICIENCYSET = cms.PSet(VEFFICIENCYSET[0],VEFFICIENCYSET[1],VEFFICIENCYSET[2], VEFFICIENCYSET[3],VEFFICIENCYSET[4], VEFFICIENCYSET[5],VEFFICIENCYSET[6], VEFFICIENCYSET[7],VEFFICIENCYSET[8], VEFFICIENCYSET[9], VEFFICIENCYSET[10], VEFFICIENCYSET[11])
+if scenario == "8": EFFICIENCYSET = cms.PSet(VEFFICIENCYSET[11], VEFFICIENCYSET[12])
+if scenario == "0": EFFICIENCYSET = cms.PSet(VEFFICIENCYSET[0],VEFFICIENCYSET[1],VEFFICIENCYSET[2], VEFFICIENCYSET[3],VEFFICIENCYSET[4], VEFFICIENCYSET[5],VEFFICIENCYSET[6], VEFFICIENCYSET[7],VEFFICIENCYSET[8], VEFFICIENCYSET[9], VEFFICIENCYSET[10], VEFFICIENCYSET[11], VEFFICIENCYSET[12])
 
 
 
@@ -271,7 +288,7 @@ process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
                         SoftID = cms.vstring("SoftID", "dummy[true=1,false=0]"),
 			TM = cms.vstring("TM", "dummy[true=1,false=0]"),
                         HLT_PAL1DoubleMuOpen = cms.vstring("HLT_PAL1DoubleMuOpen", "dummy[true=1,false=0]"),
-			isNotMuonSeeded = cms.vstring("isNotMuonSeeded", "dummy[true=1,false=0]"),
+			#isNotMuonSeeded = cms.vstring("isNotMuonSeeded", "dummy[true=1,false=0]"),
     ),
 
     # defines all the PDFs that will be available for the efficiency calculations; uses RooFit's "factory" syntax;
