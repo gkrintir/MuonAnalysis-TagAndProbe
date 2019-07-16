@@ -6,14 +6,14 @@ void AddWeightMC_2D_pPb() {
   //pPb
   TFile *inputData = TFile::Open("/eos/cms/store/group/phys_heavyions/okukral/TagAndProbe2016/LowPt/tnpJPsi_Data_pPb-merged.root");
   //TFile *inputMC   = TFile::Open("tnpJPsi_MC_pPb_noWeight.root","update");
-  TFile *inputMC   = TFile::Open("tnpJPsi_MC_pPb-NoWeightSkimmed.root","update");
+  TFile *inputMC   = TFile::Open("tnpJPsi_MC_pPb-Skimmed.root","update");
 
   //binning x=pt, y=eta
   Double_t xbins[47] = {0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 9.5, 10, 10.5, 11, 11.5, 12, 12.5, 13, 13.5, 14, 14.5, 15, 15.5, 16, 16.5, 17, 17.5, 18, 18.5, 19, 19.5, 20, 22.5, 25, 27.5, 30, 35, 40};
   const int nbinsx = sizeof(xbins)/sizeof(Double_t)-1;
   cout << "nbinsx = " << nbinsx << endl;
 
-  Int_t nbinsy = 48;
+  Int_t nbinsy = 24;
   Double_t ylow = -2.4;
   Double_t yup = 2.4;
 
@@ -24,7 +24,7 @@ void AddWeightMC_2D_pPb() {
   cout << "Loading data" << endl;
   TTree* DataTree = (TTree*)inputData->Get("tpTree/fitter_tree");
 
-  TH2F* hData = new TH2F("hData","hData",nbinsx, xbins, nbinsy, ylow, yup);
+  TH2D* hData = new TH2D("hData","hData",nbinsx, xbins, nbinsy, ylow, yup);
   hData->Sumw2();
   hData->GetXaxis()->SetTitle("p_T");
   hData->GetYaxis()->SetTitle("eta");
@@ -43,7 +43,7 @@ void AddWeightMC_2D_pPb() {
   cout << "Loading MC" << endl;
   TTree* MCTree = (TTree*)inputMC->Get("tpTree/fitter_tree");
 
-  TH2F* hMC = new TH2F("hMC","hMC",nbinsx, xbins, nbinsy, ylow, yup);
+  TH2D* hMC = new TH2D("hMC","hMC",nbinsx, xbins, nbinsy, ylow, yup);
   hMC->Sumw2();
   hMC->GetXaxis()->SetTitle("p_T");
   hMC->GetYaxis()->SetTitle("eta");
@@ -63,11 +63,11 @@ void AddWeightMC_2D_pPb() {
   TH2F* hWeight = (TH2F*)hData->Clone();
   hWeight->Sumw2();
   hWeight->Divide(hMC);
-  int nDataSoft = hData->GetEntries();
+  long nDataSoft = hData->GetEntries();
   cout << " Nentries Data (SoftID): " << nDataSoft << endl;
-  int nMCSoft = hMC->GetEntries();
+  long nMCSoft = hMC->GetEntries();
   cout << " Nentries MC (SoftID): " << nMCSoft << endl;
-  float scalefactor = ((float)nMCSoft)/((float)nDataSoft);
+  double scalefactor = ((double)nMCSoft)/((double)nDataSoft);
   hWeight->Scale(scalefactor);
   hWeight->GetXaxis()->SetTitle("p_T");
   hWeight->GetYaxis()->SetTitle("eta");
@@ -85,7 +85,8 @@ void AddWeightMC_2D_pPb() {
 
   //Weighted MC
   cout << "Weighting MC Histogram" << endl;
-  TH2F* hWMC = (TH2F*)hMC->Clone();
+  TH2D* hWMC = (TH2D*)hMC->Clone();
+  hWMC->SetName("hWMC");
   hWMC->Sumw2();
   hWMC->Multiply(hWeight);
   hWMC->GetXaxis()->SetTitle("p_T");
@@ -103,7 +104,7 @@ void AddWeightMC_2D_pPb() {
 
   //RD over weighted MC
   cout << "Dividing Data by weighted MC" << endl;
-  TH2F* hDiv = (TH2F*)hData->Clone();
+  TH2D* hDiv = (TH2D*)hData->Clone();
   hDiv->Sumw2();
   hDiv->Divide(hWMC);
   hDiv->Scale(scalefactor);
@@ -116,12 +117,13 @@ void AddWeightMC_2D_pPb() {
   float avgVal = 0.0;
   for (int i=1; i<nbinsx+1; i++) {
     for (int j=1; j<nbinsy+1; j++) {
-      avgVal = avgVal + hDiv->GetBinContent(i,j);
-      hDiv->SetBinContent(i,j,hDiv->GetBinContent(i,j)-1.0);
+		if (hDiv->GetBinContent(i, j) == 0) { continue; } //skip empty bins
+		avgVal = avgVal + hDiv->GetBinContent(i,j);
+		hDiv->SetBinContent(i,j,hDiv->GetBinContent(i,j)-1.0);
     }
   }
   avgVal = avgVal/(nbinsx*nbinsy);
-  cout << "avgVal = " << avgVal << endl;
+  cout << "avgVal (should be somewhat close to 1) = " << avgVal << endl;
 
   TCanvas* cDiv = new TCanvas("cDiv","cDiv",850,450,400,400);
   cDiv->cd();
@@ -141,8 +143,8 @@ void AddWeightMC_2D_pPb() {
   MCTree->SetBranchAddress("eta",&MC_eta);
   MCTree->SetBranchAddress("pt",&MC_pt);
   TBranch *newBranch_weight = MCTree->Branch("weight", &weight, "weight/F");
-  TBranch *newBranch_weighted_eta = MCTree->Branch("weighted_eta", &weighted_eta, "weighted_eta/F");
-  TBranch *newBranch_weighted_pt = MCTree->Branch("weighted_pt", &weighted_pt, "weighted_pt/F");
+  //TBranch *newBranch_weighted_eta = MCTree->Branch("weighted_eta", &weighted_eta, "weighted_eta/F"); // O: this is nonsense, so I commented it out
+  //TBranch *newBranch_weighted_pt = MCTree->Branch("weighted_pt", &weighted_pt, "weighted_pt/F");
 
   TH1F* hWeightedMC_eta = new TH1F("hWeightedMC_eta","hWeightedMC_eta",nbinsy,ylow,yup);
   TH1F* hWeightedMC_pt = new TH1F("hWeightedMC_pt","hWeightedMC_pt",nbinsx,xbins);
@@ -158,15 +160,16 @@ void AddWeightMC_2D_pPb() {
 
     weight = hWeight->GetBinContent(ptbin,etabin);
 
-    hWeightedMC_eta->Fill(MC_eta,weight);
-    weighted_eta = MC_eta*weight;
+
+    hWeightedMC_eta->Fill(MC_eta,weight); 
+   // weighted_eta = MC_eta*weight;  //O: you cannot weight like this
 
     hWeightedMC_pt->Fill(MC_pt,weight);
-    weighted_pt = MC_pt*weight;
+  //  weighted_pt = MC_pt*weight;
 
     newBranch_weight->Fill();
-    newBranch_weighted_eta->Fill();
-    newBranch_weighted_pt->Fill();
+   // newBranch_weighted_eta->Fill();
+   // newBranch_weighted_pt->Fill();
   }
 
   //Write changes to MC file
