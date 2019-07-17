@@ -55,7 +55,7 @@ TString collTag = "pPb"; //Collision system
 // 2 = ([0]*Erf((x-[1])/[2]))*Exp([4]*x)+ [3]
 // 3 = [0]
 // 
-int fitfcn = 2; //2
+int fitfcn = 3; //2
 
 // Location of the files
 const int nSyst = 1;//5;
@@ -114,7 +114,6 @@ const char* systName[nSyst] = {
 // Santona
 #ifdef TRG
 bool doSF = false;
-bool fitDataOnly = false; //Going to use it to fit the data only in efficiency plots that do not have appropriate MC (Ntracks dep and Pt and eta dep in Ntracks bins)
 TString saveDirName = "Trg_Eff";
 TString etaTag("Trig_etadep");
 TString absetaTag("Trig_absetadep");
@@ -133,9 +132,9 @@ ofstream file_Cent("NtracksValues_Trig.txt");
 ofstream file_TestErr("Trig_ExpErr.txt");
 TString treeTag("tpTree");
 TString cutLegend("Trigger");
-const double effmin = 0.64; //0.4
+const double effmin = 0.65; //0.4
 const double effmax = 0.96; //1.05
-const double sfrange = 0.2; //0.3
+const double sfrange = 0.02; //0.3
 const double c_ptRange = 25; // how far to plot the pt
 const double c_centralityRange = 400; // how far to plot the centrality (hibin goes to 200)
 const char* fDataName[nSyst] = {"../test/jpsiHI/tnp_Ana_RD_Trig_pPb_merged.root"}; // both dir
@@ -216,7 +215,7 @@ void formatTH1F(TH1* a, int b, int c, int d);
 void formatTGraph(TGraph* a, int b, int c, int d);
 void formatTLeg(TLegend* a);
 void CalEffErr(TGraph *a, double *b);
-void CalEffErr(vector<TGraphAsymmErrors*> a, double **b);
+void CalEffErrVec(vector<TGraphAsymmErrors*> a, double **b);
 void plotSysts(TGraphAsymmErrors *graphs[nSyst], TCanvas *c1, TPad *p1, TH1F *h1, TPad *pr, TH1F *hr, TString header, TString tag);
 TF1 *initfcn(const char* fname, int ifcn, double ptmin, double ptmax, double effguess);
 TF1 *ratiofunc(const char* fname, TF1 *fnum, TF1 *fden);
@@ -371,9 +370,6 @@ void TnPEffDraw_singleFile_Santona() {
 			effCentMC = plotEff_1bin(rds_cent_MC[k], 1, centVar);
 			effCentData = plotEff_1bin(rds_cent_RD[k], 1, centVar);
 		}
-		//if (isCentralityBinned && k==0) {
-		//	effNtracksEta_RD[k] = plotEff_Nbins(rds_abseta_RD[k], 0, "pt", absetaVar);
-		//}
 	}
 	cout << endl<< "Loading of roo data sets and efficiencies done " << endl << endl;
 
@@ -408,17 +404,17 @@ void TnPEffDraw_singleFile_Santona() {
 		}
                 for (int i = 0; i < nbins_ntracksPt; i++) 
                 {    
-                        ComNtracksPt_RD[k][i]->SetMarkerStyle(25+i);
+                        ComNtracksPt_RD[k][i]->SetMarkerStyle(26+i);
                         ComNtracksPt_RD[k][i]->SetMarkerSize(1.4);
-                        ComNtracksPt_RD[k][i]->SetMarkerColor(2 + i);
-                        ComNtracksPt_RD[k][i]->SetLineColor(2 + i);
+                        ComNtracksPt_RD[k][i]->SetMarkerColor(6 + i);
+                        ComNtracksPt_RD[k][i]->SetLineColor(6 + i);
                 }    
                 for (int i = 0; i < nbins_ntracksEta; i++)
                 {
-                        ComNtracksEta_RD[k][i]->SetMarkerStyle(25+i);
+                        ComNtracksEta_RD[k][i]->SetMarkerStyle(26+i);
                         ComNtracksEta_RD[k][i]->SetMarkerSize(1.4);
-                        ComNtracksEta_RD[k][i]->SetMarkerColor(2 + i);
-                        ComNtracksEta_RD[k][i]->SetLineColor(2 + i);
+                        ComNtracksEta_RD[k][i]->SetMarkerColor(6 + i);
+                        ComNtracksEta_RD[k][i]->SetLineColor(6 + i);
                 }
 		ComEta_MC[k]->SetMarkerStyle(20);
 		ComEta_MC[k]->SetMarkerSize(1.4);
@@ -449,7 +445,7 @@ void TnPEffDraw_singleFile_Santona() {
 	double x[10], y[10];
 	double sum;
 	double avgEffCent[3] = {0,0,0};
-	int nBinForAvg[3] = {2, 2, 5};
+	int nBinForAvg[4] = {0, 1, 3, 8};
 
 	for (int k = 0; k < nSyst; k++) {
 		TrkAbsEta0[k] = new double*[nbins_abseta];
@@ -464,20 +460,20 @@ void TnPEffDraw_singleFile_Santona() {
 		CalEffErr(eff1bin_MC[k], Trk0[k]);
 		CalEffErr(eff1bin_RD[k], Trk1[k]);
 		cout << "GotHere" << endl;
-		CalEffErr(effAbsEta_MC[k], TrkAbsEta0[k]);
-		CalEffErr(effAbsEta_RD[k], TrkAbsEta1[k]);
+		CalEffErrVec(effAbsEta_MC[k], TrkAbsEta0[k]);
+		CalEffErrVec(effAbsEta_RD[k], TrkAbsEta1[k]);
 
 		// Getting average efficiency in combined Ntracks bins in data. 0-30, 30-75, 75-100.
 		if (k==0)
 		{
-			for (int j = 0; j < (sizeof(nBinForAvg)/sizeof(*nBinForAvg)) ; j++)
+			for (int j = 1; j < (sizeof(nBinForAvg)/sizeof(*nBinForAvg)) ; j++)
 			{
 				sum = 0;
-				for (int i = 0;i < nBinForAvg[j];i++) 
+				for (int i = nBinForAvg[j-1]; i < nBinForAvg[j] ; i++) 
 				{
 					effCentData->GetPoint(i, x[i], y[i]);
 					sum += y[i];
-					avgEffCent[j] = sum / nBinForAvg[j];
+					avgEffCent[j-1] = sum / (nBinForAvg[j]-nBinForAvg[j-1]);
 				}
 			}
 		cout << " average efficiency in Ntracks0-30, 30-75, 75-400 " << avgEffCent[0] << " " << avgEffCent[1] << " " << avgEffCent[2] << endl;	
@@ -821,6 +817,9 @@ void TnPEffDraw_singleFile_Santona() {
 		
 		line1->SetLineColor(2); line2->SetLineColor(3); line3->SetLineColor(4);
 		line4->SetLineColor(2); line5->SetLineColor(3); line6->SetLineColor(4);
+		
+		char integrated[512];
+		sprintf(integrated, " All Ntracks ");
 
 		// vs pT
 		for (int k = 0; k < nSyst; k++)
@@ -853,8 +852,10 @@ void TnPEffDraw_singleFile_Santona() {
 				
 				ComNtracksPt_RD[k][i]->Draw("pz same");
                         }
+			leg1->AddEntry(ComPt_RD[k][0], integrated, "pl");
+			ComPt_RD[k][0]->Draw("pz same");
 			leg1->Draw("same");
-			line1->Draw("same"); line2->Draw("same"); line3->Draw("same");
+			//line1->Draw("same"); line2->Draw("same"); line3->Draw("same");
 
                         if (k == 0) { c2->SaveAs(saveDirName + "/" + treeTag + collTag + "_RD_NtracksPTdep.pdf"); }
                 }
@@ -890,13 +891,14 @@ void TnPEffDraw_singleFile_Santona() {
 
                                 ComNtracksEta_RD[k][i]->Draw("pz same");
                         }
-                        leg1->Draw("same");
-			line4->Draw("same"); line5->Draw("same"); line6->Draw("same");
+                        leg1->AddEntry(ComEta_RD[k], integrated, "pl");
+			ComEta_RD[k]->Draw("pz same");
+			leg1->Draw("same");
+			//line4->Draw("same"); line5->Draw("same"); line6->Draw("same");
 
                         if (k == 0) { c2->SaveAs(saveDirName + "/" + treeTag + collTag + "_RD_NtracksETAdep.pdf"); }
                 }
 	}
-
 
 	//
 	// ---------- abseta dependence plot
@@ -1088,9 +1090,33 @@ void TnPEffDraw_singleFile_Santona() {
 	if (isCentrality) {
 		pad1->cd();
 		hPad2->Draw();
-
-		effCentMC->Draw("pz same");
+		
 		effCentData->Draw("pz same");
+		effCentMC->Draw("pz same");
+		
+		///////////
+		TLatex tchi; tchi.SetNDC();
+		tchi.SetTextSize(0.035);
+		double chi2, pval, fittedValue; int dof;
+
+		// fit data // choose fit function at the top, just like when fitting eff vs pT in abseta bins
+		fdata = initfcn("fdata", fitfcn, 0, 400, 0.8);
+		fdata->SetLineWidth(2);
+		fdata->SetLineColor(kBlue);
+		effCentData->Fit(fdata, "RME");
+
+		//draw
+		leg1->AddEntry(fdata, formulaReadable(fdata, 2), "pl");
+
+		chi2 = effCentData->Chisquare(fdata);
+		dof = effCentData->GetN() - fdata->GetNpar();
+		pval = TMath::Prob(chi2, dof);
+		tchi.SetTextColor(kBlue);
+		tchi.DrawLatex(0.6, 0.92, Form("#chi^{2}/dof = %.1f/%d (p-value: %.2f)", chi2, dof, pval));
+
+		fittedValue = fdata->GetParameter(0);
+		cout << " fitted value " << fittedValue << endl;
+		///////////
 
 		leg1->Draw("same");
 
@@ -1098,13 +1124,14 @@ void TnPEffDraw_singleFile_Santona() {
 		lt1->DrawLatex(0.35, 0.40, "CMS Preliminary");
 		lt1->DrawLatex(0.35, 0.34, collTag + "  #sqrt{s_{NN}} = 8.16 TeV"); //Change energy if needed
 
-		// now take care of the data/mc ratio panel
+		// now take care of the data/integrated data ratio panel (for centrality)
 		c1->cd();
 		pad2->Draw();
 		pad2->cd();
 		hPad2r->Draw();
 
-		int nbins2 = effCentMC->GetN();
+		//int nbins2 = effCentMC->GetN();
+		int nbins2 = effCentData->GetN();
 		double* xr2 = new double[nbins2];
 		double* yr2 = new double[nbins2];
 		double* xr2lo = new double[nbins2];
@@ -1112,8 +1139,10 @@ void TnPEffDraw_singleFile_Santona() {
 		double* xr2hi = new double[nbins2];
 		double* yr2hi = new double[nbins2];
 
-		// here we assume that the mc uncertainty is negligible compared to the data one: simply scale everything by the central value.
-		for (int j = 0; j < nbins2; j++)
+		// We do not assume either uncertainty is much smaller than the other
+
+		// Would use this if we had embedded MC:
+		/*for (int j = 0; j < nbins2; j++)
 		{
 			xr2[j] = effCentData->GetX()[j];
 			xr2lo[j] = effCentData->GetErrorXlow(j);
@@ -1121,7 +1150,18 @@ void TnPEffDraw_singleFile_Santona() {
 			yr2[j] = effCentData->GetY()[j] / effCentMC->GetY()[j];
 			yr2lo[j] = effCentData->GetErrorYlow(j) / effCentMC->GetY()[j];
 			yr2hi[j] = effCentData->GetErrorYhigh(j) / effCentMC->GetY()[j];
-		}
+		} // */
+                for (int j = 0; j < nbins2; j++)
+                {
+                        xr2[j] = effCentData->GetX()[j];
+                        xr2lo[j] = effCentData->GetErrorXlow(j);
+                        xr2hi[j] = effCentData->GetErrorXhigh(j);
+                        yr2[j] = effCentData->GetY()[j] / Trk1[0][0];
+                        //yr2lo[j] = effCentData->GetErrorYlow(j) / Trk1[0][0];
+                        yr2lo[j] = ( (effCentData->GetErrorYlow(j)/effCentData->GetY()[j]) + (Trk1[0][2]/Trk1[0][0]) ) * yr2[j];
+			//yr2hi[j] = effCentData->GetErrorYhigh(j) / Trk1[0][0]; 
+			yr2hi[j] = ( (effCentData->GetErrorYhigh(j)/effCentData->GetY()[j]) + (Trk1[0][1]/Trk1[0][0]) ) * yr2[j];
+                } // */
 		TGraphAsymmErrors *gratio2 = new TGraphAsymmErrors(nbins2, xr2, yr2, xr2lo, xr2hi, yr2lo, yr2hi);
 		gratio2->SetMarkerStyle(20);
 		gratio2->SetMarkerColor(kBlack);
@@ -1130,41 +1170,9 @@ void TnPEffDraw_singleFile_Santona() {
 		gratio2->SetLineWidth(1);
 		gratio2->Draw("pz same");
 
-		c1->SaveAs(saveDirName + "/" + treeTag + "Eff_" + collTag + "_RD_MC_Cent.root");
-		c1->SaveAs(saveDirName + "/" + treeTag + "Eff_" + collTag + "_RD_MC_Cent.pdf");
-		c1->SaveAs(saveDirName + "/" + treeTag + "Eff_" + collTag + "_RD_MC_Cent.png");
-
-		// Just fitting data
-		if (fitDataOnly)
-		{
-			pad1->cd();
-			TLatex tchi; tchi.SetNDC();
-			tchi.SetTextSize(0.035);
-			double chi2, pval; int dof;
-
-				// fit data
-				fdata = initfcn("fdata", fitfcn, 0, 400, 0.8);
-				fdata->SetLineWidth(2);
-				fdata->SetLineColor(kBlue);
-				effCentData->Fit(fdata, "RME");
-				//effCentMC->Draw("pz same");
-
-				//draw
-				leg1->AddEntry(fdata, formulaReadable(fdata, 2), "pl");
-
-				chi2 = effCentData->Chisquare(fdata);
-				dof = effCentData->GetN() - fdata->GetNpar();
-				pval = TMath::Prob(chi2, dof);
-				tchi.SetTextColor(kBlue);
-				tchi.DrawLatex(0.6, 0.92, Form("#chi^{2}/dof = %.1f/%d (p-value: %.2f)", chi2, dof, pval));
-
-				leg1->Draw();
-
-				// save (nominal only)
-				c1->SaveAs(saveDirName + "/" + treeTag + "FittedData" + collTag + "_RD_MC_Cent.root");
-				c1->SaveAs(saveDirName + "/" + treeTag + "FittedData" + collTag + "_RD_MC_Cent.pdf");
-				c1->SaveAs(saveDirName + "/" + treeTag + "FittedData" + collTag + "_RD_MC_Cent.png");
-		}
+		c1->SaveAs(saveDirName + "/" + treeTag + "Eff_" + collTag + "_RD_IntRD_MC_Cent.root");
+		c1->SaveAs(saveDirName + "/" + treeTag + "Eff_" + collTag + "_RD_IntRD_MC_Cent.pdf");
+		c1->SaveAs(saveDirName + "/" + treeTag + "Eff_" + collTag + "_RD_IntRD_MC_Cent.png");
 
 		// print the centrality dependence to file
 		double xVal, yVal, ErrDown, ErrUp;
@@ -1440,7 +1448,8 @@ TH2F *plotEff2D(RooDataSet *a, TString b) {
 void CalEffErr(TGraph *a, double *b) {
 	const int nbins = 100;
 	double x[nbins], y[nbins];
-	double sum = 0, errHighSum = 0, errLowSum = 0, sqSumHigh = 0, sqSumLow = 0;
+	//double sum = 0, errHighSum = 0, errLowSum = 0, sqSumHigh = 0, sqSumLow = 0;
+	double sum=0, abseHigh=0, abseLow=0, sumSqAbseHigh=0, sumSqAbseLow=0;
 	//double b[3] = 0;
 
 	int nBins = a->GetN();
@@ -1449,27 +1458,32 @@ void CalEffErr(TGraph *a, double *b) {
 		double eHigh = a->GetErrorYhigh(i);
 		double eLow = a->GetErrorYlow(i);
 		sum += y[i];
-		errHighSum += eHigh;
-		sqSumHigh += eHigh*eHigh;
-		errLowSum += eLow;
-		sqSumLow += eLow*eLow;
+		abseHigh = eHigh/y[i];
+		abseLow = eLow/y[i];
+		//errHighSum += eHigh;
+		//sqSumHigh += eHigh*eHigh;
+		sumSqAbseHigh += abseHigh*abseHigh;
+		//errLowSum += eLow;
+		//sqSumLow += eLow*eLow;
+		sumSqAbseLow += abseLow*abseLow;
 	}
 	b[0] = sum / nBins;
-	b[1] = sqrt(sqSumHigh) / nBins;
-	b[2] = sqrt(sqSumLow) / nBins;
+	b[1] = sqrt(sumSqAbseHigh)*sum / nBins;
+	b[2] = sqrt(sumSqAbseLow)*sum / nBins;
 
 	cout << b[0] << "^{" << b[1] << "}_{" << b[2] << "}" << endl;
 	//return b[3];
 }
 
-void CalEffErr(vector<TGraphAsymmErrors*> a, double **b) {
+void CalEffErrVec(vector<TGraphAsymmErrors*> a, double **b) {
 	const int nbins = 100;
 	const int vsize = a.size();
 
 	for (int vbin = 0; vbin < vsize; vbin++)
 	{
 		double x[nbins], y[nbins];
-		double sum = 0, errHighSum = 0, errLowSum = 0, sqSumHigh = 0, sqSumLow = 0;
+		//double sum = 0, errHighSum = 0, errLowSum = 0, sqSumHigh = 0, sqSumLow = 0;
+		double sum=0, abseHigh=0, abseLow=0, sumSqAbseHigh=0, sumSqAbseLow=0;
 		//double b[3] = 0;
 
 		int nBins = a[vbin]->GetN();
@@ -1478,14 +1492,18 @@ void CalEffErr(vector<TGraphAsymmErrors*> a, double **b) {
 			double eHigh = a[vbin]->GetErrorYhigh(i);
 			double eLow = a[vbin]->GetErrorYlow(i);
 			sum += y[i];
-			errHighSum += eHigh;
-			sqSumHigh += eHigh*eHigh;
-			errLowSum += eLow;
-			sqSumLow += eLow*eLow;
+			abseHigh = eHigh/y[i];
+                	abseLow = eLow/y[i];
+			sumSqAbseHigh += abseHigh*abseHigh;
+			sumSqAbseLow += abseLow*abseLow;
+			//errHighSum += eHigh;
+			//sqSumHigh += eHigh*eHigh;
+			//errLowSum += eLow;
+			//sqSumLow += eLow*eLow;
 		}
 		b[vbin][0] = sum / nBins;
-		b[vbin][1] = sqrt(sqSumHigh) / nBins;
-		b[vbin][2] = sqrt(sqSumLow) / nBins;
+		b[vbin][1] = sqrt(sumSqAbseHigh)*sum / nBins; //sqrt(sqSumHigh) / nBins;
+		b[vbin][2] = sqrt(sumSqAbseLow)*sum / nBins; //sqrt(sqSumLow) / nBins;
 
 		cout << b[vbin][0] << "^{" << b[vbin][1] << "}_{" << b[vbin][2] << "}" << endl;
 	}

@@ -261,7 +261,7 @@ process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
     ###
     InputDirectoryName = cms.string("tpTree"),
     InputTreeName = cms.string("fitter_tree"),
-    OutputFileName = cms.string("tnp_Ana_MC_Trig_pPb_%s.root" % (scenario)),
+    OutputFileName = cms.string("tnp_Ana_MC_Trig_pPb_%s.root" % (scenario)), #Dont forget to change output name when changing inputs
     #number of CPUs to use for fitting
     NumCPU = cms.uint32(16),
     # specifies whether to save the RooWorkspace containing the data for each bin and
