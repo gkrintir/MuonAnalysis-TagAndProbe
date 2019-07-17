@@ -224,7 +224,7 @@ TF1 *ratiofunc(const char* fname, TF1 *fnum, TF1 *fden);
 ofstream file_binnedsfs("correction_binned.txt");
 
 
-void TnPEffDraw_singleFile_O() {
+void TnPEffDraw_singleFile_Santona() {
 
 	// gROOT->Macro("~/logon.C");
 	gROOT->SetStyle("Plain");
@@ -446,9 +446,10 @@ void TnPEffDraw_singleFile_O() {
 	double*** TrkAbsEta0 = new double**[nSyst];
 	double*** TrkAbsEta1 = new double**[nSyst];
 
-	//double*** AvgInNtrackBin1 = new double**[nSyst];
-	//double*** AvgInNtrackBin2 = new double**[nSyst];
-	//double*** AvgInNtrackBin3 = new double**[nSyst];
+	double x[10], y[10];
+	double sum;
+	double avgEffCent[3] = {0,0,0};
+	int nBinForAvg[3] = {2, 2, 5};
 
 	for (int k = 0; k < nSyst; k++) {
 		TrkAbsEta0[k] = new double*[nbins_abseta];
@@ -466,20 +467,21 @@ void TnPEffDraw_singleFile_O() {
 		CalEffErr(effAbsEta_MC[k], TrkAbsEta0[k]);
 		CalEffErr(effAbsEta_RD[k], TrkAbsEta1[k]);
 
-		
-		/* if(isCentralityBinned){
-			AvgInNtrackBin1[k] = new double*[nbins_ntracksEta];
-			AvgInNtrackBin2[k] = new double*[nbins_ntracksEta];
-			AvgInNtrackBin3[k] = new double*[nbins_ntracksEta];
-
-			for (int i = 0; i < nbins_ntracksEta; i++)
+		// Getting average efficiency in combined Ntracks bins in data. 0-30, 30-75, 75-100.
+		if (k==0)
+		{
+			for (int j = 0; j < (sizeof(nBinForAvg)/sizeof(*nBinForAvg)) ; j++)
 			{
-				AvgInNtrackBin1[k][i] = new double[4];
-				AvgInNtrackBin2[k][i] = new double[4];
-				AvgInNtrackBin3[k][i] = new double[4];
+				sum = 0;
+				for (int i = 0;i < nBinForAvg[j];i++) 
+				{
+					effCentData->GetPoint(i, x[i], y[i]);
+					sum += y[i];
+					avgEffCent[j] = sum / nBinForAvg[j];
+				}
 			}
-			CalEffErr(ComNtracksEta_RD[k][i],Avg);
-		} // */
+		cout << " average efficiency in Ntracks0-30, 30-75, 75-400 " << avgEffCent[0] << " " << avgEffCent[1] << " " << avgEffCent[2] << endl;	
+		}
 	}
 
 	///////////////////////////////////////////////
@@ -810,6 +812,16 @@ void TnPEffDraw_singleFile_O() {
 
 	if(isCentralityBinned)
 	{
+		TLine *line1 = new TLine(0,avgEffCent[0],25,avgEffCent[0]);
+		TLine *line2 = new TLine(0,avgEffCent[1],25,avgEffCent[1]);
+		TLine *line3 = new TLine(0,avgEffCent[2],25,avgEffCent[2]);
+                TLine *line4 = new TLine(-2.4,avgEffCent[0],2.4,avgEffCent[0]);
+                TLine *line5 = new TLine(-2.4,avgEffCent[1],2.4,avgEffCent[1]);
+                TLine *line6 = new TLine(-2.4,avgEffCent[2],2.4,avgEffCent[2]);
+		
+		line1->SetLineColor(2); line2->SetLineColor(3); line3->SetLineColor(4);
+		line4->SetLineColor(2); line5->SetLineColor(3); line6->SetLineColor(4);
+
 		// vs pT
 		for (int k = 0; k < nSyst; k++)
 		{
@@ -827,7 +839,7 @@ void TnPEffDraw_singleFile_O() {
                         leg1->SetBorderSize(0);
                         leg1->SetTextSize(0.028);
                 	char legs[512];
-                	
+        
                         double ntracksmin, ntracksmax;
                         
 			for (int i = 0; i < nbins_ntracksPt; i++)
@@ -842,6 +854,7 @@ void TnPEffDraw_singleFile_O() {
 				ComNtracksPt_RD[k][i]->Draw("pz same");
                         }
 			leg1->Draw("same");
+			line1->Draw("same"); line2->Draw("same"); line3->Draw("same");
 
                         if (k == 0) { c2->SaveAs(saveDirName + "/" + treeTag + collTag + "_RD_NtracksPTdep.pdf"); }
                 }
@@ -878,6 +891,7 @@ void TnPEffDraw_singleFile_O() {
                                 ComNtracksEta_RD[k][i]->Draw("pz same");
                         }
                         leg1->Draw("same");
+			line4->Draw("same"); line5->Draw("same"); line6->Draw("same");
 
                         if (k == 0) { c2->SaveAs(saveDirName + "/" + treeTag + collTag + "_RD_NtracksETAdep.pdf"); }
                 }
