@@ -55,7 +55,7 @@ TString collTag = "pPb"; //Collision system
 // 2 = ([0]*Erf((x-[1])/[2]))*Exp([4]*x)+ [3]
 // 3 = [0]
 // 
-int fitfcn = 3; //2
+int fitfcn = 2; //2
 
 // Location of the files
 const int nSyst = 1;//5;
@@ -113,7 +113,7 @@ const char* systName[nSyst] = {
 
 // Santona
 #ifdef TRG
-bool doSF = false;
+bool doSF = true;
 TString saveDirName = "Trg_Eff";
 TString etaTag("Trig_etadep");
 TString absetaTag("Trig_absetadep");
@@ -132,9 +132,9 @@ ofstream file_Cent("NtracksValues_Trig.txt");
 ofstream file_TestErr("Trig_ExpErr.txt");
 TString treeTag("tpTree");
 TString cutLegend("Trigger");
-const double effmin = 0.65; //0.4
-const double effmax = 0.96; //1.05
-const double sfrange = 0.02; //0.3
+const double effmin = 0.4; //0.4
+const double effmax = 1.05; //1.05
+const double sfrange = 0.3; //0.3
 const double c_ptRange = 25; // how far to plot the pt
 const double c_centralityRange = 400; // how far to plot the centrality (hibin goes to 200)
 const char* fDataName[nSyst] = {"../test/jpsiHI/tnp_Ana_RD_Trig_pPb_merged.root"}; // both dir
@@ -221,7 +221,8 @@ TF1 *initfcn(const char* fname, int ifcn, double ptmin, double ptmax, double eff
 TF1 *ratiofunc(const char* fname, TF1 *fnum, TF1 *fden);
 
 ofstream file_binnedsfs("correction_binned.txt");
-
+ofstream file_binnedsfs_statlow("correction_binned_statLow.txt");
+ofstream file_binnedsfs_stathigh("correction_binned_statHigh.txt");
 
 void TnPEffDraw_singleFile_Santona() {
 
@@ -770,13 +771,30 @@ void TnPEffDraw_singleFile_Santona() {
 					file_sfs << formulaReadable(fmc, 5) << endl;
 					file_sfs << endl;
 
-					// print the binned ratio to the other file
+					// print the binned ratio to corrections_binned
+					file_binnedsfs << "// SF nominal" << endl;
 					file_binnedsfs << "// " << etamin << " < |eta| < " << etamax << endl;
 					for (int i = 0; i < gratio->GetN(); i++) {
 						if (i > 0) file_binnedsfs << "else ";
 						file_binnedsfs << "if (pt<" << gratio->GetX()[i] + gratio->GetEXhigh()[i] << ") return " << gratio->GetY()[i] << ";" << endl;
 					}
 					file_binnedsfs << endl;
+					// print SF-stat to binned_statLow
+					file_binnedsfs_statlow << "// SF - statLow" << endl;
+                                        file_binnedsfs_statlow << "// " << etamin << " < |eta| < " << etamax << endl;
+					for (int i = 0; i < gratio->GetN(); i++) {
+						if (i > 0) file_binnedsfs_statlow << "else ";
+						file_binnedsfs_statlow << "if (pt<" << gratio->GetX()[i] + gratio->GetEXhigh()[i] << ") return " << gratio->GetY()[i] - gratio->GetErrorYlow(i) << ";" << endl;
+					}
+					file_binnedsfs_statlow << endl;
+					// print SF+stat to binned_statHigh
+                                        file_binnedsfs_stathigh << "// SF + statHigh" << endl;
+                                        file_binnedsfs_stathigh << "// " << etamin << " < |eta| < " << etamax << endl;
+					for (int i = 0; i < gratio->GetN(); i++) {
+                                                if (i > 0) file_binnedsfs_stathigh << "else ";
+                                                file_binnedsfs_stathigh << "if (pt<" << gratio->GetX()[i] + gratio->GetEXhigh()[i] << ") return " << gratio->GetY()[i] + gratio->GetErrorYhigh(i) << ";" << endl;
+                                        }
+					file_binnedsfs_stathigh << endl;
 				}
 			}
 		}
@@ -1200,6 +1218,8 @@ void TnPEffDraw_singleFile_Santona() {
 
 	file_sfs.close();
 	file_binnedsfs.close();
+	file_binnedsfs_statlow.close();
+	file_binnedsfs_stathigh.close();
 
 } //End of main function
 
