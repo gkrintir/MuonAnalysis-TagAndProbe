@@ -91,8 +91,8 @@ TString etaTag("MuId_etadep");
 TString absetaTag("MuId_absetadep");
 TString centTag("MuId_centdep");
 //TString centTag("MuId_centdepHF");
-const int nAbsEtaBins = 8;
-TString ptTag[nAbsEtaBins] = {"MuId_pt", "MuId_abseta00_09", "MuId_abseta09_12", "MuId_abseta00_12", "MuId_abseta12_16", "MuId_abseta16_21", "MuId_abseta12_21", "MuId_abseta21_24" };
+const int nAbsEtaBins = 6;
+TString ptTag[nAbsEtaBins] = {"MuId_pt", "MuId_abseta00_08", "MuId_abseta08_15", "MuId_abseta15_21", "MuId_abseta08_21", "MuId_abseta21_24" };
 TString allTag("MuId_1bin");
 TString absetaVar("abseta");
 TString centVar("tag_hiNtracks");
@@ -559,8 +559,8 @@ void TnPEffDraw_singleFile_O() {
 
 			lt1->SetTextSize(0.05);
 			lt1->DrawLatex(0.20, 0.30, "CMS Preliminary");
-			//lt1->DrawLatex(0.20, 0.24, collTag + "  #sqrt{s_{NN}} = 8.16 TeV");
-			lt1->DrawLatex(0.20, 0.24, collTag + "  #sqrt{s_{NN}} = 5.02 TeV");
+			lt1->DrawLatex(0.20, 0.24, collTag + "  #sqrt{s_{NN}} = 8.16 TeV");
+			//lt1->DrawLatex(0.20, 0.24, collTag + "  #sqrt{s_{NN}} = 5.02 TeV");
 
 			// now take care of the data/mc ratio panel
 			c1->cd();
@@ -799,8 +799,8 @@ void TnPEffDraw_singleFile_O() {
 
 			lt1->SetTextSize(0.05);
 			lt1->DrawLatex(0.43, 0.40, "CMS Preliminary");
-			lt1->DrawLatex(0.43, 0.34, collTag + "  #sqrt{s_{NN}} = 5.02 TeV");
-			//lt1->DrawLatex(0.43, 0.34, collTag + "  #sqrt{s_{NN}} = 8.16 TeV");
+			//lt1->DrawLatex(0.43, 0.34, collTag + "  #sqrt{s_{NN}} = 5.02 TeV");
+			lt1->DrawLatex(0.43, 0.34, collTag + "  #sqrt{s_{NN}} = 8.16 TeV");
 
 			// now take care of the data/mc ratio panel
 			c1->cd();
@@ -879,8 +879,8 @@ void TnPEffDraw_singleFile_O() {
 
 		lt1->SetTextSize(0.05);
 		lt1->DrawLatex(0.43, 0.40, "CMS Preliminary");
-		lt1->DrawLatex(0.43, 0.34, collTag + "  #sqrt{s_{NN}} = 5.02 TeV");
-		//lt1->DrawLatex(0.43, 0.34, collTag + "  #sqrt{s_{NN}} = 8.16 TeV");
+		//lt1->DrawLatex(0.43, 0.34, collTag + "  #sqrt{s_{NN}} = 5.02 TeV");
+		lt1->DrawLatex(0.43, 0.34, collTag + "  #sqrt{s_{NN}} = 8.16 TeV");
 
 		// now take care of the data/mc ratio panel
 		c1->cd();
@@ -967,8 +967,8 @@ void TnPEffDraw_singleFile_O() {
 
 		lt1->SetTextSize(0.05);
 		lt1->DrawLatex(0.43, 0.45, "CMS Preliminary");
-		lt1->DrawLatex(0.43, 0.39, collTag + "  #sqrt{s_{NN}} = 5.02 TeV");
-		//lt1->DrawLatex(0.43, 0.39, collTag + "  #sqrt{s_{NN}} = 8.16 TeV");
+		//lt1->DrawLatex(0.43, 0.39, collTag + "  #sqrt{s_{NN}} = 5.02 TeV");
+		lt1->DrawLatex(0.43, 0.39, collTag + "  #sqrt{s_{NN}} = 8.16 TeV");
 
 		// now take care of the data/mc ratio panel
 		c1->cd();
