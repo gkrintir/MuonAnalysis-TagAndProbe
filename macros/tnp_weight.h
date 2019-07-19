@@ -775,6 +775,63 @@ double tnp_weight_muid_ppb(double pt, double eta, int idx=0) {
 ///////////////////////////////////////////////////
 //                 T R G    P P b                //
 ///////////////////////////////////////////////////
+/// Just pasting for now, will format soon
+// -2.4 < |eta| < 2.4
+if (pt<1.8) return 1.20974;
+else if (pt<2.5) return 1.04818;
+else if (pt<3.5) return 1.02819;
+else if (pt<4.5) return 1.00063;
+else if (pt<5.5) return 1.00399;
+else if (pt<6.5) return 0.998767;
+else if (pt<8) return 0.991722;
+else if (pt<10.5) return 0.992729;
+else if (pt<14) return 0.991487;
+else if (pt<18) return 0.987747;
+else if (pt<25) return 0.981947;
+
+// 0 < |eta| < 0.9
+if (pt<3.8) return 1.01005;
+else if (pt<4.5) return 1.00015;
+else if (pt<5.5) return 1.00859;
+else if (pt<6.5) return 0.994886;
+else if (pt<8) return 0.979021;
+else if (pt<10.5) return 0.978756;
+else if (pt<14) return 0.973643;
+else if (pt<18) return 0.96243;
+else if (pt<25) return 0.954136;
+
+// 0.9 < |eta| < 1.2
+if (pt<3.8) return 1.25081;
+else if (pt<4.5) return 1.03099;
+else if (pt<5.5) return 1.00102;
+else if (pt<6.5) return 0.999884;
+else if (pt<8) return 0.998999;
+else if (pt<10.5) return 0.99726;
+else if (pt<14) return 1.00131;
+else if (pt<18) return 0.999727;
+else if (pt<25) return 0.98394;
+
+// 0 < |eta| < 1.2
+if (pt<3.8) return 1.07384;
+else if (pt<4.5) return 1.00502;
+else if (pt<5.5) return 1.00401;
+else if (pt<6.5) return 0.994907;
+else if (pt<8) return 0.983281;
+else if (pt<10.5) return 0.982374;
+else if (pt<14) return 0.97952;
+else if (pt<18) return 0.970756;
+else if (pt<25) return 0.959715;
+
+// 1.2 < |eta| < 1.6
+if (pt<3) return 1.22981;
+else if (pt<4.5) return 1.03105;
+else if (pt<6.5) return 1.0091;
+else if (pt<10) return 1.00626;
+else if (pt<14) return 1.00334;
+else if (pt<25) return 1.01464;
+
+
+
 double tnp_weight_trg_ppb(double eta, int idx)
 {
 	double x = eta;
