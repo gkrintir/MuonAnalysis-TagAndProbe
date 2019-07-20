@@ -71,7 +71,8 @@ bool doToys = false;
 
 // names for nominal + systematics
 const char* systName[nSyst] = {
-   "nominal",
+//   "nominal",
+   "syst_bkg_Pol1",     
 };
 
 
