@@ -15,6 +15,12 @@
 
 // - MuID: (tnp_weight_muid_ppb)
 //   * idx = -10: binned
+//   * idx = -11: binned, stat up
+//   * idx = -12: binned, stat down
+//   * idx = -13: binned, syst up
+//   * idx = -14: binned, syst down
+
+
 
 
 // - Trigger: (tnp_weight_trg_ppb)
@@ -27,7 +33,7 @@
 // THE INDIVIDUAL SFs
 // ++++++++++++++++++
 double tnp_weight_trk_ppb(double pt, double eta, int idx=0); //UPDATE TO WHAT YOU REALLY DO
-double tnp_weight_muid_ppb(double pt, double eta, int idx=0);
+double tnp_weight_muid_ppb(double pt, double eta, int idx=0); // HAS BEEN UPDATED
 double tnp_weight_trg_ppb(double pt, double eta, int idx=0);
 
 
@@ -409,368 +415,244 @@ double tnp_weight_trk_ppb(double pt, double eta, int idx=0) {
 double tnp_weight_muid_ppb(double pt, double eta, int idx=0) {
    double x = pt;
 
-   if (idx == -10) {
-      if (fabs(eta)<1.2) {
-         // 0 < |eta| < 1.2
-		  if (pt < 3.5) return 0.995434;
-		  else if (pt < 4.5) return 0.996824;
-		  else if (pt < 5.5) return 0.997548;
-		  else if (pt < 6.5) return 0.998022;
-		  else if (pt < 8) return 0.997625;
-		  else if (pt < 10.5) return 0.997302;
-		  else if (pt < 14) return 0.996757;
-		  else if (pt < 18) return 0.999137;
-		  else if (pt < 25) return 0.99837;
-      } else if (fabs(eta)<2.1) {
-		  // 1.2 < |eta| < 2.1
-		  if (pt < 2) return 0.978781;
-		  else if (pt < 3) return 0.991077;
-		  else if (pt < 4.5) return 1.00259;
-		  else if (pt < 6.5) return 0.996977;
-		  else if (pt < 10) return 1.00119;
-		  else if (pt < 14) return 1.00213;
-		  else if (pt < 25) return 1.00352;
-      } else {
-         // 2.1 < |eta| < 2.4
-		  if (pt < 2) return 1.00306;
-		  else if (pt < 3.5) return 0.992941;
-		  else if (pt < 5.5) return 0.994036;
-		  else if (pt < 8) return 1.00566;
-		  else if (pt < 12) return 0.985825;
-		  else if (pt < 25) return 1.00203;
-      }
+   double num = 1.0, den = 0.0;  //intentionaly 0, so if asked for a corrections outside defined range, it returns NaN instead of 1
+
+   // MC
+   if (fabs(eta) > 0 && fabs(eta) <= 0.8) {
+	   if (pt > 3.3 && pt <= 4.5) den = 0.980292;
+	   else if (pt <= 5.5) den = 0.988652;
+	   else if (pt <= 6.5) den = 0.991186;
+	   else if (pt <= 8) den = 0.99211;
+	   else if (pt <= 10.5) den = 0.993282;
+	   else if (pt <= 14) den = 0.993677;
+	   else if (pt <= 18) den = 0.993716;
+	   else if (pt <= 25) den = 0.989668;
+   }
+   else if (fabs(eta) > 0.8 && fabs(eta) <= 1.5) {
+	   if (pt > 1.1 && pt <= 3.3) den = 0.972175;
+	   else if (pt <= 4.5) den = 0.986112;
+	   else if (pt <= 5.5) den = 0.989617;
+	   else if (pt <= 6.5) den = 0.992082;
+	   else if (pt <= 8) den = 0.993391;
+	   else if (pt <= 10.5) den = 0.993456;
+	   else if (pt <= 14) den = 0.996085;
+	   else if (pt <= 18) den = 0.994577;
+	   else if (pt <= 25) den = 0.994608;
+   }
+   else if (fabs(eta) > 1.5 && fabs(eta) <= 2.1) {
+	   if (pt > 0.8 && pt <= 2) den = 0.973474;
+	   else if (pt <= 3.5) den = 0.994106;
+	   else if (pt <= 4.5) den = 0.997574;
+	   else if (pt <= 6.5) den = 0.99761;
+	   else if (pt <= 10) den = 0.998036;
+	   else if (pt <= 14) den = 0.997462;
+	   else if (pt <= 25) den = 0.997858;
+   }
+   else if (fabs(eta) > 2.1 && fabs(eta) <= 2.4) {
+	   if (pt > 0.8 && pt <= 2) den = 0.975377;
+	   else if (pt <= 3.5) den = 0.992559;
+	   else if (pt <= 5.5) den = 0.994019;
+	   else if (pt <= 12) den = 0.995517;
+	   else if (pt <= 25) den = 1;
    }
 
-   //double num = 1, den = 1;
-
-   //// nominal
-   //if (fabs(eta)<1.2) {
-   //   num = 0.98711-0.00022*x;
-   //   den = 0.98864-0.00002*x;
-   //} else if (fabs(eta)<2.1) {
-   //   num = 0.99296 + 0.00001*x;
-   //   den = 0.99633-0.00004*x;
-   //} else {
-   //   num = 1.00072-0.00052*x;
-   //   den = 0.99254-0.00017*x;
-   //}
-
-   //// 100 variations 
-   //if (fabs(eta)<1.2) {
-   //   if (idx == 1   ) num = 0.98216-0.00012*x;
-   //   else if (idx == 2   ) num = 0.98444-0.00015*x;
-   //   else if (idx == 3   ) num = 0.99079-0.00033*x;
-   //   else if (idx == 4   ) num = 0.97209+0.00010*x;
-   //   else if (idx == 5   ) num = 0.99083-0.00029*x;
-   //   else if (idx == 6   ) num = 0.99184-0.00029*x;
-   //   else if (idx == 7   ) num = 0.98340-0.00016*x;
-   //   else if (idx == 8   ) num = 0.98541-0.00026*x;
-   //   else if (idx == 9   ) num = 0.97642+0.00005*x;
-   //   else if (idx == 10  ) num = 0.99088-0.00026*x;
-   //   else if (idx == 11  ) num = 0.97731-0.00003*x;
-   //   else if (idx == 12  ) num = 0.98927-0.00032*x;
-   //   else if (idx == 13  ) num = 0.99025-0.00031*x;
-   //   else if (idx == 14  ) num = 0.99398-0.00040*x;
-   //   else if (idx == 15  ) num = 0.98014-0.00017*x;
-   //   else if (idx == 16  ) num = 0.99707-0.00046*x;
-   //   else if (idx == 17  ) num = 0.97607-0.00002*x;
-   //   else if (idx == 18  ) num = 0.99917-0.00049*x;
-   //   else if (idx == 19  ) num = 0.98614-0.00018*x;
-   //   else if (idx == 20  ) num = 0.99061-0.00024*x;
-   //   else if (idx == 21  ) num = 0.98719-0.00022*x;
-   //   else if (idx == 22  ) num = 0.98611-0.00021*x;
-   //   else if (idx == 23  ) num = 0.98541-0.00014*x;
-   //   else if (idx == 24  ) num = 0.98480-0.00015*x;
-   //   else if (idx == 25  ) num = 0.97988-0.00009*x;
-   //   else if (idx == 26  ) num = 0.97945-0.00006*x;
-   //   else if (idx == 27  ) num = 0.99505-0.00038*x;
-   //   else if (idx == 28  ) num = 0.99933-0.00049*x;
-   //   else if (idx == 29  ) num = 0.98003-0.00000*x;
-   //   else if (idx == 30  ) num = 0.97219+0.00009*x;
-   //   else if (idx == 31  ) num = 0.98237-0.00010*x;
-   //   else if (idx == 32  ) num = 0.98512-0.00015*x;
-   //   else if (idx == 33  ) num = 0.98142-0.00007*x;
-   //   else if (idx == 34  ) num = 0.99604-0.00039*x;
-   //   else if (idx == 35  ) num = 0.98885-0.00031*x;
-   //   else if (idx == 36  ) num = 0.99388-0.00034*x;
-   //   else if (idx == 37  ) num = 0.99168-0.00033*x;
-   //   else if (idx == 38  ) num = 0.97524+0.00004*x;
-   //   else if (idx == 39  ) num = 0.98027-0.00011*x;
-   //   else if (idx == 40  ) num = 0.99009-0.00022*x;
-   //   else if (idx == 41  ) num = 0.98929-0.00026*x;
-   //   else if (idx == 42  ) num = 0.98244-0.00015*x;
-   //   else if (idx == 43  ) num = 0.98258-0.00011*x;
-   //   else if (idx == 44  ) num = 0.98014-0.00002*x;
-   //   else if (idx == 45  ) num = 0.98656-0.00026*x;
-   //   else if (idx == 46  ) num = 0.98013+0.00004*x;
-   //   else if (idx == 47  ) num = 0.98895-0.00027*x;
-   //   else if (idx == 48  ) num = 0.98689-0.00028*x;
-   //   else if (idx == 49  ) num = 0.98938-0.00026*x;
-   //   else if (idx == 50  ) num = 0.97786-0.00007*x;
-   //   else if (idx == 51  ) num = 0.97637+0.00003*x;
-   //   else if (idx == 52  ) num = 0.99635-0.00050*x;
-   //   else if (idx == 53  ) num = 0.98092-0.00011*x;
-   //   else if (idx == 54  ) num = 0.98849-0.00032*x;
-   //   else if (idx == 55  ) num = 0.98958-0.00022*x;
-   //   else if (idx == 56  ) num = 0.99087-0.00023*x;
-   //   else if (idx == 57  ) num = 0.99112-0.00035*x;
-   //   else if (idx == 58  ) num = 0.99542-0.00035*x;
-   //   else if (idx == 59  ) num = 0.99380-0.00035*x;
-   //   else if (idx == 60  ) num = 0.98629-0.00019*x;
-   //   else if (idx == 61  ) num = 0.97954-0.00005*x;
-   //   else if (idx == 62  ) num = 0.99353-0.00037*x;
-   //   else if (idx == 63  ) num = 0.99171-0.00033*x;
-   //   else if (idx == 64  ) num = 0.99339-0.00038*x;
-   //   else if (idx == 65  ) num = 0.98256-0.00003*x;
-   //   else if (idx == 66  ) num = 0.98016-0.00020*x;
-   //   else if (idx == 67  ) num = 0.99609-0.00037*x;
-   //   else if (idx == 68  ) num = 0.99209-0.00030*x;
-   //   else if (idx == 69  ) num = 1.00039-0.00055*x;
-   //   else if (idx == 70  ) num = 0.98237-0.00018*x;
-   //   else if (idx == 71  ) num = 0.99425-0.00040*x;
-   //   else if (idx == 72  ) num = 0.98840-0.00017*x;
-   //   else if (idx == 73  ) num = 0.99310-0.00048*x;
-   //   else if (idx == 74  ) num = 0.98728-0.00028*x;
-   //   else if (idx == 75  ) num = 0.99716-0.00041*x;
-   //   else if (idx == 76  ) num = 0.99419-0.00036*x;
-   //   else if (idx == 77  ) num = 0.98171-0.00012*x;
-   //   else if (idx == 78  ) num = 0.98239-0.00006*x;
-   //   else if (idx == 79  ) num = 0.98080-0.00012*x;
-   //   else if (idx == 80  ) num = 0.99226-0.00032*x;
-   //   else if (idx == 81  ) num = 0.98672-0.00018*x;
-   //   else if (idx == 82  ) num = 0.99198-0.00048*x;
-   //   else if (idx == 83  ) num = 0.98282-0.00018*x;
-   //   else if (idx == 84  ) num = 0.98647-0.00020*x;
-   //   else if (idx == 85  ) num = 0.99965-0.00056*x;
-   //   else if (idx == 86  ) num = 1.00148-0.00056*x;
-   //   else if (idx == 87  ) num = 0.97968-0.00012*x;
-   //   else if (idx == 88  ) num = 0.98417-0.00014*x;
-   //   else if (idx == 89  ) num = 0.98236-0.00010*x;
-   //   else if (idx == 90  ) num = 0.98229-0.00015*x;
-   //   else if (idx == 91  ) num = 0.98788-0.00021*x;
-   //   else if (idx == 92  ) num = 0.98183-0.00011*x;
-   //   else if (idx == 93  ) num = 0.98130-0.00005*x;
-   //   else if (idx == 94  ) num = 0.97616-0.00006*x;
-   //   else if (idx == 95  ) num = 0.98670-0.00024*x;
-   //   else if (idx == 96  ) num = 0.98200-0.00012*x;
-   //   else if (idx == 97  ) num = 0.98162-0.00010*x;
-   //   else if (idx == 98  ) num = 0.97650+0.00003*x;
-   //   else if (idx == 99  ) num = 0.99554-0.00045*x;
-   //   else if (idx == 100 ) num = 0.97934-0.00010*x;
-   //   // // ADD THE FUNCTIONS FOR SYSTS BELOW! +1 SIGMA (IDX==-1) AND -1 SIGMA (IDX==-2)
-   //   else if (idx == -1  ) num = 0.99313+0.00032*x;
-   //   else if (idx == -2  ) num = 0.98101-0.00013*x;
-   //} else if (fabs(eta)<2.1) {
-   //   if (idx == 1   ) num = 0.99035+0.00003*x;
-   //   else if (idx == 2   ) num = 0.99224+0.00003*x;
-   //   else if (idx == 3   ) num = 0.99557-0.00009*x;
-   //   else if (idx == 4   ) num = 0.99262-0.00003*x;
-   //   else if (idx == 5   ) num = 0.98790+0.00006*x;
-   //   else if (idx == 6   ) num = 0.99470-0.00010*x;
-   //   else if (idx == 7   ) num = 0.99488-0.00004*x;
-   //   else if (idx == 8   ) num = 0.99265+0.00000*x;
-   //   else if (idx == 9   ) num = 0.99252-0.00001*x;
-   //   else if (idx == 10  ) num = 0.99290+0.00003*x;
-   //   else if (idx == 11  ) num = 0.99594-0.00013*x;
-   //   else if (idx == 12  ) num = 0.99790-0.00019*x;
-   //   else if (idx == 13  ) num = 0.99244+0.00000*x;
-   //   else if (idx == 14  ) num = 0.99034+0.00006*x;
-   //   else if (idx == 15  ) num = 0.99067+0.00003*x;
-   //   else if (idx == 16  ) num = 0.99296-0.00000*x;
-   //   else if (idx == 17  ) num = 0.99447-0.00012*x;
-   //   else if (idx == 18  ) num = 0.99822-0.00015*x;
-   //   else if (idx == 19  ) num = 0.99034+0.00004*x;
-   //   else if (idx == 20  ) num = 0.98905+0.00009*x;
-   //   else if (idx == 21  ) num = 0.99728-0.00013*x;
-   //   else if (idx == 22  ) num = 0.98986+0.00006*x;
-   //   else if (idx == 23  ) num = 0.99346-0.00001*x;
-   //   else if (idx == 24  ) num = 0.99091+0.00005*x;
-   //   else if (idx == 25  ) num = 0.99422-0.00007*x;
-   //   else if (idx == 26  ) num = 0.99192+0.00004*x;
-   //   else if (idx == 27  ) num = 0.99295+0.00000*x;
-   //   else if (idx == 28  ) num = 0.99333+0.00003*x;
-   //   else if (idx == 29  ) num = 0.99803-0.00013*x;
-   //   else if (idx == 30  ) num = 0.99531-0.00004*x;
-   //   else if (idx == 31  ) num = 0.99849-0.00018*x;
-   //   else if (idx == 32  ) num = 1.00133-0.00023*x;
-   //   else if (idx == 33  ) num = 0.99100+0.00004*x;
-   //   else if (idx == 34  ) num = 0.99552-0.00012*x;
-   //   else if (idx == 35  ) num = 0.99358-0.00003*x;
-   //   else if (idx == 36  ) num = 0.99728-0.00016*x;
-   //   else if (idx == 37  ) num = 0.99082+0.00004*x;
-   //   else if (idx == 38  ) num = 0.98951+0.00009*x;
-   //   else if (idx == 39  ) num = 0.99028+0.00005*x;
-   //   else if (idx == 40  ) num = 0.99038+0.00006*x;
-   //   else if (idx == 41  ) num = 0.99066+0.00004*x;
-   //   else if (idx == 42  ) num = 0.99353-0.00007*x;
-   //   else if (idx == 43  ) num = 0.99252-0.00002*x;
-   //   else if (idx == 44  ) num = 0.99347-0.00003*x;
-   //   else if (idx == 45  ) num = 0.99327+0.00001*x;
-   //   else if (idx == 46  ) num = 1.00178-0.00033*x;
-   //   else if (idx == 47  ) num = 0.99974-0.00021*x;
-   //   else if (idx == 48  ) num = 0.99517-0.00011*x;
-   //   else if (idx == 49  ) num = 0.99390-0.00002*x;
-   //   else if (idx == 50  ) num = 0.99083+0.00003*x;
-   //   else if (idx == 51  ) num = 0.99079+0.00004*x;
-   //   else if (idx == 52  ) num = 0.99611-0.00004*x;
-   //   else if (idx == 53  ) num = 0.99067+0.00006*x;
-   //   else if (idx == 54  ) num = 0.99370-0.00011*x;
-   //   else if (idx == 55  ) num = 0.99157+0.00004*x;
-   //   else if (idx == 56  ) num = 0.99434-0.00006*x;
-   //   else if (idx == 57  ) num = 0.99419-0.00006*x;
-   //   else if (idx == 58  ) num = 0.99454-0.00002*x;
-   //   else if (idx == 59  ) num = 0.99427-0.00008*x;
-   //   else if (idx == 60  ) num = 0.99417-0.00002*x;
-   //   else if (idx == 61  ) num = 0.99198+0.00003*x;
-   //   else if (idx == 62  ) num = 0.99311-0.00007*x;
-   //   else if (idx == 63  ) num = 0.99782-0.00020*x;
-   //   else if (idx == 64  ) num = 0.99705-0.00017*x;
-   //   else if (idx == 65  ) num = 0.99078+0.00001*x;
-   //   else if (idx == 66  ) num = 0.99604-0.00009*x;
-   //   else if (idx == 67  ) num = 0.98999+0.00007*x;
-   //   else if (idx == 68  ) num = 0.99561-0.00009*x;
-   //   else if (idx == 69  ) num = 1.00041-0.00026*x;
-   //   else if (idx == 70  ) num = 0.99434-0.00004*x;
-   //   else if (idx == 71  ) num = 0.99150+0.00000*x;
-   //   else if (idx == 72  ) num = 0.99620-0.00015*x;
-   //   else if (idx == 73  ) num = 0.99408-0.00001*x;
-   //   else if (idx == 74  ) num = 0.99139+0.00004*x;
-   //   else if (idx == 75  ) num = 0.99662-0.00013*x;
-   //   else if (idx == 76  ) num = 0.99270+0.00001*x;
-   //   else if (idx == 77  ) num = 0.99150-0.00001*x;
-   //   else if (idx == 78  ) num = 0.99159-0.00001*x;
-   //   else if (idx == 79  ) num = 0.99518-0.00006*x;
-   //   else if (idx == 80  ) num = 0.99239+0.00003*x;
-   //   else if (idx == 81  ) num = 0.99147+0.00004*x;
-   //   else if (idx == 82  ) num = 0.99207+0.00002*x;
-   //   else if (idx == 83  ) num = 0.99147+0.00001*x;
-   //   else if (idx == 84  ) num = 0.99450-0.00002*x;
-   //   else if (idx == 85  ) num = 0.99665-0.00010*x;
-   //   else if (idx == 86  ) num = 0.99218+0.00003*x;
-   //   else if (idx == 87  ) num = 0.99033+0.00005*x;
-   //   else if (idx == 88  ) num = 0.99448-0.00005*x;
-   //   else if (idx == 89  ) num = 0.98874+0.00005*x;
-   //   else if (idx == 90  ) num = 0.99019+0.00005*x;
-   //   else if (idx == 91  ) num = 0.99692-0.00016*x;
-   //   else if (idx == 92  ) num = 0.99135+0.00002*x;
-   //   else if (idx == 93  ) num = 0.99239-0.00001*x;
-   //   else if (idx == 94  ) num = 0.99123+0.00005*x;
-   //   else if (idx == 95  ) num = 0.98927+0.00008*x;
-   //   else if (idx == 96  ) num = 0.99349-0.00001*x;
-   //   else if (idx == 97  ) num = 0.99073+0.00005*x;
-   //   else if (idx == 98  ) num = 1.00333-0.00029*x;
-   //   else if (idx == 99  ) num = 0.99071+0.00006*x;
-   //   else if (idx == 100 ) num = 0.99103+0.00002*x;
-   //   // // ADD THE FUNCTIONS FOR SYSTS BELOW! +1 SIGMA (IDX==-1) AND -1 SIGMA (IDX==-2)
-   //   else if (idx == -1  ) num = 0.99234+0.00003*x;
-   //   else if (idx == -2  ) num = 0.99346-0.00001*x;
-   //} else {
-   //   if (idx == 1   ) num = 0.98883-0.00012*x;
-   //   else if (idx == 2   ) num = 0.99973-0.00052*x;
-   //   else if (idx == 3   ) num = 1.00163-0.00073*x;
-   //   else if (idx == 4   ) num = 1.00401-0.00077*x;
-   //   else if (idx == 5   ) num = 1.00779-0.00083*x;
-   //   else if (idx == 6   ) num = 0.98365+0.00006*x;
-   //   else if (idx == 7   ) num = 0.99932-0.00061*x;
-   //   else if (idx == 8   ) num = 1.01102-0.00087*x;
-   //   else if (idx == 9   ) num = 0.98429+0.00004*x;
-   //   else if (idx == 10  ) num = 1.00947-0.00100*x;
-   //   else if (idx == 11  ) num = 1.01235-0.00110*x;
-   //   else if (idx == 12  ) num = 1.00550-0.00077*x;
-   //   else if (idx == 13  ) num = 0.98864-0.00009*x;
-   //   else if (idx == 14  ) num = 1.00527-0.00073*x;
-   //   else if (idx == 15  ) num = 0.99135-0.00022*x;
-   //   else if (idx == 16  ) num = 0.99817-0.00033*x;
-   //   else if (idx == 17  ) num = 1.00889-0.00088*x;
-   //   else if (idx == 18  ) num = 0.98720-0.00007*x;
-   //   else if (idx == 19  ) num = 1.00314-0.00068*x;
-   //   else if (idx == 20  ) num = 0.98765-0.00013*x;
-   //   else if (idx == 21  ) num = 1.01230-0.00097*x;
-   //   else if (idx == 22  ) num = 1.01536-0.00112*x;
-   //   else if (idx == 23  ) num = 0.98338+0.00002*x;
-   //   else if (idx == 24  ) num = 0.99702-0.00047*x;
-   //   else if (idx == 25  ) num = 1.00064-0.00067*x;
-   //   else if (idx == 26  ) num = 0.99694-0.00036*x;
-   //   else if (idx == 27  ) num = 1.01886-0.00139*x;
-   //   else if (idx == 28  ) num = 1.01914-0.00120*x;
-   //   else if (idx == 29  ) num = 0.99698-0.00036*x;
-   //   else if (idx == 30  ) num = 0.99037-0.00022*x;
-   //   else if (idx == 31  ) num = 0.99771-0.00039*x;
-   //   else if (idx == 32  ) num = 1.00317-0.00080*x;
-   //   else if (idx == 33  ) num = 0.98440+0.00000*x;
-   //   else if (idx == 34  ) num = 0.98109+0.00010*x;
-   //   else if (idx == 35  ) num = 1.00229-0.00073*x;
-   //   else if (idx == 36  ) num = 1.00581-0.00077*x;
-   //   else if (idx == 37  ) num = 0.99311-0.00028*x;
-   //   else if (idx == 38  ) num = 0.99696-0.00050*x;
-   //   else if (idx == 39  ) num = 1.00555-0.00097*x;
-   //   else if (idx == 40  ) num = 0.99395-0.00044*x;
-   //   else if (idx == 41  ) num = 0.98796-0.00028*x;
-   //   else if (idx == 42  ) num = 0.99429-0.00050*x;
-   //   else if (idx == 43  ) num = 1.01477-0.00122*x;
-   //   else if (idx == 44  ) num = 0.99855-0.00045*x;
-   //   else if (idx == 45  ) num = 0.99397-0.00029*x;
-   //   else if (idx == 46  ) num = 1.01511-0.00114*x;
-   //   else if (idx == 47  ) num = 0.99798-0.00052*x;
-   //   else if (idx == 48  ) num = 1.01710-0.00126*x;
-   //   else if (idx == 49  ) num = 1.02298-0.00145*x;
-   //   else if (idx == 50  ) num = 0.99830-0.00046*x;
-   //   else if (idx == 51  ) num = 0.99691-0.00042*x;
-   //   else if (idx == 52  ) num = 0.99923-0.00046*x;
-   //   else if (idx == 53  ) num = 0.99528-0.00035*x;
-   //   else if (idx == 54  ) num = 1.00914-0.00083*x;
-   //   else if (idx == 55  ) num = 0.99466-0.00044*x;
-   //   else if (idx == 56  ) num = 0.98395+0.00001*x;
-   //   else if (idx == 57  ) num = 0.99536-0.00043*x;
-   //   else if (idx == 58  ) num = 0.99864-0.00046*x;
-   //   else if (idx == 59  ) num = 1.01598-0.00112*x;
-   //   else if (idx == 60  ) num = 1.01881-0.00140*x;
-   //   else if (idx == 61  ) num = 0.99198-0.00019*x;
-   //   else if (idx == 62  ) num = 0.98994-0.00025*x;
-   //   else if (idx == 63  ) num = 0.99481-0.00039*x;
-   //   else if (idx == 64  ) num = 0.99666-0.00038*x;
-   //   else if (idx == 65  ) num = 0.99272-0.00021*x;
-   //   else if (idx == 66  ) num = 0.99375-0.00047*x;
-   //   else if (idx == 67  ) num = 0.99298-0.00042*x;
-   //   else if (idx == 68  ) num = 1.01118-0.00117*x;
-   //   else if (idx == 69  ) num = 1.00950-0.00099*x;
-   //   else if (idx == 70  ) num = 0.98714-0.00025*x;
-   //   else if (idx == 71  ) num = 0.99450-0.00048*x;
-   //   else if (idx == 72  ) num = 1.01686-0.00117*x;
-   //   else if (idx == 73  ) num = 0.98565-0.00004*x;
-   //   else if (idx == 74  ) num = 1.00325-0.00075*x;
-   //   else if (idx == 75  ) num = 0.98219-0.00003*x;
-   //   else if (idx == 76  ) num = 0.99635-0.00046*x;
-   //   else if (idx == 77  ) num = 0.99561-0.00032*x;
-   //   else if (idx == 78  ) num = 0.99953-0.00042*x;
-   //   else if (idx == 79  ) num = 1.02005-0.00124*x;
-   //   else if (idx == 80  ) num = 1.00194-0.00067*x;
-   //   else if (idx == 81  ) num = 1.01322-0.00107*x;
-   //   else if (idx == 82  ) num = 1.00293-0.00065*x;
-   //   else if (idx == 83  ) num = 0.99452-0.00029*x;
-   //   else if (idx == 84  ) num = 1.01578-0.00125*x;
-   //   else if (idx == 85  ) num = 1.00544-0.00065*x;
-   //   else if (idx == 86  ) num = 0.99637-0.00039*x;
-   //   else if (idx == 87  ) num = 0.98428+0.00001*x;
-   //   else if (idx == 88  ) num = 0.99187-0.00031*x;
-   //   else if (idx == 89  ) num = 0.99737-0.00042*x;
-   //   else if (idx == 90  ) num = 1.00048-0.00060*x;
-   //   else if (idx == 91  ) num = 1.02340-0.00147*x;
-   //   else if (idx == 92  ) num = 0.99232-0.00027*x;
-   //   else if (idx == 93  ) num = 1.00800-0.00094*x;
-   //   else if (idx == 94  ) num = 0.98921-0.00029*x;
-   //   else if (idx == 95  ) num = 1.00956-0.00084*x;
-   //   else if (idx == 96  ) num = 1.00888-0.00091*x;
-   //   else if (idx == 97  ) num = 0.99272-0.00018*x;
-   //   else if (idx == 98  ) num = 1.01214-0.00111*x;
-   //   else if (idx == 99  ) num = 1.01610-0.00107*x;
-   //   else if (idx == 100 ) num = 0.99436-0.00021*x;
-   //   // // ADD THE FUNCTIONS FOR SYSTS BELOW! +1 SIGMA (IDX==-1) AND -1 SIGMA (IDX==-2)
-   //   else if (idx == -1  ) num = 1.00129-0.00053*x;
-   //   else if (idx == -2  ) num = 1.00014-0.00052*x;
-   //}
-
-   return num / den;
+   // data
+   if (idx == -10) { // nominal
+	   if (fabs(eta) > 0 && fabs(eta) <= 0.8) {
+		   if (pt > 3.3 && pt <= 4.5) num = 0.978123;
+		   else if (pt <= 5.5) num = 0.985305;
+		   else if (pt <= 6.5) num = 0.98696;
+		   else if (pt <= 8) num = 0.98821;
+		   else if (pt <= 10.5) num = 0.989972;
+		   else if (pt <= 14) num = 0.991429;
+		   else if (pt <= 18) num = 0.990797;
+		   else if (pt <= 25) num = 0.991848;
+	   }
+	   else if (fabs(eta) > 0.8 && fabs(eta) <= 1.5) {
+		   if (pt > 1.1 && pt <= 3.3) num = 0.973117;
+		   else if (pt <= 4.5) num = 0.984226;
+		   else if (pt <= 5.5) num = 0.988538;
+		   else if (pt <= 6.5) num = 0.991459;
+		   else if (pt <= 8) num = 0.991702;
+		   else if (pt <= 10.5) num = 0.990132;
+		   else if (pt <= 14) num = 0.992181;
+		   else if (pt <= 18) num = 0.992159;
+		   else if (pt <= 25) num = 0.992774;
+	   }
+	   else if (fabs(eta) > 1.5 && fabs(eta) <= 2.1) {
+		   if (pt > 0.8 && pt <= 2) num = 0.944705;
+		   else if (pt <= 3.5) num = 0.977526;
+		   else if (pt <= 4.5) num = 1;
+		   else if (pt <= 6.5) num = 0.99665;
+		   else if (pt <= 10) num = 1;
+		   else if (pt <= 14) num = 1;
+		   else if (pt <= 25) num = 1;
+	   }
+	   else if (fabs(eta) > 2.1 && fabs(eta) <= 2.4) {
+		   if (pt > 0.8 && pt <= 2) num = 0.942625;
+		   else if (pt <= 3.5) num = 0.979907;
+		   else if (pt <= 5.5) num = 0.987211;
+		   else if (pt <= 12) num = 0.997746;
+		   else if (pt <= 25) num = 0.999999;
+	   }
+   }
+   else if (idx == -11) { // stat up
+	   if (fabs(eta) > 0 && fabs(eta) <= 0.8) {
+		   if (pt > 3.3 && pt <= 4.5) num = 0.978818;
+		   else if (pt <= 5.5) num = 0.986103;
+		   else if (pt <= 6.5) num = 0.987913;
+		   else if (pt <= 8) num = 0.989186;
+		   else if (pt <= 10.5) num = 0.991042;
+		   else if (pt <= 14) num = 0.992865;
+		   else if (pt <= 18) num = 0.993177;
+		   else if (pt <= 25) num = 0.995012;
+	   }
+	   else if (fabs(eta) > 0.8 && fabs(eta) <= 1.5) {
+		   if (pt > 1.1 && pt <= 3.3) num = 0.976812;
+		   else if (pt <= 4.5) num = 0.985077;
+		   else if (pt <= 5.5) num = 0.989537;
+		   else if (pt <= 6.5) num = 0.99261;
+		   else if (pt <= 8) num = 0.992858;
+		   else if (pt <= 10.5) num = 0.991484;
+		   else if (pt <= 14) num = 0.993958;
+		   else if (pt <= 18) num = 0.995099;
+		   else if (pt <= 25) num = 0.997159;
+	   }
+	   else if (fabs(eta) > 1.5 && fabs(eta) <= 2.1) {
+		   if (pt > 0.8 && pt <= 2) num = 0.951165;
+		   else if (pt <= 3.5) num = 0.982042;
+		   else if (pt <= 4.5) num = 1.00035;
+		   else if (pt <= 6.5) num = 1;
+		   else if (pt <= 10) num = 1;
+		   else if (pt <= 14) num = 1;
+		   else if (pt <= 25) num = 1;
+	   }
+	   else if (fabs(eta) > 2.1 && fabs(eta) <= 2.4) {
+		   if (pt > 0.8 && pt <= 2) num = 0.952285;
+		   else if (pt <= 3.5) num = 0.988946;
+		   else if (pt <= 5.5) num = 0.995206;
+		   else if (pt <= 12) num = 1;
+		   else if (pt <= 25) num = 1.01117;
+	   }
+   }
+   else if (idx == -12) { // stat down
+	   if (fabs(eta) > 0 && fabs(eta) <= 0.8) {
+		   if (pt > 3.3 && pt <= 4.5) num = 0.977419;
+		   else if (pt <= 5.5) num = 0.984489;
+		   else if (pt <= 6.5) num = 0.985978;
+		   else if (pt <= 8) num = 0.987201;
+		   else if (pt <= 10.5) num = 0.988857;
+		   else if (pt <= 14) num = 0.989906;
+		   else if (pt <= 18) num = 0.988245;
+		   else if (pt <= 25) num = 0.988349;
+	   }
+	   else if (fabs(eta) > 0.8 && fabs(eta) <= 1.5) {
+		   if (pt > 1.1 && pt <= 3.3) num = 0.96944;
+		   else if (pt <= 4.5) num = 0.983372;
+		   else if (pt <= 5.5) num = 0.987528;
+		   else if (pt <= 6.5) num = 0.99028;
+		   else if (pt <= 8) num = 0.990514;
+		   else if (pt <= 10.5) num = 0.988733;
+		   else if (pt <= 14) num = 0.990321;
+		   else if (pt <= 18) num = 0.988999;
+		   else if (pt <= 25) num = 0.987986;
+	   }
+	   else if (fabs(eta) > 1.5 && fabs(eta) <= 2.1) {
+		   if (pt > 0.8 && pt <= 2) num = 0.938956;
+		   else if (pt <= 3.5) num = 0.97301;
+		   else if (pt <= 4.5) num = 0.999653;
+		   else if (pt <= 6.5) num = 0.992216;
+		   else if (pt <= 10) num = 0.997602;
+		   else if (pt <= 14) num = 0.99683;
+		   else if (pt <= 25) num = 0.996159;
+	   }
+	   else if (fabs(eta) > 2.1 && fabs(eta) <= 2.4) {
+		   if (pt > 0.8 && pt <= 2) num = 0.930772;
+		   else if (pt <= 3.5) num = 0.971151;
+		   else if (pt <= 5.5) num = 0.979352;
+		   else if (pt <= 12) num = 0.9896;
+		   else if (pt <= 25) num = 0.988826;
+	   }
+   }
+   if (idx == -13) { // TnP fit syst up
+	   if (fabs(eta) > 0 && fabs(eta) <= 0.8) {
+		   if (pt > 3.3 && pt <= 4.5) num = 0.978613;
+		   else if (pt <= 5.5) num = 0.985822;
+		   else if (pt <= 6.5) num = 0.987338;
+		   else if (pt <= 8) num = 0.988535;
+		   else if (pt <= 10.5) num = 0.990339;
+		   else if (pt <= 14) num = 0.991878;
+		   else if (pt <= 18) num = 0.991286;
+		   else if (pt <= 25) num = 0.992211;
+	   }
+	   else if (fabs(eta) > 0.8 && fabs(eta) <= 1.5) {
+		   if (pt > 1.1 && pt <= 3.3) num = 0.98176;
+		   else if (pt <= 4.5) num = 0.985291;
+		   else if (pt <= 5.5) num = 0.98949;
+		   else if (pt <= 6.5) num = 0.992347;
+		   else if (pt <= 8) num = 0.992573;
+		   else if (pt <= 10.5) num = 0.99101;
+		   else if (pt <= 14) num = 0.993075;
+		   else if (pt <= 18) num = 0.993063;
+		   else if (pt <= 25) num = 0.993638;
+	   }
+	   else if (fabs(eta) > 1.5 && fabs(eta) <= 2.1) {
+		   if (pt > 0.8 && pt <= 2) num = 0.949066;
+		   else if (pt <= 3.5) num = 0.979764;
+		   else if (pt <= 4.5) num = 1.0019;
+		   else if (pt <= 6.5) num = 0.99765;
+		   else if (pt <= 10) num = 1.00022;
+		   else if (pt <= 14) num = 1;
+		   else if (pt <= 25) num = 1;
+	   }
+	   else if (fabs(eta) > 2.1 && fabs(eta) <= 2.4) {
+		   if (pt > 0.8 && pt <= 2) num = 0.964941;
+		   else if (pt <= 3.5) num = 0.985622;
+		   else if (pt <= 5.5) num = 0.99152;
+		   else if (pt <= 12) num = 1.00001;
+		   else if (pt <= 25) num = 1.00055;
+	   }
+   }
+   else if (idx == -14) { // TnP fit syst down
+	   if (fabs(eta) > 0 && fabs(eta) <= 0.8) {
+		   if (pt > 3.3 && pt <= 4.5) num = 0.977633;
+		   else if (pt <= 5.5) num = 0.984787;
+		   else if (pt <= 6.5) num = 0.986582;
+		   else if (pt <= 8) num = 0.987885;
+		   else if (pt <= 10.5) num = 0.989604;
+		   else if (pt <= 14) num = 0.99098;
+		   else if (pt <= 18) num = 0.990308;
+		   else if (pt <= 25) num = 0.991485;
+	   }
+	   else if (fabs(eta) > 0.8 && fabs(eta) <= 1.5) {
+		   if (pt > 1.1 && pt <= 3.3) num = 0.964475;
+		   else if (pt <= 4.5) num = 0.98316;
+		   else if (pt <= 5.5) num = 0.987586;
+		   else if (pt <= 6.5) num = 0.990572;
+		   else if (pt <= 8) num = 0.99083;
+		   else if (pt <= 10.5) num = 0.989254;
+		   else if (pt <= 14) num = 0.991287;
+		   else if (pt <= 18) num = 0.991256;
+		   else if (pt <= 25) num = 0.991909;
+	   }
+	   else if (fabs(eta) > 1.5 && fabs(eta) <= 2.1) {
+		   if (pt > 0.8 && pt <= 2) num = 0.940343;
+		   else if (pt <= 3.5) num = 0.975288;
+		   else if (pt <= 4.5) num = 0.998101;
+		   else if (pt <= 6.5) num = 0.99565;
+		   else if (pt <= 10) num = 0.999779;
+		   else if (pt <= 14) num = 1;
+		   else if (pt <= 25) num = 1;
+	   }
+	   else if (fabs(eta) > 2.1 && fabs(eta) <= 2.4) {
+		   if (pt > 0.8 && pt <= 2) num = 0.920309;
+		   else if (pt <= 3.5) num = 0.974193;
+		   else if (pt <= 5.5) num = 0.982901;
+		   else if (pt <= 12) num = 0.995479;
+		   else if (pt <= 25) num = 0.999448;
+	   }
+   }
+   return (num / den);
 }
 
 
