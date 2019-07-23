@@ -10,7 +10,7 @@ TTree* copyTree(TTree* told, int nentries=0) {
   // tnew->SetAutoFlush(10000000);
    int passedDXY,passedDZ, isNotMuonSeeded, SoftID, SoftHINoDxyz, tag_acceptance, probe_acceptance, probe_trg_acceptance;
   // int isMuonSeeded; //fix to naming in MC - the *Not* was omitted.
-   float dzPV, dxyPV, dB, pt, eta, tag_pt, p;
+   float dzPV, dxyPV, dB, pt, eta, tag_pt, p, pair_dz, pair_deltaR;
 
    told->SetBranchAddress("dzPV",&dzPV);
    told->SetBranchAddress("dxyPV",&dxyPV);
@@ -22,6 +22,7 @@ TTree* copyTree(TTree* told, int nentries=0) {
    told->SetBranchAddress("pt", &pt);
    told->SetBranchAddress("eta", &eta);
    told->SetBranchAddress("tag_pt", &tag_pt);
+   //told->SetBranchAddress("pair_dz", &pair_dz);
 
    tnew->Branch("SoftID", &SoftID, "SoftID/I");
    tnew->Branch("passedDXY", &passedDXY, "passedDXY/I");

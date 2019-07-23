@@ -41,7 +41,7 @@ double tnp_weight_trg_ppb(double pt, double eta, int idx=0);
 ///////////////////////////////////////////////////
 //                 T r k M    P P b                //
 ///////////////////////////////////////////////////
-double tnp_weight_trk_ppb(double pt, double eta, int idx=0) {
+double tnp_weight_trkM_ppb(double pt, double eta, int idx=0) {
    double x = pt;
 
    if (idx == -10) {

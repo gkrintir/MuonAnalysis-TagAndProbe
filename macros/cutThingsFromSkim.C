@@ -5,14 +5,14 @@
 
 TTree* skimTree(TTree* told, const std::string& type, const int& ps)
 {
-	std::vector<std::string> varVec = { "pt", "eta", "abseta", "mass", "tag_nVertices", "tag_acceptance", "probe_acceptance", "probe_trg_acceptance", "tag_hiNtracks","isNotMuonSeeded", "TM", "SoftID", "HLT_PAL1DoubleMuOpen" }; //with flags
+	std::vector<std::string> varVec = { "pt", "eta", "abseta", "mass", "tag_nVertices", /*"tag_acceptance", "probe_acceptance", "probe_trg_acceptance", "isNotMuonSeeded",*/ "tag_hiNtracks", "TM"/*, "SoftID", "HLT_PAL1DoubleMuOpen", "pair_dz", "Custom_track_cuts"*/ }; //with flags
 	//std::vector<std::string> varVec = { "pt", "eta", "abseta", "mass", "tag_nVertices", "probe_trg_acceptance", "tag_hiNtracks", "TM", "SoftID", "HLT_PAL1DoubleMuOpen" }; //for Muid from Trk
 
 	std::string sel = "";
 	if (type == "Trg") { sel = ("isNotMuonSeeded == 1 && TM==1 && SoftID==1 && tag_acceptance == 1 && probe_trg_acceptance==1 && (mass>=2.6 && mass<=3.6)"); }
 	else if (type == "MuID") { sel = ("isNotMuonSeeded == 1 && TM==1 && tag_acceptance == 1 && probe_acceptance==1 && (mass>=2.6 && mass<=3.6)"); }
 	else if (type == "MuID_Trk") { sel = ("TM==1"); } //going from Trk
-	else if (type == "Trk") { sel = ("isNotMuonSeeded==1 && tag_acceptance == 1 && probe_acceptance==1 && (mass>=2.6 && mass<=3.6)"); }
+	else if (type == "Trk") { sel = ("")/*"isNotMuonSeeded==1 && tag_acceptance == 1 && probe_acceptance==1 && (mass>=2.7 && mass<=3.5) && (pair_dz>-2 && pair_dz<2) && Custom_track_cuts==1")*/; }
 
 	told->SetBranchStatus("*", 0);
 	for (auto& v : varVec) { if (told->GetBranch(v.c_str())) told->SetBranchStatus(v.c_str(), 1); }
