@@ -6,24 +6,29 @@
 // IN THIS FILE YOU WILL FIND:
 // ++++++++++++++
 
-// - TrkM: (tnp_weight_trkM_ppb) // NEEDS TO BE UPDATED
+// - TrkM: 
+//	(tnp_weight_trkM_ppb) // NEEDS TO BE UPDATED
 //   * idx = 0:  nominal
 //   * idx = 1..100: toy variations, stat. only
 //   * idx = -1: syst variation, "new_MAX", +1 sigma NOT YET IMPLEMENTED
 //   * idx = -2: syst variation, "new_MAX", -1 sigma NOT YET IMPLEMENTED
 //   * idx = -10: binned
 
-// - MuID: (tnp_weight_muid_ppb)
+// - MuID: 
+//	(tnp_weight_muid_ppb)
 //   * idx = 0: binned, nominal
 //   * idx = -11: binned, stat up
 //   * idx = -12: binned, stat down
 //   * idx = -13: binned, syst up
 //   * idx = -14: binned, syst down
+//
+// (tnp_weight_muid_nTrack)  - data correction based on the number of tracks in the event (integrated value = 1). It is for a single muon, for dimuons it would need to be squared
+//   * idx = 0: binned, nominal
+//   * idx = -11: binned, stat up
+//   * idx = -12: binned, stat down
 
-
-
-
-// - Trigger: (tnp_weight_trg_ppb)
+// - Trigger: 
+//	(tnp_weight_trg_ppb)
 //   * idx = 0: nominal
 //   * idx = -11: stat variation,  +1 sigma
 //   * idx = -12: stat variation,  -1 sigma
@@ -34,6 +39,7 @@
 // ++++++++++++++++++
 double tnp_weight_trkM_ppb(double pt, double eta, int idx = 0); //TO BE UPDATED
 double tnp_weight_muid_ppb(double pt, double eta, int idx = 0); // HAS BEEN UPDATED
+double tnp_weight_muid_nTrack(int nTrack, int idx = 0); //
 double tnp_weight_trg_ppb(double pt, double eta, int idx = 0);
 
 
@@ -330,6 +336,41 @@ double tnp_weight_muid_ppb(double pt, double eta, int idx) {
 	}
 	return (num / den);
 }
+
+////////////////// N   T R A C K    ///////////////
+
+double tnp_weight_muid_nTrack(int nTrack, int idx)
+{
+	if (idx == 0) {
+		if (nTrack <= 35) return 1.00907;
+		else if (nTrack <= 60) return 1.00433;
+		else if (nTrack <= 90) return 0.999192;
+		else if (nTrack <= 120) return 0.999982;
+		else if (nTrack <= 155) return 0.996984;
+		else if (nTrack <= 190) return 0.987001;
+		else return 1.00127;
+	}
+	if (idx == -11) {
+		if (nTrack <= 35) return 1.01043;
+		else if (nTrack <= 60) return 1.00533;
+		else if (nTrack <= 90) return 1.00028;
+		else if (nTrack <= 120) return 1.00201;
+		else if (nTrack <= 155) return 1.00084;
+		else if (nTrack <= 190) return 0.995623;
+		else return 1.02132;
+	}
+	if (idx == -12) {
+		if (nTrack <= 35) return 1.00773;
+		else if (nTrack <= 60) return 1.00332;
+		else if (nTrack <= 90) return 0.99811;
+		else if (nTrack <= 120) return 0.997972;
+		else if (nTrack <= 155) return 0.99318;
+		else if (nTrack <= 190) return 0.978575;
+		else return 0.981994;
+	}
+	return -1; //default return for bad idx
+}
+
 
 
 ///////////////////////////////////////////////////

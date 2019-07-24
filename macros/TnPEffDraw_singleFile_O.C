@@ -65,26 +65,30 @@ TString collTag = "pPb"; // isPbPb ? "PbPb" : "pp";
 
 #ifdef MUID
 
-// Location of the files
-//const int nSyst = 1;
-//const char* fDataName[nSyst] = { "tnp_Ana_RD_MuId_pPb_0.root" };
-//const char* fMCName[nSyst] = { "tnp_Ana_MC_MuId_pPb_0.root" };
+ ////Location of the files
+const int nSyst = 1;
+const char* fDataName[nSyst] = { "tnp_Ana_RD_MuId_pPb_0.root" };
+const char* fMCName[nSyst] = { "tnp_Ana_MC_MuId_pPb_0.root" };
+const char* systName[nSyst] = { "Nominal" };
+
+//const char* fDataName[nSyst] = { "tnp_Ana_RD_MuId_pPb_pPb_0.root" };
+//const char* fMCName[nSyst] = { "tnp_Ana_RD_MuId_pPb_Pbp_0.root" };
+//const char* systName[nSyst] = { "pPb vs Pbp" };
+
+
+//const int nSyst = 4;
+//const char* fDataName[nSyst] = { "tnp_Ana_RD_MuId_pPb_0.root", "tnp_Ana_RD_MuId_pPb_mass_0.root", "tnp_Ana_RD_MuId_pPb_sig_0.root", "tnp_Ana_RD_MuId_pPb_bkg_0.root" };
+//const char* fMCName[nSyst] = { "tnp_Ana_MC_MuId_pPb_0.root", "tnp_Ana_MC_MuId_pPb_mass_0.root", "tnp_Ana_MC_MuId_pPb_sig_0.root", "tnp_Ana_MC_MuId_pPb_bkg_0.root" };
 //const char* systName[nSyst] = {
 //   "Nominal",
+//   "Mass range 2.8-3.4",
+//   "Sig - Voigtian",
+//   "Bkg - exp(Pol3)",
 //};
-const int nSyst = 4;
-const char* fDataName[nSyst] = { "tnp_Ana_RD_MuId_pPb_0.root", "tnp_Ana_RD_MuId_pPb_mass_0.root", "tnp_Ana_RD_MuId_pPb_sig_0.root", "tnp_Ana_RD_MuId_pPb_bkg_0.root" };
-const char* fMCName[nSyst] = { "tnp_Ana_MC_MuId_pPb_0.root", "tnp_Ana_MC_MuId_pPb_mass_0.root", "tnp_Ana_MC_MuId_pPb_sig_0.root", "tnp_Ana_MC_MuId_pPb_bkg_0.root" };
-const char* systName[nSyst] = {
-   "Nominal",
-   "Mass range 2.8-3.4",
-   "Sig - Voigtian",
-   "Bkg - exp(Pol3)",
-};
 
 int fitfcn = 1;
-const bool bPlotAbseta = false;
-const bool bPlotSyst = true;
+const bool bPlotAbseta = true;
+const bool bPlotSyst = false;
 const bool doSF = false;
 const bool doToys = false; // do the toy study for the correction factors? //requires SFs
 
@@ -111,8 +115,9 @@ const double effmin = 0.8;
 const double effmax = 1.02;
 const double sfrange = 0.02;
 const double c_ptRange = 25; // how far to plot the pt
-const double c_centralityRange = 250; // how far to plot the centrality (hibin goes to 200)
-
+const double c_centralityRange = 300; // how far to plot the centrality (hibin goes to 200)
+const double cent_int_value = 0.9761;
+const double cent_int_Err = 0.0014; //copied by hand for now
 
 #endif
 
@@ -161,12 +166,12 @@ const int nSyst = 1;
 //const char* systName[nSyst] = {"Nominal", "Mass range 65-145", "Sig - Conv(CB,Gauss)", "Bkg - pol2"}; //name for systematics
 
 
-const char* fDataName[nSyst] = { "tnp_Ana_MC_TrkM_pPb_0.root" };
+const char* fDataName[nSyst] = { "tnp_Ana_RD_TrkM_pPb_0.root" };
 const char* fMCName[nSyst] = { "tnp_Ana_MC_TrkM_pPb_0.root" };
 const char* systName[nSyst] = { "Nominal" };
 
 int fitfcn = 1;
-const bool bPlotAbseta = false;
+const bool bPlotAbseta = true;
 const bool bPlotSyst = false;
 const bool doSF = false;
 const bool doToys = false; // do the toy study for the correction factors? //requires SFs
@@ -186,11 +191,13 @@ ofstream file_Cent("CentValues_TrkM.txt");
 ofstream file_TestErr("TrkM_ExpErr.txt");
 TString treeTag("tpTree");
 TString cutLegend("Tracker Muon");
-const double effmin = 0.6;
+const double effmin = 0.4;
 const double effmax = 1.05;
-const double sfrange = 0.03;
+const double sfrange = 0.10;
 const double c_ptRange = 25; // how far to plot the pt
 const double c_centralityRange = 300; // how far to plot the centrality (hibin goes to 200)
+const double cent_int_value = 0.97613;
+const double cent_int_Err = 0.00012; //copied by hand for now
 
 #endif
 
@@ -212,7 +219,7 @@ ofstream file_binnedsfs("correction_binned.txt");
 
 
 void TnPEffDraw_singleFile_O() {
-
+	cout << " START " << endl;
 	// gROOT->Macro("~/logon.C");
 	gROOT->SetStyle("Plain");
 	gStyle->SetOptStat(0);
@@ -539,10 +546,10 @@ void TnPEffDraw_singleFile_O() {
 			}
 			leg1->SetHeader(header);
 			sprintf(legs, "MC PYTHIA + HYDJET: %.4f^{ + %.3f}_{ - %.3f}", TrkAbsEta0[k][i][0], TrkAbsEta0[k][i][1], TrkAbsEta0[k][i][2]);
-			//sprintf(legs, "MC Pbp: %.4f^{ + %.3f}_{ - %.3f}", TrkAbsEta0[k][i][0], TrkAbsEta0[k][i][1], TrkAbsEta0[k][i][2]);
+			//sprintf(legs, "RD Pbp: %.4f^{ + %.3f}_{ - %.3f}", TrkAbsEta0[k][i][0], TrkAbsEta0[k][i][1], TrkAbsEta0[k][i][2]);
 			leg1->AddEntry(ComPt_MC[k][i], legs, "pl");
 			sprintf(legs, "Data: %.4f^{ + %.3f}_{ - %.3f}", TrkAbsEta1[k][i][0], TrkAbsEta1[k][i][1], TrkAbsEta1[k][i][2]);
-			//sprintf(legs, "MC pPb: %.4f^{ + %.3f}_{ - %.3f}", TrkAbsEta1[k][i][0], TrkAbsEta1[k][i][1], TrkAbsEta1[k][i][2]);
+			//sprintf(legs, "RD pPb: %.4f^{ + %.3f}_{ - %.3f}", TrkAbsEta1[k][i][0], TrkAbsEta1[k][i][1], TrkAbsEta1[k][i][2]);
 			leg1->AddEntry(ComPt_RD[k][i], legs, "pl");
 			leg1->Draw("same");
 
@@ -930,10 +937,10 @@ void TnPEffDraw_singleFile_O() {
 			double ptmin = ((RooRealVar*)rds_abseta_MC[k]->get()->find("pt"))->getBinning().binLow(0);
 			leg1->SetHeader(TString("#splitline{") + cutLegend + Form(" Efficiency}{(p^{#mu}_{T}>%.1f)}", ptmin));
 			sprintf(legs, "MC PYTHIA + HYDJET: %.4f^{ + %.3f}_{ - %.3f}", Trk0[k][0], Trk0[k][1], Trk0[k][2]);
-			//sprintf(legs, "MC Pbp: %.4f^{ + %.3f}_{ - %.3f}", Trk0[k][0], Trk0[k][1], Trk0[k][2]);
+			//sprintf(legs, "RD Pbp: %.4f^{ + %.3f}_{ - %.3f}", Trk0[k][0], Trk0[k][1], Trk0[k][2]);
 			leg1->AddEntry(ComPt_MC[k][0], legs, "pl");
 			sprintf(legs, "Data: %.4f^{ + %.3f}_{ - %.3f}", Trk1[k][0], Trk1[k][1], Trk1[k][2]);
-			//sprintf(legs, "MC pPb: %.4f^{ + %.3f}_{ - %.3f}", Trk1[k][0], Trk1[k][1], Trk1[k][2]);
+			//sprintf(legs, "RD pPb: %.4f^{ + %.3f}_{ - %.3f}", Trk1[k][0], Trk1[k][1], Trk1[k][2]);
 			leg1->AddEntry(ComPt_RD[k][0], legs, "pl");
 			leg1->Draw("same");
 			leg1->Draw("same");
@@ -1010,10 +1017,10 @@ void TnPEffDraw_singleFile_O() {
 		double ptmin = ((RooRealVar*)rds_eta_MC[k]->get()->find("pt"))->getBinning().binLow(0);
 		leg1->SetHeader(TString("#splitline{") + cutLegend + Form(" Efficiency}{(p^{#mu}_{T}>%.1f)}", ptmin));
 		sprintf(legs, "MC PYTHIA + HYDJET: %.4f^{ + %.3f}_{ - %.3f}", Trk0[k][0], Trk0[k][1], Trk0[k][2]);
-		//sprintf(legs, "MC Pbp: %.4f^{ + %.3f}_{ - %.3f}", Trk0[k][0], Trk0[k][1], Trk0[k][2]);
+		//sprintf(legs, "RD Pbp: %.4f^{ + %.3f}_{ - %.3f}", Trk0[k][0], Trk0[k][1], Trk0[k][2]);
 		leg1->AddEntry(ComPt_MC[k][0], legs, "pl");
 		sprintf(legs, "Data: %.4f^{ + %.3f}_{ - %.3f}", Trk1[k][0], Trk1[k][1], Trk1[k][2]);
-		//sprintf(legs, "MC pPb: %.4f^{ + %.3f}_{ - %.3f}", Trk1[k][0], Trk1[k][1], Trk1[k][2]);
+		//sprintf(legs, "RD pPb: %.4f^{ + %.3f}_{ - %.3f}", Trk1[k][0], Trk1[k][1], Trk1[k][2]);
 		leg1->AddEntry(ComPt_RD[k][0], legs, "pl");
 		leg1->Draw("same");
 		leg1->Draw("same");
@@ -1148,8 +1155,8 @@ void TnPEffDraw_singleFile_O() {
 		c1->SaveAs(saveDirName + "/" + treeTag + "Eff_" + collTag + "_RD_MC_Cent.pdf");
 		c1->SaveAs(saveDirName + "/" + treeTag + "Eff_" + collTag + "_RD_MC_Cent.png");
 
-		// print the centrality dependence to file
-		double xVal, yVal, ErrDown, ErrUp;
+		//// print the centrality dependence to file
+		double xVal, yVal, ErrDown, ErrUp, CentSF, ErrDownSF, ErrUpSF;
 		file_Cent << "Data " << endl << endl;
 		file_Cent << "Centrality Value ErrDown ErrUp" << endl;
 		for (int bin = 0; bin < effCentData->GetN(); bin++)
@@ -1157,7 +1164,12 @@ void TnPEffDraw_singleFile_O() {
 			effCentData->GetPoint(bin, xVal, yVal);
 			ErrDown = effCentData->GetErrorYlow(bin);
 			ErrUp = effCentData->GetErrorYhigh(bin);
-			file_Cent << xVal << " " << yVal << " " << ErrDown << " " << ErrUp << endl;
+			//cout << "cent" << eff1bin_RD[0]->GetY()[0] << endl;
+			CentSF = yVal / cent_int_value;
+			ErrDownSF = (ErrDown/yVal- cent_int_Err/cent_int_value)*CentSF; //one is subset of the other
+			ErrUpSF = (ErrUp / yVal - cent_int_Err / cent_int_value)*CentSF; //one is subset of the other
+			file_Cent << xVal << " " << yVal << " " << ErrDown << " " << ErrUp << " " << CentSF << " " << ErrDownSF << " " << ErrUpSF << " stat down: " << (CentSF-ErrDownSF) << " stat up: " << (CentSF+ErrUpSF) << endl;
+			
 		}
 
 		file_Cent << endl << endl << "MC " << endl << endl;
