@@ -17,3 +17,14 @@ queue
 arguments = RD MuId 0 nom
 queue
 
+arguments = RD MuId 1 bkg
+queue
+
+arguments = RD MuId 1 sig
+queue
+
+arguments = RD MuId 1 mass
+queue
+
+arguments = RD MuId 1 nom
+queue

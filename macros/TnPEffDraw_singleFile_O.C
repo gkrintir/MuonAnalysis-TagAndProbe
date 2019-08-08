@@ -44,7 +44,7 @@ using namespace std;
 
 // Choose the efficiency type.
 // Possible values: TRK, MUID, TRG
-#define MUID
+#define TRK
 
 // pp or PbPb?
 bool isPbPb = true; // if true, will compute the centrality dependence
@@ -99,7 +99,7 @@ TString centTag("MuId_centdep");
 //TString centTag("MuId_centdepHF");
 //TString centTag("MuId_nVerticesDep");
 const int nAbsEtaBins = 6;
-TString ptTag[nAbsEtaBins] = {"MuId_pt", "MuId_abseta00_08", "MuId_abseta08_15", "MuId_abseta15_21", "MuId_abseta08_21", "MuId_abseta21_24" };
+TString ptTag[nAbsEtaBins] = {"MuId_abseta00_08", "MuId_abseta08_15", "MuId_abseta15_21", "MuId_abseta21_24", "MuId_pt", "MuId_abseta08_21" };
 TString allTag("MuId_1bin");
 TString absetaVar("abseta");
 //TString centVar("tag_hiNtracks");
@@ -166,7 +166,7 @@ const int nSyst = 1;
 //const char* systName[nSyst] = {"Nominal", "Mass range 65-145", "Sig - Conv(CB,Gauss)", "Bkg - pol2"}; //name for systematics
 
 
-const char* fDataName[nSyst] = { "tnp_Ana_RD_TrkM_pPb_0.root" };
+const char* fDataName[nSyst] = { "tnp_Ana_RD_TrkM_pPb_tenthTC_0.root" };
 const char* fMCName[nSyst] = { "tnp_Ana_MC_TrkM_pPb_0.root" };
 const char* systName[nSyst] = { "Nominal" };
 
@@ -181,7 +181,7 @@ TString etaTag("TrkM_etadep");
 TString absetaTag("TrkM_absetadep");
 TString centTag("TrkM_centdep");
 const int nAbsEtaBins = 6;
-TString ptTag[nAbsEtaBins] = {"TrkM_pt","TrkM_abseta00_08","TrkM_abseta08_15", "TrkM_abseta15_21", "TrkM_abseta08_21", "TrkM_abseta21_24"};
+TString ptTag[nAbsEtaBins] = {"TrkM_abseta00_08", "TrkM_abseta08_15", "TrkM_abseta15_21", "TrkM_abseta21_24", "TrkM_pt", "TrkM_abseta08_21"};
 TString allTag("TrkM_1bin");
 TString absetaVar("abseta");
 TString centVar("tag_hiNtracks");
@@ -193,7 +193,7 @@ TString treeTag("tpTree");
 TString cutLegend("Tracker Muon");
 const double effmin = 0.4;
 const double effmax = 1.05;
-const double sfrange = 0.10;
+const double sfrange = 0.20;
 const double c_ptRange = 25; // how far to plot the pt
 const double c_centralityRange = 300; // how far to plot the centrality (hibin goes to 200)
 const double cent_int_value = 0.97613;
@@ -241,7 +241,7 @@ void TnPEffDraw_singleFile_O() {
 	}
 
 	TCanvas *c1 = new TCanvas("c1", "", 700, 600);
-
+	cout << " Loading... " << endl;
 	// Loading the values for abseta bins
 	vector<RooDataSet*> rds_absetaPtDep_MC[nSyst], rds_absetaPtDep_RD[nSyst];
 
@@ -255,7 +255,7 @@ void TnPEffDraw_singleFile_O() {
 
 	vector<TGraphAsymmErrors*> ComPt_MC[nSyst], ComPt_RD[nSyst];
 
-	//Loading the TGraphAsymmErrors for  abseta bins - 1 bin
+	//Loading the TGraphAsymmErrors for pt dep in abseta bins
 	for (int k = 0; k < nSyst; k++) {
 		for (unsigned int i = 0; i < rds_absetaPtDep_MC[k].size(); i++)
 		{
@@ -310,7 +310,7 @@ void TnPEffDraw_singleFile_O() {
 	// Loading the TGraphAsymmErrors for  abseta bins
 	TGraphAsymmErrors* ComAbsEta_MC[nSyst];
 	TGraphAsymmErrors* ComAbsEta_RD[nSyst];
-	cout << "abseta load" << endl;
+	cout << "abseta bins load" << endl;
 	for (int i = 0; i < nSyst; i++) {
 		ComAbsEta_MC[i] = plotEff_1bin(rds_abseta_MC[i], 1, "abseta");
 		ComAbsEta_RD[i] = plotEff_1bin(rds_abseta_RD[i], 1, "abseta");
@@ -384,7 +384,7 @@ void TnPEffDraw_singleFile_O() {
 	}
 
 	////////////////// get some averages
-	cout << "come to averages" << endl;
+	cout << endl<< "come to averages" << endl;
 	double Trk0[nSyst][4];
 	double Trk1[nSyst][4];
 	double*** TrkAbsEta0 = new double**[nSyst];
@@ -402,7 +402,7 @@ void TnPEffDraw_singleFile_O() {
 
 		CalEffErr(eff1bin_MC[k], Trk0[k]);
 		CalEffErr(eff1bin_RD[k], Trk1[k]);
-		cout << "GotHere" << endl;
+		cout << "GotHere" << endl << endl;;
 		CalEffErr(effAbsEta_MC[k], TrkAbsEta0[k]);
 		CalEffErr(effAbsEta_RD[k], TrkAbsEta1[k]);
 	}
@@ -1485,7 +1485,7 @@ void CalEffErr(TGraph *a, double *b) {
 void CalEffErr(vector<TGraphAsymmErrors*> a, double **b) {
 	const int nbins = 100;
 	const int vsize = a.size();
-
+	cout<< "start eff calculation "<< vsize<<endl;
 	for (int vbin = 0; vbin < vsize; vbin++)
 	{
 		double x[nbins], y[nbins];
@@ -1493,22 +1493,23 @@ void CalEffErr(vector<TGraphAsymmErrors*> a, double **b) {
 		//double b[3] = 0;
 
 		int nBins = a[vbin]->GetN();
+		cout << "nbins "<<nBins << endl;
 		for (int i = 0;i < a[vbin]->GetN();i++) {
 			a[vbin]->GetPoint(i, x[i], y[i]);
-			//cout<<"Eff x = "<<x[i]<<" y = "<<y[i]<<endl;
+			cout<<"Eff x = "<<x[i]<<" y = "<<y[i]<<endl;
 			double eHigh = a[vbin]->GetErrorYhigh(i);
 			double eLow = a[vbin]->GetErrorYlow(i);
-			//cout<<"Err high = "<<eHigh<<" low = "<<eLow<<endl;
+			cout<<"Err high = "<<eHigh<<" low = "<<eLow<<endl;
 			sum += y[i];
 			errHighSum += eHigh;
 			sqSumHigh += eHigh*eHigh;
 			errLowSum += eLow;
 			sqSumLow += eLow*eLow;
+			cout << "sum: " << sum << "and i bins " << i <<  endl;
 		}
 		b[vbin][0] = sum / nBins;
 		b[vbin][1] = sqrt(sqSumHigh) / nBins;
 		b[vbin][2] = sqrt(sqSumLow) / nBins;
-		//cout<<"b1 : "<<b[0]<<", b2 : "<<b[1]<<", b3 : "<<b[2]<<endl;
 
 		cout << b[vbin][0] << "^{" << b[vbin][1] << "}_{" << b[vbin][2] << "}" << endl;
 	}

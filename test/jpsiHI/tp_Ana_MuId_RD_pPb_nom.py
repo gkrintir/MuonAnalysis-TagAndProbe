@@ -72,7 +72,7 @@ VEFFICIENCYSET =cms.VPSet(
             EfficiencyCategoryAndState = cms.vstring("SoftID","true"),
             UnbinnedVariables = cms.vstring("mass"),
             BinnedVariables = cms.PSet(
-                pt = cms.vdouble(1.1, 2.5, 3.5, 4.5, 5.5, 6.5, 8.0, 10.5, 14.0, 18.0, 25.0),
+                pt = cms.vdouble(1.1, 3.3, 4.5, 5.5, 6.5, 8.0, 10.5, 14.0, 18.0, 25.0),
                 abseta = cms.vdouble(0.8, 1.5),
                 tag_nVertices    = cms.vdouble(0.9,1.1),
                 #TM = cms.vstring("true"),
@@ -120,7 +120,7 @@ VEFFICIENCYSET =cms.VPSet(
              EfficiencyCategoryAndState = cms.vstring("SoftID","true"),
              UnbinnedVariables = cms.vstring("mass"),
              BinnedVariables = cms.PSet(
-                pt = cms.vdouble(0.8, 2.0, 3.0, 4.5, 6.5, 10.0, 14.0, 25.0),
+                pt = cms.vdouble(0.8, 2.0, 3.5, 4.5, 6.5, 10.0, 14.0, 25.0),
                 abseta = cms.vdouble(1.5,2.1),
                 tag_nVertices    = cms.vdouble(0.9,1.1),
                 #TM = cms.vstring("true"),
@@ -136,7 +136,7 @@ VEFFICIENCYSET =cms.VPSet(
              EfficiencyCategoryAndState = cms.vstring("SoftID","true"),
              UnbinnedVariables = cms.vstring("mass"),
              BinnedVariables = cms.PSet(
-                pt = cms.vdouble(0.8, 2.0, 3.0, 4.5, 6.5, 10.0, 14.0, 25.0),
+                pt = cms.vdouble(0.8, 2.0, 3.5, 4.5, 6.5, 10.0, 14.0, 25.0),
                 abseta = cms.vdouble(0.8,2.1),
                 tag_nVertices    = cms.vdouble(0.9,1.1),
                 #TM = cms.vstring("true"),
@@ -152,7 +152,7 @@ VEFFICIENCYSET =cms.VPSet(
             EfficiencyCategoryAndState = cms.vstring("SoftID","true"),
             UnbinnedVariables = cms.vstring("mass"),
             BinnedVariables = cms.PSet(
-                pt = cms.vdouble(0.8, 2.0, 3.5, 5.5, 8.0, 12.0, 25.0),
+                pt = cms.vdouble(0.8, 2.0, 3.5, 5.5, 12.0, 25.0),
                 abseta = cms.vdouble(2.1,2.4),
                 tag_nVertices    = cms.vdouble(0.9,1.1),
                 #TM = cms.vstring("true"),
@@ -457,7 +457,7 @@ process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
     
     # defines all the real variables of the probes available in the input tree and intended for use in the efficiencies
     Variables = cms.PSet(
-                         mass             = cms.vstring("Tag-Probe Mass", "2.6", "3.6", "GeV/c^{2}"), # mass range syst: 2.8-3.4
+                         mass             = cms.vstring("Tag-Probe Mass", "2.7", "3.4", "GeV/c^{2}"), # mass range syst: 2.6-3.6
                          pt               = cms.vstring("Probe p_{T}", "0.0", "30", "GeV/c"),
                          eta              = cms.vstring("Probe #eta", "-2.4", "2.4", ""),
                          abseta           = cms.vstring("Probe |#eta|", "0", "2.4", ""),
@@ -566,8 +566,8 @@ process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
         "RooFormulaVar::sigma2('@0*@1',{fracS[1.8,1.2,2.4],sigma1})",
         "Gaussian::signal2(mass, mean, sigma2)",
         "SUM::signal(frac[0.8,0.5,1.]*signal1,signal2)",
-        "Exponential::backgroundPass(RooFormulaVar::mass3('@1*@0 + @2*@0*@0 + @2*@0*@0*@0',{mass, lp1[0,-20,20], lp2[0,-20,20], lp3[0,-20,20])), One[1.0])",
-        "Exponential::backgroundPass(RooFormulaVar::mass3('@1*@0 + @2*@0*@0 + @2*@0*@0*@0',{mass, lf1[0,-20,20], lf2[0,-20,20], lf3[0,-20,20])), One[1.0])",
+        "Exponential::backgroundPass(RooFormulaVar::mass3p('@1*@0 + @2*@0*@0 + @2*@0*@0*@0',{mass, lp1[0,-20,20], lp2[0,-20,20], lp3[0,-20,20]}), One[1.0])",
+        "Exponential::backgroundFail(RooFormulaVar::mass3f('@1*@0 + @2*@0*@0 + @2*@0*@0*@0',{mass, lf1[0,-20,20], lf2[0,-20,20], lf3[0,-20,20]}), One[1.0])",
         "efficiency[0.9,0,1]",
         "signalFractionInPassing[0.9]"
     ),
