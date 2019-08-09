@@ -169,7 +169,7 @@ VEFFICIENCYSET =cms.VPSet(
             UnbinnedVariables = cms.vstring("mass"),
             BinnedVariables = cms.PSet(
                 pt = cms.vdouble(0.8, 25.0),
-                abseta = cms.vdouble(0,0.9,1.2,1.6,2.1,2.4),
+                abseta = cms.vdouble(0, 0.8, 1.5 ,2.1, 2.4),
                 tag_nVertices    = cms.vdouble(0.9,1.1),
                 #TM = cms.vstring("true"),
                 #isNotMuonSeeded = cms.vstring("true"),
@@ -332,11 +332,11 @@ VEFFICIENCYSET =cms.VPSet(
 #if scenario == "1": EFFICIENCYSET = cms.PSet(VEFFICIENCYSET[0], VEFFICIENCYSET[1])
 if scenario == "1": EFFICIENCYSET = cms.PSet(VEFFICIENCYSET[0])
 #if scenario == "1": EFFICIENCYSET = cms.PSet(VEFFICIENCYSET[19], VEFFICIENCYSET[20], VEFFICIENCYSET[21], VEFFICIENCYSET[22], VEFFICIENCYSET[23])
-if scenario == "2": EFFICIENCYSET = cms.PSet(VEFFICIENCYSET[1], VEFFICIENCYSET[2])
-if scenario == "3": EFFICIENCYSET = cms.PSet(VEFFICIENCYSET[3], VEFFICIENCYSET[6])
+if scenario == "2": EFFICIENCYSET = cms.PSet(VEFFICIENCYSET[1])
+if scenario == "3": EFFICIENCYSET = cms.PSet(VEFFICIENCYSET[2], VEFFICIENCYSET[3])
 #if scenario == "2": EFFICIENCYSET = cms.PSet(VEFFICIENCYSET[13], VEFFICIENCYSET[14],VEFFICIENCYSET[15])
 #if scenario == "3": EFFICIENCYSET = cms.PSet(VEFFICIENCYSET[16], VEFFICIENCYSET[17],VEFFICIENCYSET[18])
-if scenario == "4": EFFICIENCYSET = cms.PSet(VEFFICIENCYSET[7])
+if scenario == "4": EFFICIENCYSET = cms.PSet(VEFFICIENCYSET[6], VEFFICIENCYSET[7])
 if scenario == "5": EFFICIENCYSET = cms.PSet(VEFFICIENCYSET[8])
 if scenario == "6": EFFICIENCYSET = cms.PSet(VEFFICIENCYSET[9])
 if scenario == "7": EFFICIENCYSET = cms.PSet(VEFFICIENCYSET[10])
@@ -351,23 +351,24 @@ process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
     # IO parameters:
     #InputFileNames = cms.vstring("file:/afs/cern.ch/work/o/okukral/TnP_pPb/Data/PASingleMuon_PARun2016C-PromptReco-v1TnpTress_Pbpv1CentralityInfo.root"),
     #InputFileNames = cms.vstring("file:/afs/cern.ch/user/o/okukral/Work/public/TnP_pPb/tnpJPsi_Data_pPb-mergedPartial.root"),
-    InputFileNames = cms.vstring("file:/eos/cms/store/group/phys_heavyions/okukral/TagAndProbe2016/LowPt/tnpJPsi_Data_bothDirTrkQuarter.root"),
+    InputFileNames = cms.vstring("file:/eos/cms/store/group/phys_heavyions/okukral/TagAndProbe2016/LowPt/tnpJPsi_Data_bothDirTrk_noTrackCutTenth.root"),
     InputDirectoryName = cms.string("tpTree"),
     InputTreeName = cms.string("fitter_tree"),
-    OutputFileName = cms.string("tnp_Ana_RD_TrkM_pPb_%s.root" % (scenario)),
+    OutputFileName = cms.string("tnp_Ana_RD_TrkM_pPb-tenth_%s.root" % (scenario)),
     #number of CPUs to use for fitting
-    NumCPU = cms.uint32(32),
+    NumCPU = cms.uint32(8),
     # specifies whether to save the RooWorkspace containing the data for each bin and
     # the pdf object with the initial and final state snapshots
     binnedFit = cms.bool(True),
-    binsForFit = cms.uint32(50),
-    binsForMassPlots = cms.uint32(50),
+    binsForFit = cms.uint32(80),
+    binsForMassPlots = cms.uint32(80),
     SaveWorkspace = cms.bool(False),
+    #SplitMode = cms.uint32(1000000),
     
     # defines all the real variables of the probes available in the input tree and intended for use in the efficiencies
     Variables = cms.PSet(
-                         mass             = cms.vstring("Tag-Probe Mass", "2.6", "3.6", "GeV/c^{2}"), # mass range syst: 2.8-3.4
-                         pt               = cms.vstring("Probe p_{T}", "0.0", "30", "GeV/c"),
+                         mass             = cms.vstring("Tag-Probe Mass", "2.7", "3.5", "GeV/c^{2}"), # mass range syst: 2.8-3.4
+                         pt               = cms.vstring("Probe p_{T}", "0.0", "25", "GeV/c"),
                          eta              = cms.vstring("Probe #eta", "-2.4", "2.4", ""),
                          abseta           = cms.vstring("Probe |#eta|", "0", "2.4", ""),
                          tag_hiNtracks    = cms.vstring("N Tracks", "0", "400", ""),
@@ -463,12 +464,29 @@ process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
         "signalFractionInPassing[0.9]"
     ),
     cbFixedNGausPol2 = cms.vstring( #n fixed to average value in the MC abseta fits
-        "CBShape::signal1(mass, mean[3.08,3.00,3.3], sigma1[0.03, 0.01, 0.10], alpha[1.85, 0.3, 50], n[1.4])",
+        "CBShape::signal1(mass, mean[3.08,3.00,3.2], sigma1[0.03, 0.01, 0.07], alpha[1.85, 0.3, 50], n[1.4])",
         "RooFormulaVar::sigma2('@0*@1',{fracS[1.8,1.2,2.4],sigma1})",
         "Gaussian::signal2(mass, mean, sigma2)",
         "SUM::signal(frac[0.8,0.5,1.]*signal1,signal2)",
-        "Chebychev::backgroundPass(mass, {cPass[0.,-1.1,1.1], cPass2[0.,-1.1,1.1]})",
-        "Chebychev::backgroundFail(mass, {cFail[0.,-1.1,1.1], cFail2[0.,-1.1,1.1]})",
+        "Chebychev::backgroundPass(mass, {cPass[0.,-2.1,2.1], cPass2[0.,-0.1,0.1]})",
+        "Chebychev::backgroundFail(mass, {cFail[0.,-2.1,2.1], cFail2[0.,-0.1,0.1]})",
+        "efficiency[0.9,0,1]",
+        "signalFractionInPassing[0.9]"
+    ),
+    cbFixedNGausPol3 = cms.vstring( #n fixed to average value in the MC abseta fits
+        "CBShape::signal1(mass, mean[3.08,3.00,3.2], sigma1[0.03, 0.01, 0.10], alpha[1.85, 0.3, 50], n[1.4])",
+        "RooFormulaVar::sigma2('@0*@1',{fracS[1.8,1.2,2.4],sigma1})",
+        "Gaussian::signal2(mass, mean, sigma2)",
+        "SUM::signal(frac[0.8,0.5,1.]*signal1,signal2)",
+        "Chebychev::backgroundPass(mass, {cPass[0.,-1.1,1.1], cPass2[0.,-1.1,1.1], cPass3[0.,-1.1,1.1]})",
+        "Chebychev::backgroundFail(mass, {cFail[0.,-1.1,1.1], cFail2[0.,-1.1,1.1], cPass3[0.,-1.1,1.1]})",
+        "efficiency[0.9,0,1]",
+        "signalFractionInPassing[0.9]"
+    ),
+    cbPlusPol3 = cms.vstring(
+        "CBShape::signal(mass, mean[3.08,3.00,3.2], sigma[0.03, 0.01, 0.10], alpha[1.85, 0.3, 50], n[1.4])",
+        "Chebychev::backgroundPass(mass, {cPass[0.1,-1.1,1.1], cPass2[0.01,-0.3,0.3], cPass3[0.01,-0.1,0.1]})",
+        "Chebychev::backgroundFail(mass, {cFail[0.1,-1.1,1.1], cFail2[0.01,-0.3,0.3], cPass3[0.01,-0.1,0.1]})",
         "efficiency[0.9,0,1]",
         "signalFractionInPassing[0.9]"
     ),
