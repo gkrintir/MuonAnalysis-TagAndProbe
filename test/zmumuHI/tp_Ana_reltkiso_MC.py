@@ -16,9 +16,9 @@ process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
    # InputFileNames = cms.vstring("file:/afs/cern.ch/work/o/okukral/TnP_pPb/Data/MC_trees_pPb.root"),
     InputDirectoryName = cms.string("tpTree"),
     InputTreeName = cms.string("fitter_tree"),
-    OutputFileName = cms.string("tnp_Ana_MC_newIso_nom_reltkiso0p2_dxycut_ptGT7.root"),
+    OutputFileName = cms.string("tnp_Ana_MC_reltkiso0p2_ptGT7_M60120.root"),
     #numbrer of CPUs to use for fitting
-    NumCPU = cms.uint32(25),
+    NumCPU = cms.uint32(10),
     # specifies whether to save the RooWorkspace containing the data for each bin and
     # the pdf object with the initial and final state snapshots
     binnedFit = cms.bool(True),
@@ -29,20 +29,20 @@ process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
     
     # defines all the real variables of the probes available in the input tree and intended for use in the efficiencies
     Variables = cms.PSet(
-                         mass             = cms.vstring("Tag-Probe Mass", "75.0", "120.0", "GeV/c^{2}"), # mass range syst: 65-110, nom 60-120 - TBA
+                         mass             = cms.vstring("Tag-Probe Mass", "60.0", "120.0", "GeV/c^{2}"), # mass range syst: 65-110, nom 60-120 - TBA
                          pt               = cms.vstring("Probe p_{T}", "0.0", "1000", "GeV/c"),
                          eta              = cms.vstring("Probe #eta", "-2.4", "2.4", ""),
                          abseta           = cms.vstring("Probe |#eta|", "0", "2.5", ""),
                          tag_hiNtracks    = cms.vstring("N Tracks", "0", "400", ""),
                          tag_hiHF         = cms.vstring("HF", "0", "500", ""),
                          tag_nVertices    = cms.vstring("PU - nVertices", "0", "10", ""),
-                         weight           = cms.vstring("weight","0","100000",""),
+                         weight           = cms.vstring("weight","0","10",""),
     ),
     # defines all the discrete variables of the probes available in the input tree and intended for use in the efficiency calculations
     Categories = cms.PSet(
                         TightId = cms.vstring("TightId", "dummy[true=1,false=0]"),
-                        Glb = cms.vstring("Glb", "dummy[true=1,false=0]"),
-                        PF = cms.vstring("PF", "dummy[true=1,false=0]"),
+                        # Glb = cms.vstring("Glb", "dummy[true=1,false=0]"),
+                        # PF = cms.vstring("PF", "dummy[true=1,false=0]"),
                         # hltL3fL1sSingleMu7BptxANDL1f0L2f0L3Filtered12 = cms.vstring("hltL3fL1sSingleMu7BptxANDL1f0L2f0L3Filtered12", "dummy[true=1,false=0]"),
                         # hltL3fL1sSingleMu7BptxANDL1f0L2f0L3Filtered15 = cms.vstring("hltL3fL1sSingleMu7BptxANDL1f0L2f0L3Filtered15", "dummy[true=1,false=0]"),
                         reltkiso0p2 = cms.vstring("reltkiso0p2", "dummy[true=1,false=0]"),
@@ -61,7 +61,7 @@ process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
 		    "FCONV::signal(mass, bw, res)",
 	    	"Exponential::backgroundPass(mass, lp[0,-5,5])",
 		    "Exponential::backgroundFail(mass, lf[0,-5,5])",
-	    	"efficiency[0.9,0.5,1]",
+	    	"efficiency[0.95,0.5,1]",
 		    "signalFractionInPassing[0.9]",
     	),    
         # Signal syst
@@ -69,7 +69,7 @@ process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
 		    "Voigtian::signal(mass, mean[91,85,95], width[3,1,10], sigma[3,1,10])",
 		    "Exponential::backgroundPass(mass, lp[0,-5,5])",
 		    "Exponential::backgroundFail(mass, lf[0,-5,5])",
-		    "efficiency[0.9,0,1]",
+		    "efficiency[0.95,0,1]",
 		    "signalFractionInPassing[0.9]"
 	    ),
         # Background syst
@@ -129,7 +129,7 @@ process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
                 EfficiencyCategoryAndState = cms.vstring("reltkiso0p2","true"),
                 UnbinnedVariables = cms.vstring("mass", "weight"),
                 BinnedVariables = cms.PSet(
-                   pt = cms.vdouble(7, 12, 15, 30, 40, 50, 60, 70, 80, 100, 200),
+                   pt = cms.vdouble(7, 12, 15, 20, 25, 30, 35, 40, 45, 50, 60, 70, 80, 100, 200),
                    eta = cms.vdouble(-2.4,2.4),
                    #tag_nVertices    = cms.vdouble(0.9,1.1),
                    TightId = cms.vstring("true"),
@@ -144,7 +144,7 @@ process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
                 EfficiencyCategoryAndState = cms.vstring("reltkiso0p2","true"),
                 UnbinnedVariables = cms.vstring("mass", "weight"),
                 BinnedVariables = cms.PSet(
-                   pt = cms.vdouble(7, 12, 15, 25, 30, 35, 40, 45,50, 80, 200),
+                   pt = cms.vdouble(7, 12, 15, 20, 25, 30, 35, 40, 45, 50, 60, 70, 80, 100, 200),
                    abseta = cms.vdouble(0, 1.2),
                    #tag_nVertices    = cms.vdouble(0.9,1.1),
                    TightId = cms.vstring("true"),
@@ -159,7 +159,7 @@ process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
                 EfficiencyCategoryAndState = cms.vstring("reltkiso0p2","true"),
                 UnbinnedVariables = cms.vstring("mass", "weight"),
                 BinnedVariables = cms.PSet(
-                   pt = cms.vdouble(7, 12, 15, 25, 30,35, 40,45,50, 80, 200),
+                   pt = cms.vdouble(7, 12, 15, 20, 25, 30, 35, 40, 45, 50, 60, 70, 80, 100, 200),
                    abseta = cms.vdouble(1.2,2.1),
                    #tag_nVertices    = cms.vdouble(0.9,1.1),
                    TightId = cms.vstring("true"),
@@ -209,6 +209,70 @@ process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
                       #tag_nVertices    = cms.vdouble(0.9,1.1),
                       TightId = cms.vstring("true"),
                       # hltL3fL1sSingleMu7BptxANDL1f0L2f0L3Filtered12 = cms.vstring("true"),
+                      # hltL3fL1sSingleMu7BptxANDL1f0L2f0L3Filtered15 = cms.vstring("true"),
+                      ),
+                   BinToPDFmap = cms.vstring(PDFName)
+                   )
+                ), 
+          cms.PSet(      
+                Iso_centdep = cms.PSet(
+                   EfficiencyCategoryAndState = cms.vstring("reltkiso0p2","true"),
+                   UnbinnedVariables = cms.vstring("mass","weight"),
+                   BinnedVariables = cms.PSet(
+                      pt = cms.vdouble(7, 200),
+                      eta = cms.vdouble(-2.4,2.4),
+                      tag_hiNtracks = cms.vdouble(0,30,50,75,100,125,150,175,400),
+                      #tag_nVertices    = cms.vdouble(0.9,1.1),
+                      TightId = cms.vstring("true"),
+                      #hltL3fL1sSingleMu7BptxANDL1f0L2f0L3Filtered12 = cms.vstring("true"),
+                      # hltL3fL1sSingleMu7BptxANDL1f0L2f0L3Filtered15 = cms.vstring("true"),
+                      ),
+                   BinToPDFmap = cms.vstring(PDFName)
+                   )
+                ), 
+          cms.PSet(      
+                Iso_centdepHF = cms.PSet(
+                   EfficiencyCategoryAndState = cms.vstring("reltkiso0p2","true"),
+                   UnbinnedVariables = cms.vstring("mass","weight"),
+                   BinnedVariables = cms.PSet(
+                      pt = cms.vdouble(7, 200),
+                      eta = cms.vdouble(-2.4,2.4),
+                      tag_hiHF = cms.vdouble(0,30,50,75,100,125,150,175,500),
+                      #tag_nVertices    = cms.vdouble(0.9,1.1),
+                      TightId = cms.vstring("true"),
+                      #hltL3fL1sSingleMu7BptxANDL1f0L2f0L3Filtered12 = cms.vstring("true"),
+                      # hltL3fL1sSingleMu7BptxANDL1f0L2f0L3Filtered15 = cms.vstring("true"),
+                      ),
+                   BinToPDFmap = cms.vstring(PDFName)
+                   )
+                ), 
+          cms.PSet(      
+                Iso_nPV = cms.PSet(
+                   EfficiencyCategoryAndState = cms.vstring("reltkiso0p2","true"),
+                   UnbinnedVariables = cms.vstring("mass","weight"),
+                   BinnedVariables = cms.PSet(
+                      pt = cms.vdouble(7, 200),
+                      eta = cms.vdouble(-2.4,2.4),
+                      tag_nVertices = cms.vdouble(0.5,1.5,2.5,3.5,10.5),
+                      #tag_nVertices    = cms.vdouble(0.9,1.1),
+                      TightId = cms.vstring("true"),
+                      #hltL3fL1sSingleMu7BptxANDL1f0L2f0L3Filtered12 = cms.vstring("true"),
+                      # hltL3fL1sSingleMu7BptxANDL1f0L2f0L3Filtered15 = cms.vstring("true"),
+                      ),
+                   BinToPDFmap = cms.vstring(PDFName)
+                   )
+                ), 
+          cms.PSet(      
+                Iso_rundep = cms.PSet(
+                   EfficiencyCategoryAndState = cms.vstring("reltkiso0p2","true"),
+                   UnbinnedVariables = cms.vstring("mass","weight"),
+                   BinnedVariables = cms.PSet(
+                      pt = cms.vdouble(7, 200),
+                      eta = cms.vdouble(-2.4,2.4),
+                      run = cms.vdouble(285479,285900,286496),
+                      #tag_nVertices    = cms.vdouble(0.9,1.1),
+                      TightId = cms.vstring("true"),
+                      #hltL3fL1sSingleMu7BptxANDL1f0L2f0L3Filtered12 = cms.vstring("true"),
                       # hltL3fL1sSingleMu7BptxANDL1f0L2f0L3Filtered15 = cms.vstring("true"),
                       ),
                    BinToPDFmap = cms.vstring(PDFName)

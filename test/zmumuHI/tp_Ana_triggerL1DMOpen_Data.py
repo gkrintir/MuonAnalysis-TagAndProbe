@@ -18,7 +18,7 @@ process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
     InputTreeName = cms.string("fitter_tree"),
     OutputFileName = cms.string("tnp_Ana_Data_L1DoubleMuOpen_ptGT7_M60120.root"),
     #numbrer of CPUs to use for fitting
-    NumCPU = cms.uint32(25),
+    NumCPU = cms.uint32(10),
     # specifies whether to save the RooWorkspace containing the data for each bin and
     # the pdf object with the initial and final state snapshots
     binnedFit = cms.bool(True),
@@ -137,7 +137,7 @@ process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
                 EfficiencyCategoryAndState = cms.vstring("l1ok","true","l1OpenQ","true"),
                 UnbinnedVariables = cms.vstring("mass"),
                 BinnedVariables = cms.PSet(
-                   pt = cms.vdouble(7, 12, 15, 20, 25, 30, 35, 50, 45, 50, 55, 60, 70, 80, 100, 200),
+                   pt = cms.vdouble(7, 12, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 70, 80, 100, 200),
                    eta = cms.vdouble(-2.4,2.4),
                    #tag_nVertices    = cms.vdouble(0.9,1.1),
                    TightId = cms.vstring("true"),
