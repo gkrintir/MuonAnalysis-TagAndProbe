@@ -44,21 +44,21 @@ using namespace std;
 
 // Choose the efficiency type.
 // Possible values: MUIDTRG, TRK, STA, MUID, TRG
-#define TRK
+#define MUIDTRG
 
 // pp or PbPb?
 bool isPbPb = true; // if true, will compute the centrality dependence
 TString collTag = "pPb"; // isPbPb ? "PbPb" : "pp";
 
 // do the toy study for the correction factors? (only applies if MUIDTRG)
-bool doToys = false;
+bool doToys = true;
 
 // how to fit efficiencies?
 // 0 = [0]*Erf((x-[1])/[2])
 // 1 = [0]*Erf((x-[1])/[2]) + [3]
 // 2 = ([0]*Erf((x-[1])/[2]))*Exp(x/[4])+ [3]
 // 3 = [0]
-int fitfcn = 2;
+int fitfcn = 1;
 
 // Location of the files
 const int nSyst = 1;//5;
@@ -77,29 +77,33 @@ const char* systName[nSyst] = {
    "nominal",
 };
 
+double ptmin0 = 10; // ignore any efficiencies below this point
 
 
 //////////////////////////////////////////////////////////////////////////
 
 // Other parameters
 #ifdef MUIDTRG
-TString etaTag("MuIdTrg_etadep");
-TString absetaTag("MuIdTrg_absetadep");
-TString centTag("MuIdTrg_centdep");
-const int nAbsEtaBins = 4;
-TString ptTag[nAbsEtaBins] = { "MuIdTrg_abseta00_09", "MuIdTrg_abseta09_12", "MuIdTrg_abseta12_16", "MuIdTrg_abseta16_21", "MuIdTrg_abseta21_24" };
-TString allTag("MuIdTrg_1bin");
+TString etaTag("Iso_etadep");
+TString absetaTag("Iso_absetadep");
+TString centTag("Iso_centdepHF");
+const int nAbsEtaBins = 3;
+TString ptTag[nAbsEtaBins] = { "Iso_abseta00_12", "Iso_abseta12_21", "Iso_abseta21_24" };
+TString allTag("Iso_1bin");
 TString absetaVar("abseta");
-TString centVar("tag_hiBin");
+TString centVar("tag_hiHF");
 ofstream file_sfs("correction_functions.txt");
-ofstream file_Eta("EtaValues_MuIdTrg.txt");
-ofstream file_Cent("CentValues_MuIdTrg.txt");
+ofstream file_Eta("EtaValues_Iso.txt");
+ofstream file_Cent("CentValues_Iso.txt");
 TString cutTag("tpTree");
-TString cutLegend("Muon ID + trigger");
-const double effmin = 0.;
-const double sfrange = 0.35;
-const char* fDataName[nSyst] = { "tnp_Ana_RD_PbPb_MuIDTrg_AllMB.root" };
-const char* fMCName[nSyst] = { "tnp_Ana_MC_PbPb_MuIDTrg_AllMB.root" };
+TString cutLegend("Rel. trk iso < 0.2");
+const double effmin = 0.8;
+const double sfrange = 0.1;
+const char* fDataName[nSyst] = { "tnp_Ana_Data_reltkiso0p2_ptGT7_M80120_20190815.root" };
+const char* fMCName[nSyst] = { "tnp_Ana_MC_reltkiso0p2_ptGT7_M80120_20190815.root" };
+// const char* fMCName[nSyst] = { "tnp_Ana_MC_reltkiso0p2_ptGT7_M80120_weight_Ntracks_20190820.root" };
+// const char* fDataName[nSyst] = { "tnp_Ana_Data_templates_reltkiso0p2_dxyz_ptGT7_M75120_20190815_reorg.root" };
+// const char* fMCName[nSyst] = { "tnp_Ana_MC_templates_reltkiso0p2_dxyz_ptGT7_M75120_20190815_reorg.root" };
 #endif
 
 #ifdef MUID
@@ -124,12 +128,12 @@ const char* fMCName[nSyst] = { "tnp_Ana_MC_MuonID_pPb.root" };
 #endif
 
 #ifdef TRG
-TString etaTag("MuIdTrg_etadep");
-TString absetaTag("MuIdTrg_absetadep");
-TString centTag("MuIdTrg_centdep");
+TString etaTag("Iso_etadep");
+TString absetaTag("Iso_absetadep");
+TString centTag("Iso_centdep");
 const int nAbsEtaBins = 4;
-TString ptTag[nAbsEtaBins] = { "MuIdTrg_abseta00_12", "MuIdTrg_abseta12_18", "MuIdTrg_abseta18_21", "MuIdTrg_abseta21_24" };
-TString allTag("MuIdTrg_1bin");
+TString ptTag[nAbsEtaBins] = { "Iso_abseta00_12", "Iso_abseta12_18", "Iso_abseta18_21", "Iso_abseta21_24" };
+TString allTag("Iso_1bin");
 TString absetaVar("abseta");
 TString centVar("tag_hiBin");
 ofstream file_sfs("correction_functions.txt");
@@ -276,19 +280,19 @@ cout << "point2" << endl;
 	RooDataSet* daPtData1Bin0[nSyst];
 	RooDataSet* daAbsEtaMC1[nSyst];
 	RooDataSet* daAbsEtaData1[nSyst];
-//	RooDataSet* daCentMC1[nSyst];
-//	RooDataSet* daCentData1[nSyst];
+	RooDataSet* daCentMC1[nSyst];
+	RooDataSet* daCentData1[nSyst];
 
 	for (int i = 0; i < nSyst; i++) {
 		daPtMC1Bin0[i] = (RooDataSet*)fMC[i]->Get(cutTag + "/" + allTag + "/fit_eff");
 		daPtData1Bin0[i] = (RooDataSet*)fData[i]->Get(cutTag + "/" + allTag + "/fit_eff");
 		daAbsEtaMC1[i] = (RooDataSet*)fMC[i]->Get(cutTag + "/" + absetaTag + "/fit_eff");
 		daAbsEtaData1[i] = (RooDataSet*)fData[i]->Get(cutTag + "/" + absetaTag + "/fit_eff");
-/*		if (isPbPb) {
-			daCentMC1[i] = (RooDataSet*)fMC[i]->Get(cutTag + "/" + centTag + "/fit_eff");
-			daCentData1[i] = (RooDataSet*)fData[i]->Get(cutTag + "/" + centTag + "/fit_eff");
-		}
-// */
+		if (isPbPb) {
+         daCentMC1[i] = (RooDataSet*)fMC[i]->Get(cutTag + "/" + centTag + "/fit_eff");
+         daCentData1[i] = (RooDataSet*)fData[i]->Get(cutTag + "/" + centTag + "/fit_eff");
+      }
+
 	}
 
 cout << "point3" << endl;
@@ -297,28 +301,28 @@ cout << "point3" << endl;
 	TGraphAsymmErrors* effPtData[nSyst];
 	vector<TGraphAsymmErrors*> effAbsEtaMC[nSyst];
 	vector<TGraphAsymmErrors*> effAbsEtaData[nSyst];
-//	TGraphAsymmErrors* effCentMC = NULL;
-//	TGraphAsymmErrors* effCentData = NULL;
+	TGraphAsymmErrors* effCentMC = NULL;
+	TGraphAsymmErrors* effCentData = NULL;
 cout << "made tgraphs" << endl;
 	for (int k = 0; k < nSyst; k++) {
 cout << "entered the for loop" << endl;
-		effPtMC[k] = plotEff_1bin(daPtMC1Bin0[k], 0, "eta");
-		effPtData[k] = plotEff_1bin(daPtData1Bin0[k], 0, "eta");
+		effPtMC[k] = plotEff_1bin(daPtMC1Bin0[k], 0, "eta"); //! abseta
+		effPtData[k] = plotEff_1bin(daPtData1Bin0[k], 0, "eta"); //! abseta
 cout << "pt was successful" << endl;
 		effAbsEtaMC[k] = plotEff_Nbins(daAbsEtaMC1[k], 0, "pt", absetaVar);
 		effAbsEtaData[k] = plotEff_Nbins(daAbsEtaData1[k], 0, "pt", absetaVar);
 cout << "eta was successful" << endl;
-/*		if (isPbPb && k == 0) {
+		if (isPbPb && k == 0) {
 			effCentMC = plotEff_1bin(daCentMC1[k], 0, centVar);
 			effCentData = plotEff_1bin(daCentData1[k], 0, centVar);
 		}
-// */
+
 cout << "k is " << k << endl;
 	}
 
 cout << "exited the for loop" << endl;
 
-/*
+
 	if (isPbPb) {
 		effCentMC->SetMarkerStyle(20);
 		effCentMC->SetMarkerSize(1.4);
@@ -329,7 +333,7 @@ cout << "exited the for loop" << endl;
 		effCentData->SetMarkerColor(kBlue + 1);
 		effCentData->SetLineColor(kBlue + 1);
 	}
-// */
+// 
 	int nbins_abseta = ComPt0[0].size();
 	for (int k = 0; k < nSyst; k++)
 	{
@@ -399,9 +403,9 @@ cout << "point4" << endl;
 	// lTextSize *= 1./0.7;
 
 
-	TH1F *hPad = new TH1F("hPad", ";p^{#mu}_{T} [GeV/c];Single #mu Efficiency", 5, 0, 200);
+	TH1F *hPad = new TH1F("hPad", ";p^{#mu}_{T} [GeV];Single #mu Efficiency", 5, 0, 200);
 	TH1F *hPad1 = new TH1F("hPad1", ";#eta^{#mu};Single #mu Efficiency", 5, -2.4, 2.4);
-//	TH1F *hPad2 = new TH1F("hPad2", ";Centrality - nTracks ;Single #mu Efficiency", 5, 0, 300);
+	TH1F *hPad2 = new TH1F("hPad2", ";HF energy [GeV];Single #mu Efficiency", 5, 0, 300);
 	hPad->GetXaxis()->CenterTitle();
 	hPad1->GetXaxis()->CenterTitle();
 //	hPad2->GetXaxis()->CenterTitle();
@@ -450,14 +454,14 @@ cout << "point4" << endl;
 	hPad1r->GetYaxis()->SetNdivisions(504, kTRUE);
 	TH1F *hPad1r_syst = (TH1F*)hPad1r->Clone("hPad1r_syst");hPad1r_syst->GetYaxis()->SetRangeUser(1. - .1, 1. + .1);
 	TH1F *hPad1_syst = (TH1F*)hPad1->Clone("hPad1_syst");
-/*	TH1F *hPad2r = (TH1F*)hPad2->Clone("hPad2r"); hPad2r->GetYaxis()->SetRangeUser(1. - sfrange, 1. + sfrange);
-	hPad2r->GetYaxis()->SetTitle("Scale Factor");
-	hPad2r->GetXaxis()->SetTitleSize(tsize);
-	hPad2r->GetXaxis()->SetLabelSize(tsize);
-	hPad2r->GetYaxis()->SetTitleSize(tsize);
-	hPad2r->GetYaxis()->SetLabelSize(tsize);
-	hPad2r->GetYaxis()->SetNdivisions(504, kTRUE);
-// */
+	TH1F *hPad2r = (TH1F*)hPad2->Clone("hPad2r"); hPad2r->GetYaxis()->SetRangeUser(1. - sfrange, 1. + sfrange);
+   hPad2r->GetYaxis()->SetTitle("Scale Factor");
+   hPad2r->GetXaxis()->SetTitleSize(tsize);
+   hPad2r->GetXaxis()->SetLabelSize(tsize);
+   hPad2r->GetYaxis()->SetTitleSize(tsize);
+   hPad2r->GetYaxis()->SetLabelSize(tsize);
+   hPad2r->GetYaxis()->SetNdivisions(504, kTRUE);
+
 	pad1->cd();
 
 cout << "point5" << endl;
@@ -477,27 +481,28 @@ cout << "point5" << endl;
 			lt1->SetNDC();
 
 			char legs[512];
-			TLegend *leg1 = new TLegend(0.25, 0.05, 0.66, 0.43); //(0.43, 0.05, 0.66, 0.43);
+			TLegend *leg1 = new TLegend(0.25, 0.25, 0.66, 0.53); //(0.43, 0.05, 0.66, 0.43);
 			leg1->SetFillStyle(0);
 			leg1->SetFillColor(0);
 			leg1->SetBorderSize(0);
 			leg1->SetTextSize(0.030);
 			ptmin = ((RooRealVar*)daPtData0[k][i]->get()->find("pt"))->getBinning().binLow(0);
+         ptmin = max(ptmin, ptmin0);
 			double etamin, etamax;
 			if (daPtData0[k][i]->get()->find("abseta"))
 			{
 				etamin = ((RooRealVar*)daPtData0[k][i]->get()->find("abseta"))->getBinning().binLow(0);
 				etamax = ((RooRealVar*)daPtData0[k][i]->get()->find("abseta"))->getBinning().binHigh(0);
-				header = TString("#splitline{") + cutLegend + Form(" Efficiency}{(p^{#mu}_{T}>%.1f, |#eta| #in [%.1f, %.1f])}", ptmin, etamin, etamax);
+				header = TString("#splitline{") + cutLegend + Form(" Efficiency}{(p^{#mu}_{T}>%.1fGeV, |#eta| #in [%.1f, %.1f])}", ptmin, etamin, etamax);
 			}
 			else
 			{
 				etamin = ((RooRealVar*)daPtData0[k][i]->get()->find("eta"))->getBinning().binLow(0);
 				etamax = ((RooRealVar*)daPtData0[k][i]->get()->find("eta"))->getBinning().binHigh(0);
-				header = TString("#splitline{") + cutLegend + Form(" Efficiency}{(p^{#mu}_{T}>%.1f, #eta #in [%.1f, %.1f])}", ptmin, etamin, etamax);
+				header = TString("#splitline{") + cutLegend + Form(" Efficiency}{(p^{#mu}_{T}>%.1fGeV, #eta #in [%.1f, %.1f])}", ptmin, etamin, etamax);
 			}
 			leg1->SetHeader(header);
-			sprintf(legs, "MC PYTHIA+EvtGen: %.4f^{ + %.3f}_{ - %.3f}", TrkAbsEta0[k][i][0], TrkAbsEta0[k][i][1], TrkAbsEta0[k][i][2]);
+			sprintf(legs, "MC Powheg+EPOS: %.4f^{ + %.3f}_{ - %.3f}", TrkAbsEta0[k][i][0], TrkAbsEta0[k][i][1], TrkAbsEta0[k][i][2]);
 			leg1->AddEntry(ComPt0[k][i], legs, "pl");
 			sprintf(legs, "Data: %.4f^{ + %.3f}_{ - %.3f}", TrkAbsEta1[k][i][0], TrkAbsEta1[k][i][1], TrkAbsEta1[k][i][2]);
 			leg1->AddEntry(ComPt1[k][i], legs, "pl");
@@ -507,8 +512,8 @@ cout << "point5" << endl;
 			ComPt1[k][i]->Draw("pz same");
 
 			lt1->SetTextSize(0.05);
-			lt1->DrawLatex(0.43, 0.55, "CMS Preliminary");
-			lt1->DrawLatex(0.43, 0.49, collTag + "  #sqrt{s_{NN}} = 8.16 TeV");
+			lt1->DrawLatex(0.43, 0.95, "CMS Preliminary");
+			lt1->DrawLatex(0.43, 0.89, collTag + "  #sqrt{s_{NN}} = 8.16 TeV");
 
 			// now take care of the data/mc ratio panel
 			c1->cd();
@@ -585,14 +590,14 @@ cout << "point7" << endl;
 			// in case we are looking at muon Id + trigger: get the scale factor at the same time
 #if defined MUIDTRG || defined STA || defined MUID || defined TRG
 			pad1->cd();
-			ptmax = ((RooRealVar*)daPtData0[k][i]->get()->find("pt"))->getMax();
+			ptmax = 200;//((RooRealVar*)daPtData0[k][i]->get()->find("pt"))->getMax();
 			TLatex tchi; tchi.SetNDC();
 			tchi.SetTextSize(0.035);
 			double chi2, pval; int dof;
 
 			if (k == 0) {
 				// fit data
-				fdata = initfcn("fdata", fitfcn, ptmin, ptmax, 0.8);// ComPt1[k][i]->GetX()[ComPt1[k][i]->GetN() - 1]);
+				fdata = initfcn("fdata", fitfcn, ptmin, ptmax, 0.9);// ComPt1[k][i]->GetX()[ComPt1[k][i]->GetN() - 1]);
 				fdata->SetLineWidth(2);
 				fdata->SetLineColor(kBlue);
 				/*ComPt1[k][i]->Fit(fdata, "RME");
@@ -611,10 +616,11 @@ cout << "point7" << endl;
 					fdata->SetParLimits(4, -1.5, 0);
 				}
 				ComPt1[k][i]->Fit(fdata, "WRME");
+            ComPt1[k][i]->Fit(fdata, "RME");
 
 				// fit mc
 				//fmc = (TF1*)fdata->Clone("fmc");
-				fmc = initfcn("fmc", fitfcn, ptmin, ptmax, 0.8);
+				fmc = initfcn("fmc", fitfcn, ptmin, ptmax, 0.9);
 				// Initialize the normalization to the efficiency in the last point
 				//if (isPbPb) fmc->SetParameters(ComPt0[k][i]->GetX()[ComPt0[k][i]->GetN() - 1], 0.5, 2.5);
 				//else fmc->SetParameters(ComPt0[k][i]->GetX()[ComPt0[k][i]->GetN() - 1], 2.2, 1.5);
@@ -711,7 +717,7 @@ cout << "point8-endofmaincode" << endl;
 cout << "point9" << endl;
 
 	//---------- This is for eta dependence
-	TLegend *leg1 = new TLegend(0.43, 0.11, 0.66, 0.33);
+	TLegend *leg1 = new TLegend(0.43, 0.51, 0.66, 0.73);
 	TLatex *lt1 = new TLatex();
 	for (int k = 0; k < nSyst; k++)
 	{
@@ -728,8 +734,9 @@ cout << "point9" << endl;
 		leg1->SetBorderSize(0);
 		leg1->SetTextSize(0.035);
 		double ptmin = ((RooRealVar*)daEtaData0[k]->get()->find("pt"))->getBinning().binLow(0);
-		leg1->SetHeader(TString("#splitline{") + cutLegend + Form(" Efficiency}{(p^{#mu}_{T}>%.1f)}", ptmin));
-		sprintf(legs, "MC PYTHIA+EvtGen: %.4f^{ + %.3f}_{ - %.3f}", Trk0[k][0], Trk0[k][1], Trk0[k][2]);
+      ptmin = max(ptmin, ptmin0);
+		leg1->SetHeader(TString("#splitline{") + cutLegend + Form(" Efficiency}{(p^{#mu}_{T}>%.1fGeV)}", ptmin));
+		sprintf(legs, "MC Powheg+EPOS: %.4f^{ + %.3f}_{ - %.3f}", Trk0[k][0], Trk0[k][1], Trk0[k][2]);
 		leg1->AddEntry(ComPt0[k][0], legs, "pl");
 		sprintf(legs, "Data: %.4f^{ + %.3f}_{ - %.3f}", Trk1[k][0], Trk1[k][1], Trk1[k][2]);
 		leg1->AddEntry(ComPt1[k][0], legs, "pl");
@@ -737,9 +744,9 @@ cout << "point9" << endl;
 		leg1->Draw("same");
 
 		lt1->SetTextSize(0.05);
-		lt1->DrawLatex(0.43, 0.50, "CMS Preliminary");
+		lt1->DrawLatex(0.43, 0.90, "CMS Preliminary");
 		//lt1->DrawLatex(0.43,0.54,"pp  #sqrt{s} = 5.02 TeV");
-		lt1->DrawLatex(0.43, 0.44, collTag + "  #sqrt{s_{NN}} = 8.16 TeV");
+		lt1->DrawLatex(0.43, 0.84, collTag + "  #sqrt{s_{NN}} = 8.16 TeV");
 
 		// now take care of the data/mc ratio panel
 		c1->cd();
@@ -814,8 +821,9 @@ cout << "point10" << endl;
 	plotSysts(ComEta0, c1, pad1, hPad1_syst, pad2, hPad1r_syst, header, "syst_mc_eta");
 
 	//-------- This is for centrality dependence
-/*	if (isPbPb) {
+	if (isPbPb) {
 		pad1->cd();
+      hPad2->GetYaxis()->SetRangeUser(0.96,1.04);
 		hPad2->Draw();
 
 		effCentMC->Draw("pz same");
@@ -833,6 +841,7 @@ cout << "point10" << endl;
 		// pad2->SetFrameFillStyle(4000);
 		pad2->Draw();
 		pad2->cd();
+      hPad2r->GetYaxis()->SetRangeUser(0.97,1.02);
 		hPad2r->Draw();
 
 		int nbins2 = effCentMC->GetN();
@@ -890,7 +899,7 @@ cout << "point11" << endl;
 		}
 		file_Cent.close();
 	}
-// */
+
 
 	file_sfs.close();
 	file_binnedsfs.close();
@@ -907,7 +916,7 @@ void formatTH1F(TH1* a, int b, int c, int d) {
 	a->SetMarkerColor(b);
 	a->GetYaxis()->SetTitle("Efficiency");
 	if (d == 1) {
-		a->GetXaxis()->SetTitle("p_{T} [GeV/c]");
+		a->GetXaxis()->SetTitle("p_{T} [GeV]");
 	}
 	else if (d == 2) {
 		a->GetXaxis()->SetTitle("#eta");
@@ -952,7 +961,7 @@ void formatTGraph(TGraph* a, int b, int c, int d)
 	a->GetYaxis()->SetTitle("Efficiency");
 	a->GetXaxis()->CenterTitle();
 	if (d == 1) {
-		a->GetXaxis()->SetTitle("p_{T} (GeV/c)");
+		a->GetXaxis()->SetTitle("p_{T} (GeV)");
 	}
 	else if (d == 2) {
 		a->GetXaxis()->SetTitle("eta");
@@ -974,10 +983,12 @@ void formatTGraph(TGraph* a, int b, int c, int d)
 
 TGraphAsymmErrors *plotEff_1bin(RooDataSet *a, int aa, const char* varx, int rebin, double *tntot) {
 	const RooArgSet *set = a->get();
+   set->Print("v");
 	RooRealVar *xAx = (RooRealVar*)set->find(varx);
 	RooRealVar *eff = (RooRealVar*)set->find("efficiency");
 
-	int nbins = xAx->getBinning().numBins();
+   // int nbins = xAx->getBinning().numBins();
+	int nbins = a->numEntries();
 
 	double tx[nbins], txhi[nbins], txlo[nbins];
 	double ty[nbins], tyhi[nbins], tylo[nbins];
@@ -1102,7 +1113,7 @@ vector<TGraphAsymmErrors*> plotEff_Nbins(RooDataSet *a, int aa, const char* varx
 		b->SetTitle("");
 		b->GetXaxis()->SetTitleSize(0.05);
 		b->GetYaxis()->SetTitleSize(0.05);
-		b->GetXaxis()->SetTitle("p_{T} [GeV/c]");
+		b->GetXaxis()->SetTitle("p_{T} [GeV]");
 		b->GetYaxis()->SetTitle("Efficiency");
 		b->GetXaxis()->CenterTitle();
 		//b->Draw("apz");
@@ -1139,7 +1150,7 @@ TH2F *plotEff2D(RooDataSet *a, TString b) {
 	h->SetOption("colztexte");
 	h->GetZaxis()->SetRangeUser(-0.001, 1.001);
 	h->SetStats(kFALSE);
-	h->GetYaxis()->SetTitle("p_{T} [GeV/c]");
+	h->GetYaxis()->SetTitle("p_{T} [GeV]");
 	h->GetXaxis()->SetTitle("#eta");
 	h->GetXaxis()->CenterTitle();
 	h->GetYaxis()->CenterTitle();
@@ -1323,10 +1334,10 @@ TF1 *initfcn(const char* fname, int ifcn, double ptmin, double ptmax, double eff
 		ans->SetParNames("eff0", "x0", "m", "cst");
 		// Initialize the normalization to the efficiency in the last point
 		ans->SetParLimits(0, 0, 9.5);
-		ans->SetParLimits(1, -10., 10.);
+		ans->SetParLimits(1, -20., 20.);
 		ans->SetParLimits(2, 0, 50.);
 		ans->SetParLimits(3, -2., 2.);
-		ans->SetParameters(effguess, 2., 1.0, 0.);
+		ans->SetParameters(effguess, -10, 30, 0.);
 	}
 	else if (ifcn == 2) {
 		ans->SetParNames("eff0", "x0", "m", "cst", "fall");

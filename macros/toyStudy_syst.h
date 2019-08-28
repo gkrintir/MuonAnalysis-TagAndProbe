@@ -16,7 +16,7 @@
 
 #include <fstream>
 
-const int nToys = 100;
+const int nToys = 100;//0;
 
 TString formula(TF1 *f, int digits=2);
 
@@ -26,8 +26,8 @@ double assym_gaus(double *x, double *par) {
    double sigmah = par[2];
 
    // beware, sometimes one of the two parameters is 0... that's bad
-   if (sigmal<1e-3) sigmal = max(1e-3, sigmah);
-   if (sigmah<1e-3) sigmah = max(1e-3, sigmal);
+   if (sigmal<1e-2) sigmal = max(1e-2, sigmah);
+   if (sigmah<1e-2) sigmah = max(1e-2, sigmal);
 
    if ((x[0] < mean))
       return TMath::Gaus(x[0],mean,sigmal,kTRUE);
@@ -131,20 +131,40 @@ void toyStudy(int nsyst, TGraphAsymmErrors **gdata, TGraphAsymmErrors **gmc, TF1
          for (int j=0; j<nbinsdata; j++) {
             if (systmode2==0) tfAsyGauss->SetParameters(ydata[j],eyldata[j],eyhdata[j]);
             else tfAsyGauss->SetParameters(ydata[j],sqrt(pow(eyldata[j],2)+pow(eyldata_syst[j],2)),sqrt(pow(eyhdata[j],2)+pow(eyhdata_syst[j],2)));
-            effdata[j] = tfAsyGauss->GetRandom();
-            gtoydata->SetPoint(j,xdata[j],effdata[j]); // nominal
+
+            // effdata[j] = tfAsyGauss->GetRandom();
+            // // remove forbidden fluctuations
+            // if (effdata[j]>0.995 || effdata[j]<0.005) effdata[j] = ydata[j];
+            // gtoydata->SetPoint(j,xdata[j],effdata[j]); // nominal
+            // // fix uncertainties
+            // gtoydata->SetPointError(j,exldata[j],exhdata[j],max(0.01,eyldata[j]),max(0.03,eyhdata[j]));
+
+            // let's try something completely different: really sample a binomial distribution, inferring the original N from the eff uncertainty
+            // but first regularise the efficiency and its uncertainty
+            double tmpeff = min(ydata[j],0.995);
+            double tmpefferr = max((eyldata[j]+eyhdata[j])/2.,0.005);
+            int origN = (tmpeff * (1.-tmpeff)) / pow(tmpefferr,2);
+            double tmpN = gRandom->Poisson(origN);
+            double tmpk = gRandom->Binomial(tmpN,ydata[j]);
+            effdata[j] = tmpk / tmpN;
+            if (i==nToys-1) cout << j << " " << ydata[j] << " " << eyldata[j] << " " << eyhdata[j] << "; " << origN << ", " << tmpN << " " << tmpk << endl;
+            gtoydata->SetPoint(j,xdata[j],effdata[j]);
+            // and now uncertainties
+            gtoydata->SetPointError(j,exldata[j],exhdata[j],TEfficiency::Wilson(tmpN,tmpk,0.68,false),TEfficiency::Wilson(tmpN,tmpk,0.68,true));
+
           // gtoydata->SetPoint(j,xdata[j],min(ydata[j]+fabs(eyhdata_syst[j]),1.)); // shift UP by 1 sigma syst, keep eff. below 1
           //   gtoydata->SetPoint(j,xdata[j],max(ydata[j]-fabs(eyhdata_syst[j]),0.)); // shift DOWN by 1 sigma syst, keep eff. above 0
          }
 
          // mc
          TGraphAsymmErrors *gtoymc = new TGraphAsymmErrors(nbinsmc,xmc,ymc,exlmc,exhmc,eylmc,eyhmc);
-         for (int j=0; j<nbinsmc; j++) {
-            if (systmode2==0) tfAsyGauss->SetParameters(ymc[j],eylmc[j],eyhmc[j]);
-            else tfAsyGauss->SetParameters(ymc[j],sqrt(pow(eylmc[j],2)+pow(eylmc_syst[j],2)),sqrt(pow(eyhmc[j],2)+pow(eyhmc_syst[j],2)));
-            effmc[j] = tfAsyGauss->GetRandom();
-            gtoymc->SetPoint(j,xmc[j],effmc[j]);
-         }
+         // skip toys for MC
+         // for (int j=0; j<nbinsmc; j++) {
+            // if (systmode2==0) tfAsyGauss->SetParameters(ymc[j],eylmc[j],eyhmc[j]);
+            // else tfAsyGauss->SetParameters(ymc[j],sqrt(pow(eylmc[j],2)+pow(eylmc_syst[j],2)),sqrt(pow(eyhmc[j],2)+pow(eyhmc_syst[j],2)));
+            // effmc[j] = tfAsyGauss->GetRandom();
+            // gtoymc->SetPoint(j,xmc[j],effmc[j]);
+         // }
 
          // fit the graphs
          TF1 *ftoydata = (TF1*) fdata->Clone(Form("ftoydata%i",i));
@@ -154,8 +174,10 @@ void toyStudy(int nsyst, TGraphAsymmErrors **gdata, TGraphAsymmErrors **gmc, TF1
          ftoymc->SetLineColor(systmode2==1 ? kGray : kBlack);
          // ftoymc->SetParameter(2,gtoymc->GetX()[nbinsmc]);
 
-         gtoydata->Fit(ftoydata,"WRM");
-         gtoymc->Fit(ftoymc,"WRM");
+         gtoydata->Fit(ftoydata,"WRME");
+         cout << i << " " << ftoydata->GetParameter(0) << " " << ftoydata->GetParameter(1) << " " << ftoydata->GetParameter(2) << endl;
+         gtoydata->Fit(ftoydata,"RME");
+         // gtoymc->Fit(ftoymc,"WRME");
 
          // compute the efficiency from fit, for the tree
          for (int j=0; j<nbinsdata; j++) {

@@ -24,11 +24,11 @@ void reorganise_tnp(const char* filename, const char* output="out.root") {
    // abseta00_12
    double ael = 0;
    double aeh = 1.2;
-   double ptl[14] = {7  ,12 ,15, 20 ,25 ,30 ,35 ,40 ,45 ,50, 60, 70 ,80 ,100 };
-   double pth[14] = {12 ,15, 20 ,25 ,30 ,35 ,40 ,45 ,50, 60, 70 ,80 ,100,200};
+   double ptl[13] = {10 ,15, 20 ,25 ,30 ,35 ,40 ,45 ,50, 60, 70 ,80 ,100 };
+   double pth[13] = {15, 20 ,25 ,30 ,35 ,40 ,45 ,50, 60, 70 ,80 ,100,200};
 
    // first bin
-   torig = (TDirectoryFile*) fin->Get("tpTree/Iso_abseta_0_12_pt_7_12");
+   torig = (TDirectoryFile*) fin->Get("tpTree/Iso_abseta_0_12_pt_10_15");
    topdir->cd();
    CopyDir(torig,"Iso_abseta00_12");
 
@@ -38,7 +38,7 @@ void reorganise_tnp(const char* filename, const char* output="out.root") {
    RooDataSet *ds = (RooDataSet*) topdir2->Get("fit_eff");
    RooDataSet *dsc = (RooDataSet*) topdir2->Get("cnt_eff");
 
-   for (int i=1; i<14; i++) {
+   for (int i=1; i<13; i++) {
       // take care of the plots and fit results
       torig = (TDirectoryFile*) fin->Get(Form("tpTree/Iso_abseta_%.0f_%.0f_pt_%.0f_%.0f/abseta_bin0__pt_bin0__TightId_true__templates_abseta_%.0f_%.0f_pt_%.0f_%.0f",ael*10.,aeh*10.,ptl[i],pth[i],ael*10.,aeh*10.,ptl[i],pth[i]));
       TString tname = torig->GetName();
@@ -64,7 +64,7 @@ void reorganise_tnp(const char* filename, const char* output="out.root") {
    aeh = 2.1;
 
    // first bin
-   torig = (TDirectoryFile*) fin->Get("tpTree/Iso_abseta_12_21_pt_7_12");
+   torig = (TDirectoryFile*) fin->Get("tpTree/Iso_abseta_12_21_pt_10_15");
    topdir->cd();
    CopyDir(torig,"Iso_abseta12_21");
 
@@ -74,7 +74,7 @@ void reorganise_tnp(const char* filename, const char* output="out.root") {
    ds = (RooDataSet*) topdir2->Get("fit_eff");
    dsc = (RooDataSet*) topdir2->Get("cnt_eff");
 
-   for (int i=1; i<14; i++) {
+   for (int i=1; i<13; i++) {
       // take care of the plots and fit results
       torig = (TDirectoryFile*) fin->Get(Form("tpTree/Iso_abseta_%.0f_%.0f_pt_%.0f_%.0f/abseta_bin0__pt_bin0__TightId_true__templates_abseta_%.0f_%.0f_pt_%.0f_%.0f",ael*10.,aeh*10.,ptl[i],pth[i],ael*10.,aeh*10.,ptl[i],pth[i]));
       TString tname = torig->GetName();
@@ -97,11 +97,11 @@ void reorganise_tnp(const char* filename, const char* output="out.root") {
    // abseta21_24
    ael = 2.1;
    aeh = 2.4;
-   double ptl2[6] = {7  ,12 ,15 ,25 ,40 ,80};
-   double pth2[6] = {12 ,15 ,25 ,40 ,80 ,200};
+   double ptl2[5] = {10 ,15 ,25 ,40 ,80};
+   double pth2[5] = {15 ,25 ,40 ,80 ,200};
 
    // first bin
-   torig = (TDirectoryFile*) fin->Get("tpTree/Iso_abseta_21_24_pt_7_12");
+   torig = (TDirectoryFile*) fin->Get("tpTree/Iso_abseta_21_24_pt_10_15");
    topdir->cd();
    CopyDir(torig,"Iso_abseta21_24");
 
@@ -111,7 +111,7 @@ void reorganise_tnp(const char* filename, const char* output="out.root") {
    ds = (RooDataSet*) topdir2->Get("fit_eff");
    dsc = (RooDataSet*) topdir2->Get("cnt_eff");
 
-   for (int i=1; i<6; i++) {
+   for (int i=1; i<5; i++) {
       // take care of the plots and fit results
       torig = (TDirectoryFile*) fin->Get(Form("tpTree/Iso_abseta_%.0f_%.0f_pt_%.0f_%.0f/abseta_bin0__pt_bin0__TightId_true__templates_abseta_%.0f_%.0f_pt_%.0f_%.0f",ael*10.,aeh*10.,ptl2[i],pth2[i],ael*10.,aeh*10.,ptl2[i],pth2[i]));
       TString tname = torig->GetName();
@@ -215,11 +215,11 @@ void reorganise_tnp(const char* filename, const char* output="out.root") {
    // pt
    double ael5 = 0;
    double aeh5 = 2.4;
-   double ptl5[14] = {7  ,12 ,15, 20 ,25 ,30 ,35 ,40 ,45 ,50, 60, 70 ,80 ,100 };
-   double pth5[14] = {12 ,15, 20 ,25 ,30 ,35 ,40 ,45 ,50, 60, 70 ,80 ,100,200};
+   double ptl5[13] = {10, 15, 20 ,25 ,30 ,35 ,40 ,45 ,50, 60, 70 ,80 ,100 };
+   double pth5[13] = {15, 20 ,25 ,30 ,35 ,40 ,45 ,50, 60, 70 ,80 ,100,200};
 
    // first bin
-   torig = (TDirectoryFile*) fin->Get("tpTree/Iso_abseta_0_24_pt_7_12");
+   torig = (TDirectoryFile*) fin->Get("tpTree/Iso_abseta_0_24_pt_10_15");
    topdir->cd();
    CopyDir(torig,"Iso_ptdep");
 
@@ -229,7 +229,7 @@ void reorganise_tnp(const char* filename, const char* output="out.root") {
    ds = (RooDataSet*) topdir2->Get("fit_eff");
    dsc = (RooDataSet*) topdir2->Get("cnt_eff");
 
-   for (int i=1; i<14; i++) {
+   for (int i=1; i<13; i++) {
       // take care of the plots and fit results
       torig = (TDirectoryFile*) fin->Get(Form("tpTree/Iso_abseta_%.0f_%.0f_pt_%.0f_%.0f/abseta_bin0__pt_bin0__TightId_true__templates_abseta_%.0f_%.0f_pt_%.0f_%.0f",ael5*10.,aeh5*10.,ptl5[i],pth5[i],ael5*10.,aeh5*10.,ptl5[i],pth5[i]));
       TString tname = torig->GetName();

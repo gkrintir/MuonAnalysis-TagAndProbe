@@ -3,41 +3,41 @@
 
 using namespace std;
 
-const int nbins = 47;
+const int nbins = 59;
 const double ael[nbins] = {0  ,
-   0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,
-   0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,
-   1.2,1.2,1.2,1.2,1.2,1.2,1.2,1.2,1.2,1.2,
+   0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,
+   0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,
+   1.2,1.2,1.2,1.2,1.2,1.2,1.2,1.2,1.2,1.2,1.2,1.2,1.2,1.2,
    2.1,2.1,2.1,2.1,2.1,2.1,
    0  ,1.2,2.1,
    0  ,0.3,0.6,0.9,1.2,1.6,2.1
 };
 const double aeh[nbins] = {2.4,
-   2.4,2.4,2.4,2.4,2.4,2.4,2.4,2.4,2.4,2.4,
-   1.2,1.2,1.2,1.2,1.2,1.2,1.2,1.2,1.2,1.2,
-   2.1,2.1,2.1,2.1,2.1,2.1,2.1,2.1,2.1,2.1,
+   2.4,2.4,2.4,2.4,2.4,2.4,2.4,2.4,2.4,2.4,2.4,2.4,2.4,2.4,
+   1.2,1.2,1.2,1.2,1.2,1.2,1.2,1.2,1.2,1.2,1.2,1.2,1.2,1.2,
+   2.1,2.1,2.1,2.1,2.1,2.1,2.1,2.1,2.1,2.1,2.1,2.1,2.1,2.1,
    2.4,2.4,2.4,2.4,2.4,2.4,
    1.2,2.1,2.4,
    0.3,0.6,0.9,1.2,1.6,2.1,2.4
 };
 const double ptl[nbins] = {7  ,
-   7  ,12 ,15 ,30 ,40 ,50, 60 ,70 ,80 ,100,
-   7  ,12 ,15 ,25 ,30 ,35 ,40 ,45 ,50 ,80 ,
-   7  ,12 ,15 ,25 ,30 ,35 ,40 ,45 ,50 ,80 ,
+   7  ,12 ,15 ,20 ,25 ,30 ,35 ,40 ,45 ,50, 60 ,70 ,80 ,100,
+   7  ,12 ,15 ,20 ,25 ,30 ,35 ,40 ,45 ,50, 60 ,70 ,80 ,100,
+   7  ,12 ,15 ,20 ,25 ,30 ,35 ,40 ,45 ,50, 60 ,70 ,80 ,100,
    7  ,12 ,15 ,25 ,40 ,80 ,
    7  ,7  ,7  ,
    7  ,7  ,7  ,7  ,7  ,7,  7
 };
 const double pth[nbins] = {200,
-   12 ,15 ,30 ,40 ,50, 60 ,70 ,80 ,100,200,
-   12 ,15 ,25 ,30 ,35 ,40 ,45 ,50 ,80 ,200,
-   12 ,15 ,25 ,30 ,35 ,40 ,45 ,50 ,80 ,200,
+   12 ,15 ,20 ,25 ,30 ,35 ,40 ,45 ,50, 60 ,70 ,80 ,100,200,
+   12 ,15 ,20 ,25 ,30 ,35 ,40 ,45 ,50, 60 ,70 ,80 ,100,200,
+   12 ,15 ,20 ,25 ,30 ,35 ,40 ,45 ,50, 60 ,70 ,80 ,100,200,
    12 ,15 ,25 ,40 ,80 ,200,
    200,200,200,
    200,200,200,200,200,200,200
 };
 
-void print_tnp_config(int massmin=75, int massmax=120, const char* templatefilename="MassTemplatesForTnP_relPF" << tagname << "_M75120.root", const char* isotagname="" << tagname << "") {
+void print_tnp_config(int massmin=75, int massmax=120, const char* templatefilename="MassTemplatesForTnP_reltkiso0p20_M75120.root", const char* isotagname="reltkiso0p20") {
    cout << "import FWCore.ParameterSet.Config as cms" << endl;
    cout << "" << endl;
    cout << "process = cms.Process(\"TagProbe\")" << endl;
@@ -56,11 +56,11 @@ void print_tnp_config(int massmin=75, int massmax=120, const char* templatefilen
    cout << "    InputTreeName = cms.string(\"fitter_tree\")," << endl;
    cout << "    OutputFileName = cms.string(\"tnp_Ana_Data_newIso_vpv_" << isotagname << "_dxyz_ptGT7_M" << massmin << massmax << ".root\")," << endl;
    cout << "    #numbrer of CPUs to use for fitting" << endl;
-   cout << "    NumCPU = cms.uint32(25)," << endl;
+   cout << "    NumCPU = cms.uint32(10)," << endl;
    cout << "    # specifies whether to save the RooWorkspace containing the data for each bin and" << endl;
    cout << "    # the pdf object with the initial and final state snapshots" << endl;
-   cout << "    binnedFit = cms.bool(False)," << endl;
-   cout << "    #binsForFit = cms.uint32(30)," << endl;
+   cout << "    binnedFit = cms.bool(True)," << endl;
+   cout << "    binsForFit = cms.uint32(50)," << endl;
    cout << "    binsForMassPlots = cms.uint32(50)," << endl;
    cout << "    SaveWorkspace = cms.bool(False)," << endl;
    cout << "    # WeightVariable = cms.string(\"weight\")," << endl;
@@ -74,6 +74,7 @@ void print_tnp_config(int massmin=75, int massmax=120, const char* templatefilen
    cout << "                         tag_hiNtracks    = cms.vstring(\"N Tracks\", \"0\", \"400\", \"\")," << endl;
    cout << "                         tag_hiHF         = cms.vstring(\"HF\", \"0\", \"500\", \"\")," << endl;
    cout << "                         tag_nVertices    = cms.vstring(\"PU - nVertices\", \"0\", \"10\", \"\")," << endl;
+   cout << "                         run              = cms.vstring(\"run number\", \"285479\", \"286496\", \"\")," << endl;
    cout << "                         # weight           = cms.vstring(\"weight\",\"0\",\"10\",\"\")," << endl;
    cout << "    )," << endl;
    cout << "    # defines all the discrete variables of the probes available in the input tree and intended for use in the efficiency calculations" << endl;
@@ -104,9 +105,10 @@ void print_tnp_config(int massmin=75, int massmax=120, const char* templatefilen
       cout << "       templates_" << tagname << " = cms.vstring(" << endl;
       cout << "          \"#import " << templatefilename << ":ws_templates:hpass_" << tagname << "_roohistpdf\"," << endl;
       cout << "          \"#import " << templatefilename << ":ws_templates:hfail_" << tagname << "_roohistpdf\"," << endl;
-      cout << "          \"Gaussian::res(mass, mean[0,-1,1], sigma[0.001,1e-10,10])\"," << endl;
-      cout << "          \"FCONV::signalPass(mass, hpass_" << tagname << "_roohistpdf, res)\"," << endl;
-      cout << "          \"FCONV::signalFail(mass, hfail_" << tagname << "_roohistpdf, res)\"," << endl;
+      cout << "          \"Gaussian::resS(mass, meanS[0,-1,1], sigmaB[0.001,1e-10,10])\"," << endl;
+      cout << "          \"Gaussian::resF(mass, meanF[0,-1,1], sigmaF[0.001,1e-10,10])\"," << endl;
+      cout << "          \"FCONV::signalPass(mass, hpass_" << tagname << "_roohistpdf, resS)\"," << endl;
+      cout << "          \"FCONV::signalFail(mass, hfail_" << tagname << "_roohistpdf, resF)\"," << endl;
       cout << "          \"Exponential::backgroundPass(mass, lp[0,-5,5])\"," << endl;
       cout << "          \"Exponential::backgroundFail(mass, lf[0,-5,5])\"," << endl;
       cout << "          \"efficiency[0.95,0.1,1]\"," << endl;
@@ -127,7 +129,7 @@ void print_tnp_config(int massmin=75, int massmax=120, const char* templatefilen
    for (int ibin=0; ibin<nbins-6; ibin++) {
       TString tagname = Form("abseta_%.0f_%.0f_pt_%.0f_%.0f",ael[ibin]*10.,aeh[ibin]*10.,ptl[ibin],pth[ibin]);
       cout << "             Iso_" << tagname << " = cms.PSet(" << endl;
-      cout << "                EfficiencyCategoryAndState = cms.vstring(\"" << tagname << "\",\"true\")," << endl;
+      cout << "                EfficiencyCategoryAndState = cms.vstring(\"" << isotagname << "\",\"true\")," << endl;
       cout << "                UnbinnedVariables = cms.vstring(\"mass\")," << endl;
       cout << "                BinnedVariables = cms.PSet(" << endl;
       cout << "                   pt = cms.vdouble(" << ptl[ibin] << ", " << pth[ibin] << ")," << endl;
@@ -142,7 +144,7 @@ void print_tnp_config(int massmin=75, int massmax=120, const char* templatefilen
       TString tagname = Form("abseta_%.0f_%.0f_pt_%.0f_%.0f",ael[ibin]*10.,aeh[ibin]*10.,ptl[ibin],pth[ibin]);
       TString tagname2 = Form("eta_%.0f_%.0f_pt_%.0f_%.0f",ael[ibin]*10.,aeh[ibin]*10.,ptl[ibin],pth[ibin]);
       cout << "             Iso_" << tagname2 << " = cms.PSet(" << endl;
-      cout << "                EfficiencyCategoryAndState = cms.vstring(\"" << tagname << "\",\"true\")," << endl;
+      cout << "                EfficiencyCategoryAndState = cms.vstring(\"" << isotagname << "\",\"true\")," << endl;
       cout << "                UnbinnedVariables = cms.vstring(\"mass\")," << endl;
       cout << "                BinnedVariables = cms.PSet(" << endl;
       cout << "                   pt = cms.vdouble(" << ptl[ibin] << ", " << pth[ibin] << ")," << endl;
@@ -159,7 +161,7 @@ void print_tnp_config(int massmin=75, int massmax=120, const char* templatefilen
       TString tagname2 = Form("eta_%.0f_%.0f_pt_%.0f_%.0f",-aeh[ibin]*10.,-ael[ibin]*10.,ptl[ibin],pth[ibin]);
       tagname2.ReplaceAll("-","m");
       cout << "             Iso_" << tagname2 << " = cms.PSet(" << endl;
-      cout << "                EfficiencyCategoryAndState = cms.vstring(\"" << tagname << "\",\"true\")," << endl;
+      cout << "                EfficiencyCategoryAndState = cms.vstring(\"" << isotagname << "\",\"true\")," << endl;
       cout << "                UnbinnedVariables = cms.vstring(\"mass\")," << endl;
       cout << "                BinnedVariables = cms.PSet(" << endl;
       cout << "                   pt = cms.vdouble(" << ptl[ibin] << ", " << pth[ibin] << ")," << endl;
