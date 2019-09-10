@@ -32,6 +32,7 @@ process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
                          pt               = cms.vstring("Probe p_{T}", "0.0", "1000", "GeV/c"),
                          eta              = cms.vstring("Probe #eta", "-2.4", "2.4", ""),
                          abseta           = cms.vstring("Probe |#eta|", "0", "2.5", ""),
+                         tag_nVertices    = cms.vstring("Tag nVtx", "0", "30", ""),
     ),
     # defines all the discrete variables of the probes available in the input tree and intended for use in the efficiency calculations
     Categories = cms.PSet(
@@ -189,14 +190,26 @@ process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
              EfficiencyCategoryAndState = cms.vstring("HybridSoftId_2018","true","HLTL1_DoubleMu0_v0","true","HLTL1_DoubleMu0_v2","true","passedDXY_SOFT","true","passedDZ_SOFT","true","TM","true"),
              UnbinnedVariables = cms.vstring("mass"),
              BinnedVariables = cms.PSet(
-                 pt = cms.vdouble(3, 30),
-                 abseta = cms.vdouble(0,1.2,1.8,2.1,2.4),
-                 InAcceptance_2018_Tight = cms.vstring("true"),
-                 Glb = cms.vstring("true"),
+                pt = cms.vdouble(3, 30),
+                abseta = cms.vdouble(0,1.2,1.8,2.1,2.4),
+                InAcceptance_2018_Tight = cms.vstring("true"),
+                Glb = cms.vstring("true"),
              ),
              BinToPDFmap = cms.vstring(PDFName)
          ),
-         
+      
+         Glb_nVtx = cms.PSet(
+            EfficiencyCategoryAndState = cms.vstring("HybridSoftId_2018","true","HLTL1_DoubleMu0_v0","true","HLTL1_DoubleMu0_v2","true","passedDXY_SOFT","true","passedDZ_SOFT","true","TM","true"),
+            UnbinnedVariables = cms.vstring("mass"),
+            BinnedVariables = cms.PSet(
+                tag_nVertices = cms.vdouble(0.5,1.5,2.5,3.5,4.5,5.5,7.5,29.5),
+                pt = cms.vdouble(1.5,30.0),
+                InAcceptance_2018_Tight = cms.vstring("true"),
+                Glb = cms.vstring("true"),
+            ),
+            BinToPDFmap = cms.vstring(PDFName)
+        ),
+
          #MuIdTrg_absetadep_ext = cms.PSet(
           #   EfficiencyCategoryAndState = cms.vstring("HybridSoftId_2018","true","HLTL1_DoubleMu0_v0","true","HLTL1_DoubleMu0_v2","true","passedDXY_SOFT","true","passedDZ_SOFT","true","TM","true"),
            #  UnbinnedVariables = cms.vstring("mass"),
