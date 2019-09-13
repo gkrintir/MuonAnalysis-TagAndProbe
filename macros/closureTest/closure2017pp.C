@@ -32,7 +32,7 @@ float ptmin(float etamax) {
 }
 
 void closure2017pp() {
-  TFile *f = new TFile("histos_trd_pp.root");
+  TFile *f = new TFile("histos_trd_pp.root"); //histos_trd_pp_FromRecoMethod.root
 
   TH1D *haxes20 = new TH1D("haxes20","haxes20",1,0,20);
   TH1D *haxes30 = new TH1D("haxes30","haxes30",1,0,30);
@@ -74,7 +74,8 @@ void closure2017pp() {
   tleg->AddEntry(gmuidtrg,"Tag and probe","lp");
   tleg->AddEntry(eff,"Traditional","lp");
   tleg->SetHeader("pp, MuId+trigger, 0<|y|<1.2");
-  tr = new TRatioPlot(g2h(eff,20),g2h(gmuidtrg,2));
+  TH1F *hTrdMuidtrg_00_12 = g2h(eff,20);
+  tr = new TRatioPlot(hTrdMuidtrg_00_12,g2h(gmuidtrg,2));
   tr->Draw();
   setTRatioPlotStyle(tr);
   c1->Update();
@@ -98,7 +99,8 @@ void closure2017pp() {
   eff->SetLineColor(kBlack);
   eff->SetMarkerColor(kBlack);
   tleg->SetHeader("pp, MuId+trigger, 1.2<|y|<1.8");
-  tr = new TRatioPlot(g2h(eff,20),g2h(gmuidtrg,2));
+  TH1F *hTrdMuidtrg_12_18 = g2h(eff,20);
+  tr = new TRatioPlot(hTrdMuidtrg_12_18,g2h(gmuidtrg,2));
   tr->Draw();
   setTRatioPlotStyle(tr);
   c1->Update();
@@ -122,7 +124,8 @@ void closure2017pp() {
   eff->SetLineColor(kBlack);
   eff->SetMarkerColor(kBlack);
   tleg->SetHeader("pp, MuId+trigger, 1.8<|y|<2.1");
-  tr = new TRatioPlot(g2h(eff,20),g2h(gmuidtrg,2));
+  TH1F *hTrdMuidtrg_18_21 = g2h(eff,20);
+  tr = new TRatioPlot(hTrdMuidtrg_18_21,g2h(gmuidtrg,2));
   tr->Draw();
   setTRatioPlotStyle(tr);
   c1->Update();
@@ -164,8 +167,9 @@ void closure2017pp() {
   eff->SetLineColor(kBlack);
   eff->SetMarkerColor(kBlack);
   tleg->SetHeader("pp, MuId+trigger, 2.1<|y|<2.4");
-  TH1F* heff = g2h(eff,20); TH1F* hmuidtrg = g2h(gmuidtrg,2);
-  tr = new TRatioPlot(heff,hmuidtrg);
+  TH1F *hTrdMuidtrg_21_24 = g2h(eff,20);
+  TH1F* hmuidtrg = g2h(gmuidtrg,2);
+  tr = new TRatioPlot(hTrdMuidtrg_21_24,hmuidtrg);
   // cout<<endl;
   // cout<<"final hist sizes for num, den = "<<heff->GetNbinsX()<<" "<<hmuidtrg->GetNbinsX()<<endl;
   // for(int i=0;i<=heff->GetNbinsX()+1;i++){
@@ -184,7 +188,241 @@ void closure2017pp() {
 
 
 
-  // Full eff comparison: Trd vs Tnp (functions)
+
+  // // Muid eff comparison: Trd vs Tnp (binned)
+
+  // // 0<|y|<1.2
+  // c1->cd(); c1->Clear();
+  // //  da_muid = (RooDataSet*)ftnp_muid->Get("tpTree/MuId_abseta00_12/fit_eff");
+  // htnp_num = (TH1D*) f->Get("hden_glbIDwtFromGlb_00_12");//plotEff(da_muid,1,"pt");
+  // htnp_den = (TH1D*) f->Get("hden_glbwtFromGlb_00_12");
+  // gmuidtrg->Divide(htnp_num,htnp_den,"pois");
+  // SetGoodTnpError(gmuidtrg, g_MuId_00_12, htnp_num);
+  // gmuidtrg->SetLineColor(kRed);
+  // gmuidtrg->SetMarkerColor(kRed);
+  // hnum = (TH1D*) f->Get("hnumglbID_00_12");
+  // hden = (TH1D*) f->Get("hnumglb_00_12");
+  // eff->Divide(hnum,hden,"pois");
+  // eff->SetLineColor(kBlack);
+  // eff->SetMarkerColor(kBlack);
+  // // tleg->AddEntry(gmuidtrg,"Tag and probe","lp");
+  // // tleg->AddEntry(eff,"Traditional","lp");
+  // tleg->SetHeader("pp, MuId, 0<|y|<1.2");
+  // tr = new TRatioPlot(g2h(eff,20),g2h(gmuidtrg,2));
+  // tr->Draw();
+  // setTRatioPlotStyle(tr);
+  // c1->Update();
+  // tr->GetUpperPad()->cd();
+  // tleg->Draw();
+  // //  g_MuId_00_12->Draw("P");
+  // c1->SaveAs("pp_muid_binned_00_12.pdf");
+
+  // // 1.2<|y|<1.8
+  // c1->cd(); c1->Clear();
+  // //  da_muid = (RooDataSet*)ftnp_muid->Get("tpTree/MuId_abseta12_18/fit_eff");
+  // htnp_num = (TH1D*) f->Get("hden_glbIDwtFromGlb_12_18");//plotEff(da_muid,1,"pt");
+  // htnp_den = (TH1D*) f->Get("hden_glbwtFromGlb_12_18");
+  // gmuidtrg->Divide(htnp_num,htnp_den,"pois");
+  // SetGoodTnpError(gmuidtrg, g_MuId_12_18, htnp_num);
+  // gmuidtrg->SetLineColor(kRed);
+  // gmuidtrg->SetMarkerColor(kRed);
+  // hnum = (TH1D*) f->Get("hnumglbID_12_18");
+  // hden = (TH1D*) f->Get("hnumglb_12_18");
+  // eff->Divide(hnum,hden,"pois");
+  // eff->SetLineColor(kBlack);
+  // eff->SetMarkerColor(kBlack);
+  // tleg->SetHeader("pp, MuId, 1.2<|y|<1.8");
+  // tr = new TRatioPlot(g2h(eff,20),g2h(gmuidtrg,2));
+  // tr->Draw();
+  // setTRatioPlotStyle(tr);
+  // c1->Update();
+  // tr->GetUpperPad()->cd();
+  // tleg->Draw();
+  // //  g_MuId_12_18->Draw("P");
+  // c1->SaveAs("pp_muid_binned_12_18.pdf");
+
+  // // 1.8<|y|<2.1
+  // c1->cd(); c1->Clear();
+  // //  da_muid = (RooDataSet*)ftnp_muid->Get("tpTree/MuId_abseta18_21/fit_eff");
+  // htnp_num = (TH1D*) f->Get("hden_glbIDwtFromGlb_18_21");//plotEff(da_muid,1,"pt");
+  // htnp_den = (TH1D*) f->Get("hden_glbwtFromGlb_18_21");
+  // gmuidtrg->Divide(htnp_num,htnp_den,"pois");
+  // SetGoodTnpError(gmuidtrg, g_MuId_18_21, htnp_num);
+  // gmuidtrg->SetLineColor(kRed);
+  // gmuidtrg->SetMarkerColor(kRed);
+  // hnum = (TH1D*) f->Get("hnumglbID_18_21");
+  // hden = (TH1D*) f->Get("hnumglb_18_21");
+  // eff->Divide(hnum,hden,"pois");
+  // eff->SetLineColor(kBlack);
+  // eff->SetMarkerColor(kBlack);
+  // tleg->SetHeader("pp, MuId, 1.8<|y|<2.1");
+  // tr = new TRatioPlot(g2h(eff,20),g2h(gmuidtrg,2));
+  // tr->Draw();
+  // setTRatioPlotStyle(tr);
+  // c1->Update();
+  // tr->GetUpperPad()->cd();
+  // tleg->Draw();
+  // //  g_MuId_18_21->Draw("P");
+  // c1->SaveAs("pp_muid_binned_18_21.pdf");
+
+  // // 2.1<|y|<2.4
+  // c1->cd(); c1->Clear();
+  // //  da_muid = (RooDataSet*)ftnp_muid->Get("tpTree/MuId_abseta18_21/fit_eff");
+  // htnp_num = (TH1D*) f->Get("hden_glbIDwtFromGlb_21_24");//plotEff(da_muid,1,"pt");
+  // htnp_den = (TH1D*) f->Get("hden_glbwtFromGlb_21_24");
+  // //  cout<<htnp_num->GetNbinsX()<<endl;
+  // // for(int i=0;i<=htnp_num->GetNbinsX()+1;i++){
+  // //   cout<<"bin #"<<i<<" lowedge, width = "<<htnp_num->GetBinLowEdge(i)<<" "<<htnp_num->GetBinWidth(i)<<endl;
+  // //   cout<<"hnum y = "<<htnp_num->GetBinContent(i)<<endl;
+  // //   cout<<"hden y = "<<htnp_den->GetBinContent(i)<<endl;
+  // // }
+  // gmuidtrg->Divide(htnp_num,htnp_den,"pois");
+  // // for(int i=0;i<gmuidtrg->GetN();i++){
+  // //   cout<<"TnP method graph, pt #"<<i<<"<< X,Y = "<<gmuidtrg->GetX()[i]<<","<<gmuidtrg->GetY()[i]<<endl;
+  // // }
+  // SetGoodTnpError(gmuidtrg, g_MuId_21_24, htnp_num);
+  // gmuidtrg->SetLineColor(kRed);
+  // gmuidtrg->SetMarkerColor(kRed);
+  // hnum = (TH1D*) f->Get("hnumglbID_21_24");
+  // hden = (TH1D*) f->Get("hnumglb_21_24");
+  // // cout<<endl;
+  // // for(int i=0;i<=hnum->GetNbinsX()+1;i++){
+  // //   cout<<"bin #"<<i<<" lowedge, width = "<<hnum->GetBinLowEdge(i)<<" "<<hnum->GetBinWidth(i)<<endl;
+  // //   cout<<"hnum y = "<<hnum->GetBinContent(i)<<endl;
+  // //   cout<<"hden y = "<<hden->GetBinContent(i)<<endl;
+  // // }
+  // eff->Divide(hnum,hden,"pois");
+  // // for(int i=0;i<eff->GetN();i++){
+  // //   cout<<"Trad method graph, pt #"<<i<<"<< X,Y = "<<eff->GetX()[i]<<","<<eff->GetY()[i]<<endl;
+  // // }
+  // eff->SetLineColor(kBlack);
+  // eff->SetMarkerColor(kBlack);
+  // tleg->SetHeader("pp, MuId, 2.1<|y|<2.4");
+  // tr = new TRatioPlot(g2h(eff,20),g2h(gmuidtrg,2));
+  // // cout<<endl;
+  // // cout<<"final hist sizes for num, den = "<<heff->GetNbinsX()<<" "<<hmuid->GetNbinsX()<<endl;
+  // // for(int i=0;i<=heff->GetNbinsX()+1;i++){
+  // //   cout<<"bin #"<<i<<" lowedge, width = "<<heff->GetBinLowEdge(i)<<" "<<heff->GetBinWidth(i)<<endl;
+  // //   cout<<"hTrad y = "<<heff->GetBinContent(i)<<endl;
+  // //   cout<<"hTnP y = "<<hmuid->GetBinContent(i)<<endl;
+  // // }
+  // tr->Draw();
+  // setTRatioPlotStyle(tr);
+  // c1->Update();
+  // tr->GetUpperPad()->cd();
+  // tleg->Draw();
+  // //  g_MuId_21_24->Draw("P");
+  // c1->SaveAs("pp_muid_binned_21_24.pdf");
+
+
+
+
+  // // Full eff comparison: Trd vs Tnp (method from reco muons)
+
+  // // 0<|y|<1.2
+  // c1->cd(); c1->Clear();
+  // htnp_num = (TH1D*) f->Get("hden_glbIDtrgwt_00_12");
+  // htnp_den = (TH1D*) f->Get("hden_00_12");
+  // gmuidtrg->Divide(htnp_num,htnp_den,"pois");
+  // SetGoodTnpError(gmuidtrg, g_MuIdTrg_00_12, htnp_num, g_Glb_00_12);
+  // gmuidtrg->SetLineColor(kRed);
+  // gmuidtrg->SetMarkerColor(kRed);
+  // hnum = (TH1D*) f->Get("hnumglbFromGen_00_12");
+  // hden = (TH1D*) f->Get("hnumAcc_00_12");
+  // eff->Divide(hnum,hden,"pois");
+  // eff->SetLineColor(kBlack);
+  // eff->SetMarkerColor(kBlack);
+  // tleg->SetHeader("pp, full eff, 0<|y|<1.2");
+  // TH1F *hTrdGlb_00_12 = g2h(eff,20);
+  // TH1F *hFullEff = Multiply(hTrdMuidtrg_00_12, hTrdGlb_00_12);
+  // tr = new TRatioPlot(hFullEff,g2h(gmuidtrg,2));
+  // tr->Draw();
+  // setTRatioPlotStyle(tr);
+  // c1->Update();
+  // tr->GetUpperPad()->cd();
+  // tleg->Draw();
+  // c1->SaveAs("pp_full_binned_00_12.pdf");
+
+  // // 1.2<|y|<1.8
+  // c1->cd(); c1->Clear();
+  // htnp_num = (TH1D*) f->Get("hden_glbIDtrgwt_12_18");
+  // htnp_den = (TH1D*) f->Get("hden_12_18");
+  // gmuidtrg->Divide(htnp_num,htnp_den,"pois");
+  // SetGoodTnpError(gmuidtrg, g_MuIdTrg_12_18, htnp_num, g_Glb_12_18);
+  // gmuidtrg->SetLineColor(kRed);
+  // gmuidtrg->SetMarkerColor(kRed);
+  // hnum = (TH1D*) f->Get("hnumglbIDtrg_12_18");
+  // hden = (TH1D*) f->Get("hnumAcc_12_18");
+  // eff->Divide(hnum,hden,"pois");
+  // eff->SetLineColor(kBlack);
+  // eff->SetMarkerColor(kBlack);
+  // tleg->SetHeader("pp, full eff, 1.2<|y|<1.8");
+  // tr = new TRatioPlot(g2h(eff,20),g2h(gmuidtrg,2));
+  // tr->Draw();
+  // setTRatioPlotStyle(tr);
+  // c1->Update();
+  // tr->GetUpperPad()->cd();
+  // tleg->Draw();
+  // c1->SaveAs("pp_full_binned_12_18.pdf");
+
+  // // 1.8<|y|<2.1
+  // c1->cd(); c1->Clear();
+  // htnp_num = (TH1D*) f->Get("hden_glbIDtrgwt_18_21");
+  // htnp_den = (TH1D*) f->Get("hden_18_21");
+  // gmuidtrg->Divide(htnp_num,htnp_den,"pois");
+  // SetGoodTnpError(gmuidtrg, g_MuIdTrg_18_21, htnp_num, g_Glb_18_24);
+  // gmuidtrg->SetLineColor(kRed);
+  // gmuidtrg->SetMarkerColor(kRed);
+  // hnum = (TH1D*) f->Get("hnumglbIDtrg_18_21");
+  // hden = (TH1D*) f->Get("hnumAcc_18_21");
+  // eff->Divide(hnum,hden,"pois");
+  // eff->SetLineColor(kBlack);
+  // eff->SetMarkerColor(kBlack);
+  // tleg->SetHeader("pp, full eff, 1.8<|y|<2.1");
+  // tr = new TRatioPlot(g2h(eff,20),g2h(gmuidtrg,2));
+  // tr->Draw();
+  // setTRatioPlotStyle(tr);
+  // c1->Update();
+  // tr->GetUpperPad()->cd();
+  // tleg->Draw();
+  // c1->SaveAs("pp_full_binned_18_21.pdf");
+
+  // // 2.1<|y|<2.4
+  // c1->cd(); c1->Clear();
+  // htnp_num = (TH1D*) f->Get("hden_glbIDtrgwt_21_24");
+  // htnp_den = (TH1D*) f->Get("hden_21_24");
+  // gmuidtrg->Divide(htnp_num,htnp_den,"pois");
+  // SetGoodTnpError(gmuidtrg, g_MuIdTrg_21_24, htnp_num, g_Glb_18_24);
+  // gmuidtrg->SetLineColor(kRed);
+  // gmuidtrg->SetMarkerColor(kRed);
+  // hnum = (TH1D*) f->Get("hnumglbIDtrg_21_24");
+  // hden = (TH1D*) f->Get("hnumAcc_21_24");
+  // eff->Divide(hnum,hden,"pois");
+  // eff->SetLineColor(kBlack);
+  // eff->SetMarkerColor(kBlack);
+  // tleg->SetHeader("pp, full eff, 2.1<|y|<2.4");
+  // tr = new TRatioPlot(g2h(eff,20),g2h(gmuidtrg,2));
+  // tr->Draw();
+  // setTRatioPlotStyle(tr);
+  // c1->Update();
+  // tr->GetUpperPad()->cd();
+  // tleg->Draw();
+  // c1->SaveAs("pp_full_binned_21_24.pdf");
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  // Full eff comparison: Trd vs Tnp 
 
   // 0<|y|<1.2
   c1->cd(); c1->Clear();

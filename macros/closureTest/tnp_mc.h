@@ -28,6 +28,30 @@ double tnpEff_mc_glb_pp(double x, double eta) {
 
 
 ///////////////////////////////////////////////////
+//           M U I D    P P                      //
+///////////////////////////////////////////////////
+//Extracted with rt -b "../extractEffs.C(\"../../test/tnp_fitOutput_HybridSoftID_MC_pp_TightAcceptance_CBGPlusPol1.root\",\"tnp_efficiencies_HybridSoftID_MC_pp_CBGPlusPol1.root\")"
+
+TFile* fMuId = new TFile("tnp_efficiencies_HybridSoftID_MC_pp_CBGPlusPol1.root");
+TGraphAsymmErrors* g_MuId_00_12 = (TGraphAsymmErrors*)fMuId->Get("MuId_abseta00_12");
+TGraphAsymmErrors* g_MuId_12_18 = (TGraphAsymmErrors*)fMuId->Get("MuId_abseta12_18");
+TGraphAsymmErrors* g_MuId_18_21 = (TGraphAsymmErrors*)fMuId->Get("MuId_abseta18_21");
+TGraphAsymmErrors* g_MuId_21_24 = (TGraphAsymmErrors*)fMuId->Get("MuId_abseta21_24");
+
+double tnpEff_mc_MuId_pp(double x, double eta) {
+  double eff=1;
+  if(fabs(eta)<1.2) eff = g_MuId_00_12->Eval(x);
+  else if(fabs(eta)<1.8) eff = g_MuId_12_18->Eval(x);
+  else if(fabs(eta)<2.1) eff = g_MuId_18_21->Eval(x);
+  else if(fabs(eta)<2.4) eff = g_MuId_21_24->Eval(x);
+  return eff;
+}
+
+
+
+
+
+///////////////////////////////////////////////////
 //           M U I D T R G    P P                //
 ///////////////////////////////////////////////////
 //Extracted with rt -b "../extractEffs.C(\"../../test/tnp_fitOutput_HybridSoftIDTrigger_MC_pp_CBGPlusPol1.root\",\"tnp_efficiencies_HybridSoftIDTrigger_MC_pp_CBGPlusPol1.root\")"

@@ -33,7 +33,7 @@ class ClosureTestPP {
   //Int_t           Centrality;
   Int_t           nTrig;
   //Int_t           trigPrescale[15];   //[nTrig]
-  Long64_t       HLTriggers;
+  ULong64_t       HLTriggers;
   /* Int_t           Npix; */
   /* Int_t           NpixelTracks; */
   /* Int_t           Ntracks; */
@@ -340,8 +340,8 @@ Int_t ClosureTestPP::CutSgMuon(Long64_t irec)
   if (Reco_mu_nTrkWMea[irec] > 5 &&   //Reco_mu_nTrkHits[irec]>10 &&
       Reco_mu_nPixWMea[irec]>0 &&
       //Reco_mu_normChi2_inner[irec]<4.0 &&
-      fabs(Reco_mu_dxy[irec])<0.3 &&
-      fabs(Reco_mu_dz[irec])<20 &&
+      //      fabs(Reco_mu_dxy[irec])<0.3 &&
+      //fabs(Reco_mu_dz[irec])<20 &&
       //Reco_mu_normChi2_global[irec]<10.0 &&
       //Reco_mu_nMuValHits[irec]>0 &&
       //Reco_mu_StationsMatched[irec]>0 &&
