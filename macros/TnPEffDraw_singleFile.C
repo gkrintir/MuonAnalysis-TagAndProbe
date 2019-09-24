@@ -44,7 +44,7 @@ using namespace std;
 
 // Choose the efficiency type.
 // Possible values: MUIDTRG, TRK, STA, MUID, TRG
-#define MUID
+#define TRG
 
 // pp or PbPb?
 bool isPbPb = false; // if true, will compute the centrality dependence
@@ -61,7 +61,7 @@ bool doToys = false;
 int fitfcn = 2;
 
 // Location of the files
-const int nSyst = 4;//4;
+const int nSyst = 1;//4;
 // the first file is for the nominal case, the following ones are for the systematics
 /*const char* fDataName[nSyst] = {
 	//"tnp_Ana_RD_PbPb_MuonIDTrg_AllMB.root",
@@ -74,7 +74,8 @@ const char* fMCName[nSyst] = {
 
 // names for systematics
 const char* systName[nSyst] = {
-  "nominal (CB+pol2)","Background_pol2","Signal_CB","MassRange_narrow"//,"TightAcceptance"
+  "nominal (CB+pol1)"
+//  "nominal (CB+pol2)","Background_pol2","Signal_CB","MassRange_narrow"//,"TightAcceptance"
 };
 //GLB:   "nominal","Background_pol3","Signal_CB+Gauss","MassRange_narrow","LooseAcceptance"
 //MUID:  "nominal (CB+pol2)","Background_pol2","Signal_CB","MassRange_narrow","TightAcceptance"
@@ -147,8 +148,8 @@ TString cutTag("tpTree");
 TString cutLegend("HybridSoft ID");
 const double effmin = 0.85;
 const double sfrange = 0.013;
-const char* fDataName[nSyst] = { "../../tnp_fitOutput_HybridSoftID_data_pp_CBGPlusPol1.root", "../../tnp_fitOutput_HybridSoftID_data_pp_CBGPlusPol2.root", "../../tnp_fitOutput_HybridSoftID_data_pp_CBPlusPol1.root", "../../tnp_fitOutput_HybridSoftID_data_pp_CBGPlusPol1_narrowMrange.root" };// , "../../tnp_fitOutput_HybridSoftID_data_pp_TightAcceptance_CBGPlusPol1.root"
-const char* fMCName[nSyst] = { "../../tnp_fitOutput_HybridSoftID_MC_pp_CBGPlusPol1.root", "../../tnp_fitOutput_HybridSoftID_MC_pp_CBGPlusPol2.root", "../../tnp_fitOutput_HybridSoftID_MC_pp_CBPlusPol1.root", "../../tnp_fitOutput_HybridSoftID_MC_pp_CBGPlusPol1_narrowMrange.root" } ;//"../../tnp_fitOutput_HybridSoftID_MC_pp_TightAcceptance_CBGPlusPol1.root"
+const char* fDataName[nSyst] = { "../../tnp_fitOutput_HybridSoftID_data_pp_TightAcceptance_CBGPlusPol1.root"};//"../../tnp_fitOutput_HybridSoftID_data_pp_CBGPlusPol1.root", "../../tnp_fitOutput_HybridSoftID_data_pp_CBGPlusPol2.root", "../../tnp_fitOutput_HybridSoftID_data_pp_CBPlusPol1.root", "../../tnp_fitOutput_HybridSoftID_data_pp_CBGPlusPol1_narrowMrange.root" };// , "../../tnp_fitOutput_HybridSoftID_data_pp_TightAcceptance_CBGPlusPol1.root"
+const char* fMCName[nSyst] = { "../../tnp_fitOutput_HybridSoftID_MC_pp_TightAcceptance_CBGPlusPol1.root"};//"../../tnp_fitOutput_HybridSoftID_MC_pp_CBGPlusPol1.root", "../../tnp_fitOutput_HybridSoftID_MC_pp_CBGPlusPol2.root", "../../tnp_fitOutput_HybridSoftID_MC_pp_CBPlusPol1.root", "../../tnp_fitOutput_HybridSoftID_MC_pp_CBGPlusPol1_narrowMrange.root" } ;//"../../tnp_fitOutput_HybridSoftID_MC_pp_TightAcceptance_CBGPlusPol1.root"
 #endif
 
 #ifdef TRG
@@ -167,9 +168,9 @@ ofstream file_TestErr("Trg_ExpErr.txt");
 TString cutTag("tpTree");
 TString cutLegend("DoubleMu0 trigger");
 const double effmin = 0.;
-const double sfrange = 0.35;
-const char* fDataName[nSyst] = { "../../tnp_fitOutput_Trigger_data_pp_pol1.root" };
-const char* fMCName[nSyst] = { "../../tnp_fitOutput_Trigger_MC_pp_pol1.root" };
+const double sfrange = 0.15;
+const char* fDataName[nSyst] = { "../../tnp_fitOutput_Trigger_data_pp_CBGPlusPol1.root" };
+const char* fMCName[nSyst] = { "../../tnp_fitOutput_Trigger_MC_pp_CBGPlusPol1.root" };
 #endif
 
 

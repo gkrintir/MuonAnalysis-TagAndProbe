@@ -79,6 +79,14 @@ class ClosureTestPP {
   /* Float_t         Reco_mu_pt_global[20];   //[Reco_mu_size] */
   /* Float_t         Reco_mu_ptErr_inner[20];   //[Reco_mu_size] */
   /* Float_t         Reco_mu_ptErr_global[20];   //[Reco_mu_size]  Float_t         Reco_mu_dxy[10];   //[Reco_QQ_size] */
+  Short_t         Reco_trk_size;
+  Short_t         Reco_trk_charge[20];
+  Short_t         Reco_trk_whichGenmu[20];
+  Float_t         Reco_trk_dxy[20];   //[Reco_mu_size]
+  Float_t         Reco_trk_dz[20];   //[Reco_mu_size]
+  int         Reco_trk_originalAlgo[20];   //[Reco_mu_size]
+  int         Reco_trk_nPixWMea[20];   //[Reco_mu_size]
+  int         Reco_trk_nTrkWMea[20];   //[Reco_mu_size]
   Short_t         Gen_QQ_size;
   Short_t         Gen_QQ_whichRec[4];
   Short_t         Gen_QQ_mupl_idx[4];
@@ -147,6 +155,14 @@ class ClosureTestPP {
   /* TBranch        *b_Reco_mu_pt_global;   //! */
   /* TBranch        *b_Reco_mu_ptErr_inner;   //! */
   /* TBranch        *b_Reco_mu_ptErr_global;   //! */
+  TBranch        *b_Reco_trk_whichGenmu;   //!
+  TBranch        *b_Reco_trk_charge;   //!
+  TBranch        *b_Reco_trk_size;   //!
+  TBranch        *b_Reco_trk_dxy;   //!
+  TBranch        *b_Reco_trk_dz;   //!
+  TBranch        *b_Reco_trk_originalAlgo;   //!
+  TBranch        *b_Reco_trk_nPixWMea;   //!
+  TBranch        *b_Reco_trk_nTrkWMea;   //!
   TBranch        *b_Gen_QQ_size;   //!
   TBranch        *b_Gen_QQ_mupl_idx;   //!
   TBranch        *b_Gen_QQ_mumi_idx;   //!
@@ -295,6 +311,14 @@ void ClosureTestPP::Init(TTree *tree)
   /* fChain->SetBranchAddress("Reco_mu_pt_global", Reco_mu_pt_global, &b_Reco_mu_pt_global); */
   /* fChain->SetBranchAddress("Reco_mu_ptErr_inner", Reco_mu_ptErr_inner, &b_Reco_mu_ptErr_inner); */
   /* fChain->SetBranchAddress("Reco_mu_ptErr_global", Reco_mu_ptErr_global, &b_Reco_mu_ptErr_global); */
+  fChain->SetBranchAddress("Reco_trk_whichGenmu", Reco_trk_whichGenmu, &b_Reco_trk_whichGenmu);
+  fChain->SetBranchAddress("Reco_trk_size", &Reco_trk_size, &b_Reco_trk_size);
+  fChain->SetBranchAddress("Reco_trk_charge", Reco_trk_charge, &b_Reco_trk_charge);
+  fChain->SetBranchAddress("Reco_trk_dxy", Reco_trk_dxy, &b_Reco_trk_dxy);
+  fChain->SetBranchAddress("Reco_trk_dz", Reco_trk_dz, &b_Reco_trk_dz);
+  fChain->SetBranchAddress("Reco_trk_originalAlgo", Reco_trk_originalAlgo, &b_Reco_trk_originalAlgo);
+  fChain->SetBranchAddress("Reco_trk_nPixWMea", Reco_trk_nPixWMea, &b_Reco_trk_nPixWMea);
+  fChain->SetBranchAddress("Reco_trk_nTrkWMea", Reco_trk_nTrkWMea, &b_Reco_trk_nTrkWMea);
 
   fChain->SetBranchAddress("Gen_QQ_size", &Gen_QQ_size, &b_Gen_QQ_size);
   fChain->SetBranchAddress("Gen_QQ_4mom", &Gen_QQ_4mom, &b_Gen_QQ_4mom);

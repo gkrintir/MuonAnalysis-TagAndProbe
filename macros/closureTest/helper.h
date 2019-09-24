@@ -102,6 +102,15 @@ TH1F *g2h(TGraphAsymmErrors *g, double def=1e-3) {
   return ans;
 };
 
+TH1F *Multiply(TH1F *h1, TH1F *h2, TString name){
+  TH1F *res = (TH1F*)h1->Clone(name);
+  for (int bin=0;bin<=h1->GetNbinsX();bin++){
+    res->SetBinContent(bin, res->GetBinContent(bin) * h2->GetBinContent(bin));
+  }
+
+  return res;
+}
+
 void setTRatioPlotStyle(TRatioPlot *tr) {
   tr->SetH1DrawOpt("");
   tr->SetH2DrawOpt("");
