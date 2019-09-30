@@ -134,8 +134,8 @@ std::tuple<std::vector<Int_t*>, std::vector<ULong64_t*>, std::vector<float*>, st
 }
 
 void combineDataSamples_NoDoubles(){
-  const char* filename1 = "/home/llr/cms/falmagne/tuples/pp17/TnP/data/TNP_SingleMu_pp5TeVRun2017G_PromptReco_v1_AOD_20190415/tnpJpsi_data_pp5TeV_SingleMu";
-  const char* filename2 = "/home/llr/cms/falmagne/tuples/pp17/TnP/data/TNP_SingleMuTnP_pp5TeVRun2017G_PromptReco_v1_AOD_20190415/tnpJpsi_data_pp5TeV_SingleMuTnP";
+  const char* filename1 = "/home/llr/cms/falmagne/tuples/pp17/TnP/data/TNP_SingleMu_pp5TeVRun2017G_PromptReco_v1_AOD_20190924/tnpJpsi_data_pp5TeV_SingleMu";
+  const char* filename2 = "/home/llr/cms/falmagne/tuples/pp17/TnP/data/TNP_SingleMuTnP_pp5TeVRun2017G_PromptReco_v1_AOD_20190924/tnpJpsi_data_pp5TeV_SingleMuTnP";
 
   //Get indices of sorted event list
   cout<<"Sorting events in the trees of file "<<filename1<<".root"<<endl;

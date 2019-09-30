@@ -20,10 +20,11 @@ TTree* copyTreeAndAddWeight(TTree* told, int nentries=0)
   TTree *tnew = told->CloneTree(0);
   tnew->SetAutoSave(0);
   tnew->SetAutoFlush(0);
-  int isTightMuon=-1, passedDXY_TIGHT=-1, passedDZ_TIGHT=-1, passedValidPixelHits=-1, passedTrackerLayers=-1, passedMatchedStations=-1, passedMuHits=-1, passedglbChi2=-1, Glb=-1, PF=-1;
+  int isTightMuon=-1, passedDXY_TIGHT=-1, passedDZ_TIGHT=-1, passedValidPixelHits=-1, passedTrackerLayers=-1,passedTrackerLayersTight=-1, passedMatchedStations=-1, passedMuHits=-1, passedglbChi2=-1, Glb=-1, PF=-1, passedTagChi2=-1;
   int isSoftMuon=-1, isHybridSoftMuon2015=-1, isHybridSoftMuon2018=-1, passedDXY_SOFT=-1, passedDZ_SOFT=-1, passedPixelLayers=-1, TMOST=-1, Track_HP=-1, TM=-1;
-  float dzPV=-999., dxyPV=-999., dB=-999., tkValidPixelHits=-1., tkPixelLay=-1., tkTrackerLay=-1., numberOfMatchedStations=-1., glbValidMuHits=-1., glbChi2=999., hiBin=-1., genWeight=-999., weight=1.;
+  float dzPV=-999., dxyPV=-999., dB=-999., tkValidPixelHits=-1., tkPixelLay=-1., tkTrackerLay=-1., numberOfMatchedStations=-1., glbValidMuHits=-1., glbChi2=999., hiBin=-1., genWeight=-999., weight=1., tag_tkChi2=999.;
 
+  told->SetBranchAddress("tag_tkChi2",&tag_tkChi2);
   told->SetBranchAddress("dzPV",&dzPV);
   told->SetBranchAddress("dxyPV",&dxyPV);
   told->SetBranchAddress("dB",&dB);
@@ -41,11 +42,13 @@ TTree* copyTreeAndAddWeight(TTree* told, int nentries=0)
   if (told->GetBranch("tag_hiBin")!=NULL) { told->SetBranchAddress("tag_hiBin", &hiBin); }
   if (told->GetBranch("pair_genWeight")!=NULL) { told->SetBranchAddress("pair_genWeight", &genWeight); }
    
+  tnew->Branch("passedTagChi2", &passedTagChi2, "passedTagChi2/I");
   tnew->Branch("isTightMuon", &isTightMuon, "isTightMuon/I");
   tnew->Branch("passedDXY_TIGHT", &passedDXY_TIGHT, "passedDXY_TIGHT/I");
   tnew->Branch("passedDZ_TIGHT", &passedDZ_TIGHT, "passedDZ_TIGHT/I");
   tnew->Branch("passedValidPixelHits", &passedValidPixelHits, "passedValidPixelHits/I");
   tnew->Branch("passedTrackerLayers", &passedTrackerLayers, "passedTrackerLayers/I");
+  tnew->Branch("passedTrackerLayersTight", &passedTrackerLayersTight, "passedTrackerLayersTight/I");
   tnew->Branch("passedMatchedStations", &passedMatchedStations, "passedMatchedStations/I");
   tnew->Branch("passedMuHits", &passedMuHits, "passedMuHits/I");
   tnew->Branch("passedglbChi2", &passedglbChi2, "passedglbChi2/I");
@@ -80,6 +83,7 @@ TTree* copyTreeAndAddWeight(TTree* told, int nentries=0)
     passedDZ_TIGHT = (fabs(dzPV) < DZCUT_TIGHT);
     passedValidPixelHits = (tkValidPixelHits > 0.1);
     passedTrackerLayers = (tkTrackerLay > 5.1);
+    passedTrackerLayersTight = (tkTrackerLay > 7.1);
     passedMatchedStations = (numberOfMatchedStations > 1.1);
     passedMuHits = (glbValidMuHits > 0.1);
     passedglbChi2 = (glbChi2 < 10.);
@@ -89,7 +93,7 @@ TTree* copyTreeAndAddWeight(TTree* told, int nentries=0)
     passedDXY_SOFT = (fabs(dxyPV) < DXYCUT_SOFT);
     passedDZ_SOFT = (fabs(dzPV) < DZCUT_SOFT);
     passedPixelLayers = (tkPixelLay > 0.1);
-    passedTrackerLayers = (tkTrackerLay > 5.1);
+    passedTagChi2 = (tag_tkChi2<2.5);
 
     //HybridSoftMuonID PbPb
     isHybridSoftMuon2015 = (Glb==1 && TM==1 && TMOST==1 && fabs(dxyPV)<DXYCUT_SOFT && fabs(dzPV)<DZCUT_SOFT && tkPixelLay>0.1 && tkTrackerLay>5.1);
@@ -165,7 +169,7 @@ void addFlagsToFile(const std::string filein, const std::string fileout) {
   fout->cd();
   TDirectory *tdir_sta = fout->mkdir("tpTreeTrk");
   tdir_sta->cd();
-  TTree *tr_sta = justCopyTreeAndAddWeight((TTree*)fin->Get("tpTreeTrk/fitter_tree"),0);
+  TTree *tr_sta = copyTreeAndAddWeight((TTree*)fin->Get("tpTreeTrk/fitter_tree"),0);
 
   fout->Write();
   fout->Close();

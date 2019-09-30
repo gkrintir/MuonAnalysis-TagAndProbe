@@ -99,8 +99,8 @@ process.load("MuonAnalysis.TagAndProbe.common_modules_cff")
 ### Muon Id
 TightIdReco = "isGlobalMuon && isPFMuon && globalTrack.normalizedChi2 < 10 && globalTrack.hitPattern.numberOfValidMuonHits > 0 && numberOfMatchedStations > 1 && track.hitPattern.trackerLayersWithMeasurement > 5 && track.hitPattern.numberOfValidPixelHits > 0"
 TightId = TightIdReco+" && abs(dB) < 0.2"
-HybridSoftIdReco_2018 = "isGlobalMuon && innerTrack.hitPattern.trackerLayersWithMeasurement > 5 && innerTrack.hitPattern.pixelLayersWithMeasurement > 0"
-HybridSoftId_2018 = HybridSoftIdReco_2018
+HybridSoftIdReco_2018 = "isGlobalMuon && isTrackerMuon && innerTrack.hitPattern.trackerLayersWithMeasurement > 5 && innerTrack.hitPattern.pixelLayersWithMeasurement > 0"
+HybridSoftId_2018 = HybridSoftIdReco_2018+" && abs(dB('PV2D')) < 0.3 && abs(dB('PVDZ')) < 20"
 HybridSoftIdReco_2015 = HybridSoftIdReco_2018
 HybridSoftId_2015 = HybridSoftIdReco_2015 + " && isTrackerMuon && muonID('TMOneStationTight')"
 SoftId = "muonID('TMOneStationTight') && innerTrack.hitPattern.trackerLayersWithMeasurement > 5 && innerTrack.hitPattern.pixelLayersWithMeasurement > 0 && innerTrack.quality(\"highPurity\")"
@@ -135,12 +135,12 @@ HighPtTriggerTagFlags = cms.PSet(
     HLT_HIL3Mu20 = cms.string("!triggerObjectMatchesByPath('HLT_HIL3Mu20_v*',1,0).empty()"),
 )
 ### Tracking
-TRACK_CUTS = "track.isNonnull && track.hitPattern.trackerLayersWithMeasurement > 5 && track.hitPattern.pixelLayersWithMeasurement > 0"
+TRACK_CUTS = "track.isNonnull"# && track.hitPattern.trackerLayersWithMeasurement > 5 && track.hitPattern.pixelLayersWithMeasurement > 0"
 
 ## ==== Tag muons
 process.tagMuons = cms.EDFilter("PATMuonSelector",
     src = cms.InputTag("patMuonsWithTrigger"),
-    cut = cms.string(InAcceptance_2015+" && "+HybridSoftId_2015+" && ("
+    cut = cms.string(InAcceptance_2018_Tight+" && "+HybridSoftId_2018+" && ("
                      +    "!triggerObjectMatchesByPath('HLT_HIL2Mu3_NHitQ10_v*',1,0).empty()"
                      + "|| !triggerObjectMatchesByPath('HLT_HIL3Mu3_v*',1,0).empty()"
                      + "|| !triggerObjectMatchesByPath('HLT_HIL3Mu3_NHitQ10_v*',1,0).empty()"
@@ -161,7 +161,7 @@ process.tagMuons = cms.EDFilter("PATMuonSelector",
 process.oneTag = cms.EDFilter("CandViewCountFilter", src = cms.InputTag("tagMuons"), minNumber = cms.uint32(1))
 process.pseudoTag = cms.EDFilter("MuonSelector",
     src = cms.InputTag("mergedMuons"),
-    cut = cms.string(InAcceptance_2015+" && "+HybridSoftIdReco_2015),
+    cut = cms.string(InAcceptance_2018_Tight+" && "+HybridSoftIdReco_2018),
 )
 process.onePseudoTag = process.oneTag.clone(src = cms.InputTag("pseudoTag"))
 
@@ -358,7 +358,7 @@ process.tpTreeSta = process.tpTree.clone(
         InAcceptance_2015 = cms.string(InAcceptance_2015),
         InAcceptance_2018_Loose = cms.string(InAcceptance_2018_Loose),
         InAcceptance_2018_Tight = cms.string(InAcceptance_2018_Tight),
-        isNonMuonSeeded = cms.string("innerTrack.isNonnull && innerTrack.originalAlgo<13"),
+        isNonMuonSeeded = cms.string("innerTrack.isNonnull && (innerTrack.originalAlgo<13 || innerTrack.originalAlgo>21)"),
         StaTkSameCharge = cms.string("outerTrack.isNonnull && innerTrack.isNonnull && (outerTrack.charge == innerTrack.charge)"),
     ),
     tagVariables = cms.PSet(
@@ -413,11 +413,11 @@ process.tagAndProbeSta = cms.Path(
 
 process.probeMuonsTrk = cms.EDFilter("PATMuonSelector",
     src = cms.InputTag("patMuonsWithTrigger"),
-    cut = cms.string(TRACK_CUTS + ' && ' + InAcceptance_2018_Loose + ' &&' + 'innerTrack.isNonnull && innerTrack.originalAlgo<13'), #   muonSeededStepInOut = 13
+    cut = cms.string(TRACK_CUTS + ' && ' + InAcceptance_2018_Loose + ' &&' + 'innerTrack.isNonnull'), #   muonSeededStepInOut = 13
 )
 process.pseudoProbeTrk = cms.EDFilter("MuonSelector",
     src = cms.InputTag("mergedMuons"),
-    cut = cms.string(TRACK_CUTS + ' && ' + InAcceptance_2018_Loose + ' &&' + 'innerTrack.isNonnull && innerTrack.originalAlgo<13'), #   muonSeededStepInOut = 13
+    cut = cms.string(TRACK_CUTS + ' && ' + InAcceptance_2018_Loose + ' &&' + 'innerTrack.isNonnull'), #   muonSeededStepInOut = 13
 )
 
 process.tpPairsTrk = cms.EDProducer("CandViewShallowCloneCombiner",
@@ -441,7 +441,9 @@ process.tpTreeTrk = cms.EDAnalyzer("TagProbeFitTreeProducer",
     # probe variables: all useful ones
     variables = cms.PSet(
       KinematicVariables,
+      TrackQualityVariables,
       StaOnlyVariables,
+      trackAlgo = cms.string("? innerTrack.isNull() ? 0 : innerTrack.originalAlgo"),
       #dxyBS = cms.InputTag("muonDxyPVdzminTrk","dxyBS"),
       dxyPVdzmin = cms.InputTag("muonDxyPVdzminTrk","dxyPVdzmin"),
       dzPV = cms.InputTag("muonDxyPVdzminTrk","dzPV"),
@@ -455,11 +457,13 @@ process.tpTreeTrk = cms.EDAnalyzer("TagProbeFitTreeProducer",
       InAcceptance_2015 = cms.string(InAcceptance_2015),
       InAcceptance_2018_Loose = cms.string(InAcceptance_2018_Loose),
       InAcceptance_2018_Tight = cms.string(InAcceptance_2018_Tight),
+      isNonMuonSeeded = cms.string("innerTrack.isNonnull && (innerTrack.originalAlgo<13 || innerTrack.originalAlgo>21)"),
       #dxyzPVCuts = cms.InputTag("muonDxyPVdzminTrk","dxyzPVCuts"),
+      trackID = cms.string("track.hitPattern.trackerLayersWithMeasurement > 5 && track.hitPattern.pixelLayersWithMeasurement > 0"),
     ),
     tagVariables = cms.PSet(
       TrackQualityVariables,
-      GlobalTrackQualityVariables,
+      #GlobalTrackQualityVariables,
       pt  = cms.string("pt"),
       eta = cms.string("eta"),
       abseta = cms.string("abs(eta)"),

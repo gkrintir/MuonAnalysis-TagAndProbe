@@ -13,10 +13,10 @@ PDFName = "twoGaussPlusPol2"
 process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
     # IO parameters:
     #InputFileNames = cms.vstring("root://cms-xrd-global.cern.ch//store/group/phys_heavyions/dileptons/TNPTagAndProbe2015/Data2015/pp502TeV/TTrees/tnpJPsi_Data_pp5TeV_AOD.root"),
-    InputFileNames = cms.vstring("file:/home/llr/cms/falmagne/tuples/pp17/TnP/TNP_JpsiMM_5p02TeV_TuneCUETP8M1_RunIIpp5Spring18DR-94X_AODSIM_20190415/tnpJpsi_mc_pp5TeV_PromptJpsi_wAddedFlags.root"),
+    InputFileNames = cms.vstring("file:/home/llr/cms/falmagne/tuples/pp17/TnP/TNP_JpsiMM_5p02TeV_TuneCUETP8M1_RunIIpp5Spring18DR-94X_AODSIM_20190924/tnpJpsi_mc_pp5TeV_PromptJpsi_wAddedFlags.root"),
     InputDirectoryName = cms.string("tpTreeTrk"),
     InputTreeName = cms.string("fitter_tree"),
-    OutputFileName = cms.string("file:./tnp_fitOutput_Glb_MC_pp_twoGaussPlusPol2.root"),
+    OutputFileName = cms.string("file:./tnp_fitOutput_Glb_wTrackID_MC_pp_twoGaussPlusPol2.root"),
     NumCPU = cms.uint32(16),
     # specifies wether to save the RooWorkspace containing the data for each bin and
     # the pdf object with the initial and final state snapshots
@@ -38,8 +38,15 @@ process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
     # defines all the discrete variables of the probes available in the input tree and intended for use in the efficiency calculations
     Categories = cms.PSet(
         Glb = cms.vstring("Glb", "dummy[true=1,false=0]"),
+        trackID = cms.vstring("trackID", "dummy[true=1,false=0]"),
+        isNonMuonSeeded = cms.vstring("isNonMuonSeeded", "dummy[true=1,false=0]"),
         InAcceptance_2018_Tight = cms.vstring("InAcceptance_2018_Tight","dummy[true=1,false=0]"),
         InAcceptance_2018_Loose = cms.vstring("InAcceptance_2018_Loose","dummy[true=1,false=0]"),
+        passedTrackerLayers = cms.vstring("passedTrackerLayers","dummy[true=1,false=0]"),
+        passedTrackerLayersTight = cms.vstring("passedTrackerLayersTight","dummy[true=1,false=0]"),
+        passedPixelLayers = cms.vstring("passedPixelLayers","dummy[true=1,false=0]"),
+        passedDXY_SOFT = cms.vstring("passedDXY_SOFT","dummy[true=1,false=0]"),
+        passedDZ_SOFT = cms.vstring("passedDZ_SOFT","dummy[true=1,false=0]"),
     ),
 
     # defines all the PDFs that will be available for the efficiency calculations; uses RooFit's "factory" syntax;
@@ -86,6 +93,12 @@ process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
                 pair_pt = cms.vdouble(2.5, 30),
                 abseta = cms.vdouble(0.0, 1.2), 
                 InAcceptance_2018_Tight = cms.vstring("true"),
+                passedDXY_SOFT = cms.vstring("true"),
+                #passedDZ_SOFT = cms.vstring("true"),
+                #passedPixelLayers = cms.vstring("true"),
+                passedTrackerLayers = cms.vstring("true"),
+                #trackID = cms.vstring("true"),
+                isNonMuonSeeded = cms.vstring("true"),
             ),
             BinToPDFmap = cms.vstring(PDFName)
         ),
@@ -97,6 +110,12 @@ process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
                 pair_pt = cms.vdouble(2.5,30),
                 abseta = cms.vdouble(1.2, 1.8),
                 InAcceptance_2018_Tight = cms.vstring("true"),
+                passedDXY_SOFT = cms.vstring("true"),
+                #passedDZ_SOFT = cms.vstring("true"),
+                #passedPixelLayers = cms.vstring("true"),
+                passedTrackerLayers = cms.vstring("true"),
+                #trackID = cms.vstring("true"),
+                isNonMuonSeeded = cms.vstring("true"),
             ),
             BinToPDFmap = cms.vstring(PDFName)
         ),
@@ -108,6 +127,12 @@ process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
                 pair_pt = cms.vdouble(2.5,30),
                 abseta = cms.vdouble(1.8, 2.4),
                 InAcceptance_2018_Tight = cms.vstring("true"),
+                passedDXY_SOFT = cms.vstring("true"),
+                #passedDZ_SOFT = cms.vstring("true"),
+                #passedPixelLayers = cms.vstring("true"),
+                passedTrackerLayers = cms.vstring("true"),
+                #trackID = cms.vstring("true"),
+                isNonMuonSeeded = cms.vstring("true"),
             ),
             BinToPDFmap = cms.vstring(PDFName)
         ),
@@ -118,6 +143,12 @@ process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
                 pt = cms.vdouble(1.5,30.),
                 eta = cms.vdouble(-2.4,2.4),
                 InAcceptance_2018_Tight = cms.vstring("true"),
+                passedDXY_SOFT = cms.vstring("true"),
+                #passedDZ_SOFT = cms.vstring("true"),
+                #passedPixelLayers = cms.vstring("true"),
+                passedTrackerLayers = cms.vstring("true"),
+                #trackID = cms.vstring("true"),
+                isNonMuonSeeded = cms.vstring("true"),
             ),
             BinToPDFmap = cms.vstring(PDFName)
         ),
@@ -130,6 +161,12 @@ process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
                 pair_pt = cms.vdouble(2.5,30),
                 pt = cms.vdouble(1.5,30.),
                 InAcceptance_2018_Tight = cms.vstring("true"),
+                passedDXY_SOFT = cms.vstring("true"),
+                #passedDZ_SOFT = cms.vstring("true"),
+                #passedPixelLayers = cms.vstring("true"),
+                passedTrackerLayers = cms.vstring("true"),
+                #trackID = cms.vstring("true"),
+                isNonMuonSeeded = cms.vstring("true"),
             ),
             BinToPDFmap = cms.vstring(PDFName)
         ),
@@ -141,9 +178,20 @@ process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
                 pair_pt = cms.vdouble(2.5,30),
                 pt = cms.vdouble(1.5,30),
                 InAcceptance_2018_Tight = cms.vstring("true"),
+                passedDXY_SOFT = cms.vstring("true"),
+                #passedDZ_SOFT = cms.vstring("true"),
+                #passedPixelLayers = cms.vstring("true"),
+                passedTrackerLayersTight = cms.vstring("true"),
+                #trackID = cms.vstring("true"),
+                isNonMuonSeeded = cms.vstring("true"),
             ),
             BinToPDFmap = cms.vstring(PDFName)
         ),
+
+    )
+)
+
+'''
         Glb_absetadep_HighPt = cms.PSet(
             EfficiencyCategoryAndState = cms.vstring("Glb","true"),
             UnbinnedVariables = cms.vstring("mass"),
@@ -152,6 +200,8 @@ process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
                 pair_pt = cms.vdouble(3.,30),
                 pt = cms.vdouble(3.,30),
                 InAcceptance_2018_Tight = cms.vstring("true"),
+                trackID = cms.vstring("true"),
+                isNonMuonSeeded = cms.vstring("true"),
             ),
             BinToPDFmap = cms.vstring(PDFName)
         ),
@@ -165,11 +215,6 @@ process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
             ),
             BinToPDFmap = cms.vstring(PDFName)
         ),
-
-    )
-)
-
-'''
         Glb_Trg_abseta21_24 = cms.PSet(
             EfficiencyCategoryAndState = cms.vstring("Glb","true"),
             UnbinnedVariables = cms.vstring("mass"),

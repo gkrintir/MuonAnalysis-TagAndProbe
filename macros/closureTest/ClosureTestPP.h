@@ -79,6 +79,7 @@ class ClosureTestPP {
   /* Float_t         Reco_mu_pt_global[20];   //[Reco_mu_size] */
   /* Float_t         Reco_mu_ptErr_inner[20];   //[Reco_mu_size] */
   /* Float_t         Reco_mu_ptErr_global[20];   //[Reco_mu_size]  Float_t         Reco_mu_dxy[10];   //[Reco_QQ_size] */
+  TClonesArray    *Reco_trk_4mom;
   Short_t         Reco_trk_size;
   Short_t         Reco_trk_charge[20];
   Short_t         Reco_trk_whichGenmu[20];
@@ -155,6 +156,7 @@ class ClosureTestPP {
   /* TBranch        *b_Reco_mu_pt_global;   //! */
   /* TBranch        *b_Reco_mu_ptErr_inner;   //! */
   /* TBranch        *b_Reco_mu_ptErr_global;   //! */
+  TBranch        *b_Reco_trk_4mom;   //!
   TBranch        *b_Reco_trk_whichGenmu;   //!
   TBranch        *b_Reco_trk_charge;   //!
   TBranch        *b_Reco_trk_size;   //!
@@ -250,6 +252,7 @@ void ClosureTestPP::Init(TTree *tree)
   Reco_QQ_4mom = 0;
   Reco_QQ_vtx = 0;
   Reco_mu_4mom = 0;
+  Reco_trk_4mom = 0;
   Gen_QQ_4mom = 0;
   Gen_mu_4mom = 0;
   // Set branch addresses and branch pointers
@@ -311,6 +314,7 @@ void ClosureTestPP::Init(TTree *tree)
   /* fChain->SetBranchAddress("Reco_mu_pt_global", Reco_mu_pt_global, &b_Reco_mu_pt_global); */
   /* fChain->SetBranchAddress("Reco_mu_ptErr_inner", Reco_mu_ptErr_inner, &b_Reco_mu_ptErr_inner); */
   /* fChain->SetBranchAddress("Reco_mu_ptErr_global", Reco_mu_ptErr_global, &b_Reco_mu_ptErr_global); */
+  fChain->SetBranchAddress("Reco_trk_4mom", &Reco_trk_4mom, &b_Reco_trk_4mom);
   fChain->SetBranchAddress("Reco_trk_whichGenmu", Reco_trk_whichGenmu, &b_Reco_trk_whichGenmu);
   fChain->SetBranchAddress("Reco_trk_size", &Reco_trk_size, &b_Reco_trk_size);
   fChain->SetBranchAddress("Reco_trk_charge", Reco_trk_charge, &b_Reco_trk_charge);
@@ -364,13 +368,13 @@ Int_t ClosureTestPP::CutSgMuon(Long64_t irec)
   if (Reco_mu_nTrkWMea[irec] > 5 &&   //Reco_mu_nTrkHits[irec]>10 &&
       Reco_mu_nPixWMea[irec]>0 &&
       //Reco_mu_normChi2_inner[irec]<4.0 &&
-      //      fabs(Reco_mu_dxy[irec])<0.3 &&
-      //fabs(Reco_mu_dz[irec])<20 &&
+      /* fabs(Reco_mu_dxy[irec])<0.3 && */
+      /* fabs(Reco_mu_dz[irec])<20 && */
       //Reco_mu_normChi2_global[irec]<10.0 &&
       //Reco_mu_nMuValHits[irec]>0 &&
       //Reco_mu_StationsMatched[irec]>0 &&
-      (Reco_mu_SelectionType[irec]&2)>0 && //isGlobal
-      (Reco_mu_SelectionType[irec]&4096)>0 //isTracker + TMOneStationTight (2^12) --- match the tag cuts in jpsiHI/tnp_pp_mc.py
+      //(Reco_mu_SelectionType[irec]&2)>0 && //isGlobal
+      (Reco_mu_SelectionType[irec]&4096)>0 //isTracker //TMOneStaTight:4096
       )
     return 1;
   else
