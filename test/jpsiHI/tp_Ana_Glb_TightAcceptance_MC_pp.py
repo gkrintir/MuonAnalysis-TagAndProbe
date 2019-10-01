@@ -71,7 +71,7 @@ process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
             "signalFractionInPassing[0.9]"
              ),
         CBGPlusPol2 = cms.vstring(
-            "CBShape::signal1(mass, mean[3.1,3.0,3.2], sigma1[0.025, 0.014, 0.08], alpha[2.1, 1.0, 50.0], n[3.0, 2., 50.])",
+            "CBShape::signal1(mass, mean[3.1,3.0,3.2], sigma1[0.025, 0.014, 0.08], alpha[2.1, 1.0, 50.0], n[3.0, 2., 20.])",
             "Gaussian::signal2(mass, mean, sigma2[0.04, 0.018, 0.105])",
             "SUM::signal(vFrac[0.6,0.0,1.0]*signal1, signal2)",
             "Chebychev::backgroundPass(mass, {cPass[0,-1.0,1.0], cPass2[0,-0.1,0.1]})",

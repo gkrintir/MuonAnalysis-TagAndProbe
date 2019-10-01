@@ -16,7 +16,7 @@ process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
     InputFileNames = cms.vstring("file:/home/llr/cms/falmagne/tuples/pp17/TnP/TNP_JpsiMM_5p02TeV_TuneCUETP8M1_RunIIpp5Spring18DR-94X_AODSIM_20190415/tnpJpsi_mc_pp5TeV_PromptJpsi_wAddedFlags.root"),
     InputDirectoryName = cms.string("tpTree"),
     InputTreeName = cms.string("fitter_tree"),
-    OutputFileName = cms.string("file:tnp_fitOutput_Trigger_MC_pp_CBGPlusPol1.root"),
+    OutputFileName = cms.string("file:tnp_fitOutput_Trigger_MC_pp_CBGPlusPol1_separateBarrel.root"),
     #numbrer of CPUs to use for fitting
     NumCPU = cms.uint32(16),
     # specifies whether to save the RooWorkspace containing the data for each bin and
@@ -109,21 +109,32 @@ process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
              ),
              BinToPDFmap = cms.vstring(PDFName)
          ),
-
-        Trg_abseta00_12 = cms.PSet(
-            EfficiencyCategoryAndState = cms.vstring("HLTL1_DoubleMu0_v0","true","HLTL1_DoubleMu0_v2","true"),
+        
+         Trg_abseta00_09 = cms.PSet(
+            EfficiencyCategoryAndState = cms.vstring("HybridSoftId_2018","true","HLTL1_DoubleMu0_v0","true","HLTL1_DoubleMu0_v2","true","passedDXY_SOFT","true","passedDZ_SOFT","true","TM","true"),
             UnbinnedVariables = cms.vstring("mass"),
             BinnedVariables = cms.PSet(
                 #pt = cms.vdouble(3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 9.5, 10.5, 11.5, 13, 16, 30), for 1500 evt
-                pt = cms.vdouble(3.5, 3.75, 4, 4.25, 4.5, 4.75, 5, 5.25, 5.5, 5.75, 6, 6.5, 7, 7.5, 8, 9.25, 10.5, 12.25, 14, 16, 18, 24, 30),         
+                pt = cms.vdouble(3.5, 4, 4.5, 5, 5.5, 6, 6.75, 7.5, 8.25, 9.75, 11.5, 15, 21, 30),
                 #pt = cms.vdouble(3.5, 4, 4.5, 5, 5.5, 6, 7, 8, 10.5, 14, 18, 30),
-                abseta = cms.vdouble(0, 1.2),
+                abseta = cms.vdouble(0, 0.9),
                 InAcceptance_2018_Tight = cms.vstring("true"),
                 Glb = cms.vstring("true"),
-                HybridSoftId_2018 = cms.vstring("true"),
-                passedDXY_SOFT = cms.vstring("true"),
-                passedDZ_SOFT = cms.vstring("true"),
-                TM = cms.vstring("true"),
+            ),
+             BinToPDFmap = cms.vstring(PDFName)
+         ),
+
+        Trg_abseta09_12 = cms.PSet(
+            EfficiencyCategoryAndState = cms.vstring("HybridSoftId_2018","true","HLTL1_DoubleMu0_v0","true","HLTL1_DoubleMu0_v2","true","passedDXY_SOFT","true","passedDZ_SOFT","true","TM","true"),
+            UnbinnedVariables = cms.vstring("mass"),
+            BinnedVariables = cms.PSet(
+                #pt = cms.vdouble(3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 9.5, 10.5, 11.5, 13, 16, 30), for 1500 evt
+                pt = cms.vdouble(3.5, 4, 4.5, 5, 5.5, 6, 6.75, 7.5, 8.25, 9.75, 11.5, 15, 21, 30),
+                #pt = cms.vdouble(3.5, 3.75, 4, 4.25, 4.5, 4.75, 5, 5.25, 5.5, 5.75, 6, 6.5, 7, 7.5, 8, 9.25, 10.5, 12.25, 14, 16, 18, 24, 30), 
+                #pt = cms.vdouble(3.5, 4, 4.5, 5, 5.5, 6, 7, 8, 10.5, 14, 18, 30),
+                abseta = cms.vdouble(0.9, 1.2),
+                InAcceptance_2018_Tight = cms.vstring("true"),
+                Glb = cms.vstring("true"),
             ),
              BinToPDFmap = cms.vstring(PDFName)
          ),
@@ -203,7 +214,7 @@ process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
              UnbinnedVariables = cms.vstring("mass"),
              BinnedVariables = cms.PSet(
                  pt = cms.vdouble(1.5, 30),
-                 abseta = cms.vdouble(0,1.2,1.8,2.1,2.4),
+                 abseta = cms.vdouble(0,0.9,1.2,1.8,2.1,2.4),
                  InAcceptance_2018_Tight = cms.vstring("true"),
                  Glb = cms.vstring("true"),
                  HybridSoftId_2018 = cms.vstring("true"),
@@ -219,7 +230,7 @@ process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
              UnbinnedVariables = cms.vstring("mass"),
              BinnedVariables = cms.PSet(
                 pt = cms.vdouble(3, 30),
-                abseta = cms.vdouble(0,1.2,1.8,2.1,2.4),
+                abseta = cms.vdouble(0,0.9,1.2,1.8,2.1,2.4),
                 InAcceptance_2018_Tight = cms.vstring("true"),
                 Glb = cms.vstring("true"),
                 HybridSoftId_2018 = cms.vstring("true"),
@@ -258,6 +269,28 @@ process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
          #),
      )
 )
+
+'''
+
+        Trg_abseta00_12 = cms.PSet(
+            EfficiencyCategoryAndState = cms.vstring("HLTL1_DoubleMu0_v0","true","HLTL1_DoubleMu0_v2","true"),
+            UnbinnedVariables = cms.vstring("mass"),
+            BinnedVariables = cms.PSet(
+                #pt = cms.vdouble(3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 9.5, 10.5, 11.5, 13, 16, 30), for 1500 evt
+                pt = cms.vdouble(3.5, 3.75, 4, 4.25, 4.5, 4.75, 5, 5.25, 5.5, 5.75, 6, 6.5, 7, 7.5, 8, 9.25, 10.5, 12.25, 14, 16, 18, 24, 30),         
+                #pt = cms.vdouble(3.5, 4, 4.5, 5, 5.5, 6, 7, 8, 10.5, 14, 18, 30),
+                abseta = cms.vdouble(0, 1.2),
+                InAcceptance_2018_Tight = cms.vstring("true"),
+                Glb = cms.vstring("true"),
+                HybridSoftId_2018 = cms.vstring("true"),
+                passedDXY_SOFT = cms.vstring("true"),
+                passedDZ_SOFT = cms.vstring("true"),
+                TM = cms.vstring("true"),
+            ),
+             BinToPDFmap = cms.vstring(PDFName)
+         ),
+
+'''
 
 process.fitness = cms.Path(
     process.TagProbeFitTreeAnalyzer

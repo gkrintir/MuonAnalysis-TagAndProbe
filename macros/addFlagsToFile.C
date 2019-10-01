@@ -20,11 +20,20 @@ TTree* copyTreeAndAddWeight(TTree* told, int nentries=0)
   TTree *tnew = told->CloneTree(0);
   tnew->SetAutoSave(0);
   tnew->SetAutoFlush(0);
-  int isTightMuon=-1, passedDXY_TIGHT=-1, passedDZ_TIGHT=-1, passedValidPixelHits=-1, passedTrackerLayers=-1,passedTrackerLayersTight=-1, passedMatchedStations=-1, passedMuHits=-1, passedglbChi2=-1, Glb=-1, PF=-1, passedTagChi2=-1;
+  int isTightMuon=-1, passedDXY_TIGHT=-1, passedDZ_TIGHT=-1, passedValidPixelHits=-1, passedTrackerLayers=-1,passedTrackerLayersTight=-1, passedMatchedStations=-1, passedMuHits=-1, passedglbChi2=-1, Glb=-1, PF=-1, passedTagChi2=-1, passedTagTrigAbove12=-1;
   int isSoftMuon=-1, isHybridSoftMuon2015=-1, isHybridSoftMuon2018=-1, passedDXY_SOFT=-1, passedDZ_SOFT=-1, passedPixelLayers=-1, TMOST=-1, Track_HP=-1, TM=-1;
+  int tag_HLT_HIMu15=-1, tag_HLT_HIMu17=-1, tag_HLT_HIL3Mu20=-1, tag_HLT_HIL3Mu15=-1, tag_HLT_HIL3Mu12=-1, tag_HLT_HIL2Mu20=-1, tag_HLT_HIL2Mu15=-1, tag_HLT_HIL2Mu12=-1;
   float dzPV=-999., dxyPV=-999., dB=-999., tkValidPixelHits=-1., tkPixelLay=-1., tkTrackerLay=-1., numberOfMatchedStations=-1., glbValidMuHits=-1., glbChi2=999., hiBin=-1., genWeight=-999., weight=1., tag_tkChi2=999.;
 
   told->SetBranchAddress("tag_tkChi2",&tag_tkChi2);
+  told->SetBranchAddress("tag_HLT_HIMu15",&tag_HLT_HIMu15);
+  told->SetBranchAddress("tag_HLT_HIMu17",&tag_HLT_HIMu17);
+  told->SetBranchAddress("tag_HLT_HIL2Mu15",&tag_HLT_HIL2Mu15);
+  told->SetBranchAddress("tag_HLT_HIL2Mu12",&tag_HLT_HIL2Mu12);
+  told->SetBranchAddress("tag_HLT_HIL2Mu20",&tag_HLT_HIL2Mu20);
+  told->SetBranchAddress("tag_HLT_HIL3Mu15",&tag_HLT_HIL3Mu15);
+  told->SetBranchAddress("tag_HLT_HIL3Mu12",&tag_HLT_HIL3Mu12);
+  told->SetBranchAddress("tag_HLT_HIL3Mu20",&tag_HLT_HIL3Mu20);
   told->SetBranchAddress("dzPV",&dzPV);
   told->SetBranchAddress("dxyPV",&dxyPV);
   told->SetBranchAddress("dB",&dB);
@@ -43,6 +52,7 @@ TTree* copyTreeAndAddWeight(TTree* told, int nentries=0)
   if (told->GetBranch("pair_genWeight")!=NULL) { told->SetBranchAddress("pair_genWeight", &genWeight); }
    
   tnew->Branch("passedTagChi2", &passedTagChi2, "passedTagChi2/I");
+  tnew->Branch("passedTagTrigAbove12", &passedTagTrigAbove12, "passedTagTrigAbove12/I");
   tnew->Branch("isTightMuon", &isTightMuon, "isTightMuon/I");
   tnew->Branch("passedDXY_TIGHT", &passedDXY_TIGHT, "passedDXY_TIGHT/I");
   tnew->Branch("passedDZ_TIGHT", &passedDZ_TIGHT, "passedDZ_TIGHT/I");
@@ -93,7 +103,9 @@ TTree* copyTreeAndAddWeight(TTree* told, int nentries=0)
     passedDXY_SOFT = (fabs(dxyPV) < DXYCUT_SOFT);
     passedDZ_SOFT = (fabs(dzPV) < DZCUT_SOFT);
     passedPixelLayers = (tkPixelLay > 0.1);
+
     passedTagChi2 = (tag_tkChi2<2.5);
+    passedTagTrigAbove12 = tag_HLT_HIMu15 || tag_HLT_HIMu17 || tag_HLT_HIL2Mu12 || tag_HLT_HIL2Mu15 || tag_HLT_HIL2Mu20 || tag_HLT_HIL3Mu12 || tag_HLT_HIL3Mu15 || tag_HLT_HIL3Mu20;
 
     //HybridSoftMuonID PbPb
     isHybridSoftMuon2015 = (Glb==1 && TM==1 && TMOST==1 && fabs(dxyPV)<DXYCUT_SOFT && fabs(dzPV)<DZCUT_SOFT && tkPixelLay>0.1 && tkTrackerLay>5.1);

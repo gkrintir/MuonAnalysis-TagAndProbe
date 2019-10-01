@@ -74,7 +74,7 @@ const char* fMCName[nSyst] = {
 
 // names for systematics
 const char* systName[nSyst] = {
-   "nominal (2Gauss+pol2)","Background_pol3","Signal_CB+Gauss","MassRange_narrow"
+  "nominal (2Gauss+pol2)"//,"Background_pol3","Signal_CB+Gauss","MassRange_narrow"
 //  "nominal (CB+pol2)","Background_pol2","Signal_CB","MassRange_narrow"//,"TightAcceptance"
 };
 //GLB:   "nominal","Background_pol3","Signal_CB+Gauss","MassRange_narrow","LooseAcceptance"
@@ -156,8 +156,8 @@ const char* fMCName[nSyst] = { "../../tnp_fitOutput_HybridSoftID_MC_pp_TightAcce
 TString etaTag("Trg_etadep");
 TString absetaTag("Trg_absetadep");
 TString centTag("Trg_centdep");
-const int nAbsEtaBins = 4;
-TString ptTag[nAbsEtaBins] = { "Trg_abseta00_12", "Trg_abseta12_18", "Trg_abseta18_21", "Trg_abseta21_24" };
+const int nAbsEtaBins = 5;
+TString ptTag[nAbsEtaBins] = { "Trg_abseta00_09", "Trg_abseta09_12", "Trg_abseta12_18", "Trg_abseta18_21", "Trg_abseta21_24" };
 TString allTag("Trg_1bin");
 TString absetaVar("abseta");
 TString centVar("tag_hiBin");
@@ -169,10 +169,9 @@ TString cutTag("tpTree");
 TString cutLegend("DoubleMu0 trigger");
 const double effmin = 0.;
 const double sfrange = 0.15;
-const char* fDataName[nSyst] = { "../../tnp_fitOutput_Trigger_data_pp_CBGPlusPol1.root" };
-const char* fMCName[nSyst] = { "../../tnp_fitOutput_Trigger_MC_pp_CBGPlusPol1.root" };
+const char* fDataName[nSyst] = { "../../tnp_fitOutput_Trigger_data_pp_CBGPlusPol1_separateBarrel.root" };
+const char* fMCName[nSyst] = { "../../tnp_fitOutput_Trigger_MC_pp_CBGPlusPol1_separateBarrel.root" };
 #endif
-
 
 #ifdef STA
 TString etaTag("STA_etadep");

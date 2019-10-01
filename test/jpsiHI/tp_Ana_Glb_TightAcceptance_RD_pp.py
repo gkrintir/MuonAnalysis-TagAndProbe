@@ -8,7 +8,7 @@ process.source = cms.Source("EmptySource")
 
 process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(1) )    
 
-PDFName = "twoGaussPlusPol2"
+PDFName = "CBGPlusPol2"
 
 process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
     # IO parameters:
@@ -16,7 +16,7 @@ process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
     InputFileNames = cms.vstring("file:/home/llr/cms/falmagne/tuples/pp17/TnP/data/tnpJpsi_pp5TeVRun2017G_PromptReco_20190924_SingleMuTnP_and_SingleMu_NoDuplicates_wAddedFlags.root"),#/home/llr/cms/falmagne/tuples/pp17/TnP/data/tnpJpsi_pp5TeVRun2017G_PromptReco_20190924_SingleMuTnP_wAddedFlags.root"),#TNP_SingleMuTnP_pp5TeVRun2017G_PromptReco_v1_AOD_20190415/tnpJpsi_data_pp5TeV_SingleMuTnP.root"),#"),#/home/llr/cms/falmagne/tuples/pp17/TnP/data/tnpJpsi_pp5TeVRun2017G_PromptReco_20190415_SingleMuTnP_and_SingleMu_NoDuplicates_wAddedFlagsNew.root
     InputDirectoryName = cms.string("tpTreeTrk"),
     InputTreeName = cms.string("fitter_tree"),
-    OutputFileName = cms.string("file:./tnp_fitOutput_Glb_wTrackID_data_pp_twoGaussPlusPol2.root"),
+    OutputFileName = cms.string("file:./tnp_fitOutput_Glb_wTrackID_data_pp_CBGPlusPol2.root"),
     NumCPU = cms.uint32(16),
     # specifies wether to save the RooWorkspace containing the data for each bin and
     # the pdf object with the initial and final state snapshots
@@ -72,9 +72,9 @@ process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
             "signalFractionInPassing[0.9]"
              ),
         CBGPlusPol2 = cms.vstring(
-            "CBShape::signal1(mass, mean[3.1,3.0,3.2], sigma1[0.025, 0.014, 0.08], alpha[2.1, 1.0, 50.0], n[3.0, 2., 50.])",
-            "Gaussian::signal2(mass, mean, sigma2[0.04, 0.018, 0.105])",
-            "SUM::signal(vFrac[0.6,0.0,1.0]*signal1, signal2)",
+            "CBShape::signal1(mass, mean[3.1,3.0,3.2], sigma1[0.025, 0.014, 0.08], alpha[2.1, 1.0, 50.0], n[3.0, 2., 20.])",
+            "Gaussian::signal2(mass, mean, sigma2[0.04, 0.018, 0.14])",
+            "SUM::signal(vFrac[0.6,0.0,0.985]*signal1, signal2)",
             "Chebychev::backgroundPass(mass, {cPass[0,-1.0,1.0], cPass2[0,-0.1,0.1]})",
             "Chebychev::backgroundFail(mass, {cFail[0,-1.0,1.0], cFail2[0.01,-0.18,0.18]})",
             "efficiency[0.9,0.0,1.0]",
