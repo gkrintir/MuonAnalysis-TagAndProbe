@@ -73,6 +73,8 @@ void ClosureTestPP::Loop(const char* filename)
   f->cd();
   TH1D *hden_00_12 = new TH1D("hden_00_12","hden_00_12",13,bins_00_12);
   TH1D *hden_glbwtFromGlb_00_12 = new TH1D("hden_glbwtFromGlb_00_12","hden_glbwtFromGlb_00_12",13,bins_00_12);
+  TH1D *hden_glbIDtrgwtFromTrk_00_12 = new TH1D("hden_glbIDtrgwtFromTrk_00_12","hden_glbIDtrgwtFromTrk_00_12",13,bins_00_12);
+  TH1D *hden_glbwt_00_12 = new TH1D("hden_glbwt_00_12","hden_glbwt_00_12",13,bins_00_12);
   //  TH1D *hden_glbIDwt_00_12 = new TH1D("hden_glbIDwt_00_12","hden_glbIDwt_00_12",13,bins_00_12);
   TH1D *hden_glbIDwtFromGlb_00_12 = new TH1D("hden_glbIDwtFromGlb_00_12","hden_glbIDwtFromGlb_00_12",13,bins_00_12);
   TH1D *hden_glbIDtrgwtFromGlb_00_12 = new TH1D("hden_glbIDtrgwtFromGlb_00_12","hden_glbIDtrgwtFromGlb_00_12",13,bins_00_12);
@@ -95,6 +97,8 @@ void ClosureTestPP::Loop(const char* filename)
 
   TH1D *hden_12_18 = new TH1D("hden_12_18","hden_12_18",14,bins_12_18);
   TH1D *hden_glbwtFromGlb_12_18 = new TH1D("hden_glbwtFromGlb_12_18","hden_glbwtFromGlb_12_18",14,bins_12_18);
+  TH1D *hden_glbIDtrgwtFromTrk_12_18 = new TH1D("hden_glbIDtrgwtFromTrk_12_18","hden_glbIDtrgwtFromTrk_12_18",14,bins_12_18);
+  TH1D *hden_glbwt_12_18 = new TH1D("hden_glbwt_12_18","hden_glbwt_12_18",14,bins_12_18);
   //  TH1D *hden_glbIDwt_12_18 = new TH1D("hden_glbIDwt_12_18","hden_glbIDwt_12_18",14,bins_12_18);
   TH1D *hden_glbIDwtFromGlb_12_18 = new TH1D("hden_glbIDwtFromGlb_12_18","hden_glbIDwtFromGlb_12_18",14,bins_12_18);
   TH1D *hden_glbIDtrgwtFromGlb_12_18 = new TH1D("hden_glbIDtrgwtFromGlb_12_18","hden_glbIDtrgwtFromGlb_12_18",14,bins_12_18);
@@ -117,6 +121,8 @@ void ClosureTestPP::Loop(const char* filename)
 
   TH1D *hden_18_21 = new TH1D("hden_18_21","hden_18_21",14,bins_18_21);
   TH1D *hden_glbwtFromGlb_18_21 = new TH1D("hden_glbwtFromGlb_18_21","hden_glbwtFromGlb_18_21",14,bins_18_21);
+  TH1D *hden_glbIDtrgwtFromTrk_18_21 = new TH1D("hden_glbIDtrgwtFromTrk_18_21","hden_glbIDtrgwtFromTrk_18_21",14,bins_18_21);
+  TH1D *hden_glbwt_18_21 = new TH1D("hden_glbwt_18_21","hden_glbwt_18_21",14,bins_18_21);
   //  TH1D *hden_glbIDwt_18_21 = new TH1D("hden_glbIDwt_18_21","hden_glbIDwt_18_21",14,bins_18_21);
   TH1D *hden_glbIDwtFromGlb_18_21 = new TH1D("hden_glbIDwtFromGlb_18_21","hden_glbIDwtFromGlb_18_21",14,bins_18_21);
   TH1D *hden_glbIDtrgwtFromGlb_18_21 = new TH1D("hden_glbIDtrgwtFromGlb_18_21","hden_glbIDtrgwtFromGlb_18_21",14,bins_18_21);
@@ -139,6 +145,8 @@ void ClosureTestPP::Loop(const char* filename)
 
   TH1D *hden_21_24 = new TH1D("hden_21_24","hden_21_24",13,bins_21_24);
   TH1D *hden_glbwtFromGlb_21_24 = new TH1D("hden_glbwtFromGlb_21_24","hden_glbwtFromGlb_21_24",13,bins_21_24);
+  TH1D *hden_glbIDtrgwtFromTrk_21_24 = new TH1D("hden_glbIDtrgwtFromTrk_21_24","hden_glbIDtrgwtFromTrk_21_24",13,bins_21_24);
+  TH1D *hden_glbwt_21_24 = new TH1D("hden_glbwt_21_24","hden_glbwt_21_24",13,bins_21_24);
   //  TH1D *hden_glbIDwt_21_24 = new TH1D("hden_glbIDwt_21_24","hden_glbIDwt_21_24",13,bins_21_24);
   TH1D *hden_glbIDwtFromGlb_21_24 = new TH1D("hden_glbIDwtFromGlb_21_24","hden_glbIDwtFromGlb_21_24",13,bins_21_24);
   TH1D *hden_glbIDtrgwtFromGlb_21_24 = new TH1D("hden_glbIDtrgwtFromGlb_21_24","hden_glbIDtrgwtFromGlb_21_24",13,bins_21_24);
@@ -164,13 +172,15 @@ void ClosureTestPP::Loop(const char* filename)
   int n2TagsNoDM0 = 0;
   int n2TagsNoDbMu0 = 0;
   int n2TagsPassAllCuts = 0;
-  int nInAcc = 0;
+  int nInAcc = 0;  
+  int nTrkNotAcc = 0;
   int nisGlb = 0;
+  int nisTrkOrGlb = 0;
   int nTagNotGen = 0;
   int nTnpPairNotGen = 0;
 
   Long64_t nbytes = 0, nb = 0;
-  for (Long64_t jentry=0; jentry<nentries;jentry++) {//nentries
+  for (Long64_t jentry=0; jentry<100000;jentry++){//nentries
     Long64_t ientry = LoadTree(jentry);
     if (ientry < 0) break;
     if (ientry%100000==0) cout << 100*ientry/(float)nentries<<"%" << endl;
@@ -211,7 +221,7 @@ void ClosureTestPP::Loop(const char* filename)
 	    ((HLTriggers&trg_tag12)>0 && (Reco_mu_trig[recmuplIdx]&trg_tag12)>0) ||
 	    ((HLTriggers&trg_tag13)>0 && (Reco_mu_trig[recmuplIdx]&trg_tag13)>0) ||
 	    ((HLTriggers&trg_tag14)>0 && (Reco_mu_trig[recmuplIdx]&trg_tag14)>0))
-	   && isGlobalMuonInAccept2015(&recmu)
+	   && isGlobalMuonInTightAccept2018(&recmu)
 	   ) {
 	  isgenpltag = true; tlvrecomatchtagpl = recmu;	  
 	}
@@ -234,7 +244,7 @@ void ClosureTestPP::Loop(const char* filename)
 	    ((HLTriggers&trg_tag12)>0 && (Reco_mu_trig[recmumiIdx]&trg_tag12)>0) ||
 	    ((HLTriggers&trg_tag13)>0 && (Reco_mu_trig[recmumiIdx]&trg_tag13)>0) ||
 	    ((HLTriggers&trg_tag14)>0 && (Reco_mu_trig[recmumiIdx]&trg_tag14)>0))
-	   && isGlobalMuonInAccept2015(&recmu)
+	   && isGlobalMuonInTightAccept2018(&recmu)
 	   ) {
 	  isgenmitag = true; tlvrecomatchtagmi = recmu;	  
 	}
@@ -251,9 +261,12 @@ void ClosureTestPP::Loop(const char* filename)
 	double genpt = probeMi4mom.Pt(); double geneta = probeMi4mom.Eta(); 
 	if (fabs(geneta)<1.2) {
 	  hden_00_12->Fill(genpt,1);
+	  double w_trk = tnpEff_mc_trk_pp(genpt,geneta);
 	  double w_glb = tnpEff_mc_glb_pp(genpt,geneta);
 	  double w_id = tnpEff_mc_MuId_pp(genpt,geneta);
 	  double w_idtrg = tnpEff_mc_MuIdTrg_pp(genpt,geneta);
+	  hden_glbIDtrgwtFromTrk_00_12->Fill(genpt,w_glb*w_idtrg/w_trk);
+	  hden_glbwt_00_12->Fill(genpt,w_glb);
 	  hden_glbIDtrgwt_00_12->Fill(genpt,w_glb*w_idtrg);
 	  if(recmumiIdx>-1 && (Reco_mu_SelectionType[recmumiIdx]&2)>0){ //use only muons with kinematics of global muons for the muidtrg eff
 	    hden_glbwtFromGlb_00_12->Fill(genpt,1);
@@ -262,9 +275,12 @@ void ClosureTestPP::Loop(const char* filename)
 	  }
 	} else if (fabs(geneta)<1.8) {
 	  hden_12_18->Fill(genpt,1);
+	  double w_trk = tnpEff_mc_trk_pp(genpt,geneta);
 	  double w_glb = tnpEff_mc_glb_pp(genpt,geneta);
 	  double w_id = tnpEff_mc_MuId_pp(genpt,geneta);
 	  double w_idtrg = tnpEff_mc_MuIdTrg_pp(genpt,geneta);
+	  hden_glbIDtrgwtFromTrk_12_18->Fill(genpt,w_glb*w_idtrg/w_trk);
+	  hden_glbwt_12_18->Fill(genpt,w_glb);
 	  hden_glbIDtrgwt_12_18->Fill(genpt,w_glb*w_idtrg);
 	  if(recmumiIdx>-1 && (Reco_mu_SelectionType[recmumiIdx]&2)>0){ //use only muons with kinematics of global muons for the muidtrg eff
 	    hden_glbwtFromGlb_12_18->Fill(genpt,1);
@@ -273,9 +289,12 @@ void ClosureTestPP::Loop(const char* filename)
 	  }
 	} else if (fabs(geneta)<2.1) {
 	  hden_18_21->Fill(genpt,1);
+	  double w_trk = tnpEff_mc_trk_pp(genpt,geneta);
 	  double w_glb = tnpEff_mc_glb_pp(genpt,geneta);
 	  double w_id = tnpEff_mc_MuId_pp(genpt,geneta);
 	  double w_idtrg = tnpEff_mc_MuIdTrg_pp(genpt,geneta);
+	  hden_glbIDtrgwtFromTrk_18_21->Fill(genpt,w_glb*w_idtrg/w_trk);
+	  hden_glbwt_18_21->Fill(genpt,w_glb);
 	  hden_glbIDtrgwt_18_21->Fill(genpt,w_glb*w_idtrg);
 	  if(recmumiIdx>-1 && (Reco_mu_SelectionType[recmumiIdx]&2)>0){ //use only muons with kinematics of global muons for the muidtrg eff
 	    hden_glbwtFromGlb_18_21->Fill(genpt,1);
@@ -284,9 +303,12 @@ void ClosureTestPP::Loop(const char* filename)
 	  }
 	} else if (fabs(geneta)<2.4) {
 	  hden_21_24->Fill(genpt,1);
+	  double w_trk = tnpEff_mc_trk_pp(genpt,geneta);
 	  double w_glb = tnpEff_mc_glb_pp(genpt,geneta);
 	  double w_id = tnpEff_mc_MuId_pp(genpt,geneta);
 	  double w_idtrg = tnpEff_mc_MuIdTrg_pp(genpt,geneta);
+	  hden_glbIDtrgwtFromTrk_21_24->Fill(genpt,w_glb*w_idtrg/w_trk);
+	  hden_glbwt_21_24->Fill(genpt,w_glb);
 	  hden_glbIDtrgwt_21_24->Fill(genpt,w_glb*w_idtrg);
 	  if(recmumiIdx>-1 && (Reco_mu_SelectionType[recmumiIdx]&2)>0){ //use only muons with kinematics of global muons for the muidtrg eff
 	    hden_glbwtFromGlb_21_24->Fill(genpt,1);
@@ -301,9 +323,12 @@ void ClosureTestPP::Loop(const char* filename)
 	double genpt = probePl4mom.Pt(); double geneta = probePl4mom.Eta(); 
 	if (fabs(geneta)<1.2) {
 	  hden_00_12->Fill(genpt,1);
+	  double w_trk = tnpEff_mc_trk_pp(genpt,geneta);
 	  double w_glb = tnpEff_mc_glb_pp(genpt,geneta);
 	  double w_id = tnpEff_mc_MuId_pp(genpt,geneta);
 	  double w_idtrg = tnpEff_mc_MuIdTrg_pp(genpt,geneta);
+	  hden_glbIDtrgwtFromTrk_00_12->Fill(genpt,w_glb*w_idtrg/w_trk);
+	  hden_glbwt_00_12->Fill(genpt,w_glb);
 	  hden_glbIDtrgwt_00_12->Fill(genpt,w_glb*w_idtrg);
 	  if(recmuplIdx>-1 && (Reco_mu_SelectionType[recmuplIdx]&2)>0){ //use only muons with kinematics of global muons for the muidtrg eff
 	    hden_glbwtFromGlb_00_12->Fill(genpt,1);
@@ -312,9 +337,12 @@ void ClosureTestPP::Loop(const char* filename)
 	  }
 	} else if (fabs(geneta)<1.8) {
 	  hden_12_18->Fill(genpt,1);
+	  double w_trk = tnpEff_mc_trk_pp(genpt,geneta);
 	  double w_glb = tnpEff_mc_glb_pp(genpt,geneta);
 	  double w_id = tnpEff_mc_MuId_pp(genpt,geneta);
 	  double w_idtrg = tnpEff_mc_MuIdTrg_pp(genpt,geneta);
+	  hden_glbIDtrgwtFromTrk_12_18->Fill(genpt,w_glb*w_idtrg/w_trk);
+	  hden_glbwt_12_18->Fill(genpt,w_glb);
 	  hden_glbIDtrgwt_12_18->Fill(genpt,w_glb*w_idtrg);
 	  if(recmuplIdx>-1 && (Reco_mu_SelectionType[recmuplIdx]&2)>0){ //use only muons with kinematics of global muons for the muidtrg eff
 	    hden_glbwtFromGlb_12_18->Fill(genpt,1);
@@ -323,9 +351,12 @@ void ClosureTestPP::Loop(const char* filename)
 	  }
 	} else if (fabs(geneta)<2.1) {
 	  hden_18_21->Fill(genpt,1);
+	  double w_trk = tnpEff_mc_trk_pp(genpt,geneta);
 	  double w_glb = tnpEff_mc_glb_pp(genpt,geneta);
 	  double w_id = tnpEff_mc_MuId_pp(genpt,geneta);
 	  double w_idtrg = tnpEff_mc_MuIdTrg_pp(genpt,geneta);
+	  hden_glbIDtrgwtFromTrk_18_21->Fill(genpt,w_glb*w_idtrg/w_trk);
+	  hden_glbwt_18_21->Fill(genpt,w_glb);
 	  hden_glbIDtrgwt_18_21->Fill(genpt,w_glb*w_idtrg);
 	  if(recmuplIdx>-1 && (Reco_mu_SelectionType[recmuplIdx]&2)>0){ //use only muons with kinematics of global muons for the muidtrg eff
 	    hden_glbwtFromGlb_18_21->Fill(genpt,1);
@@ -334,9 +365,12 @@ void ClosureTestPP::Loop(const char* filename)
 	  }
 	} else if (fabs(geneta)<2.4) {
 	  hden_21_24->Fill(genpt,1);
+	  double w_trk = tnpEff_mc_trk_pp(genpt,geneta);
 	  double w_glb = tnpEff_mc_glb_pp(genpt,geneta);
 	  double w_id = tnpEff_mc_MuId_pp(genpt,geneta);
 	  double w_idtrg = tnpEff_mc_MuIdTrg_pp(genpt,geneta);
+	  hden_glbIDtrgwtFromTrk_21_24->Fill(genpt,w_glb*w_idtrg/w_trk);
+	  hden_glbwt_21_24->Fill(genpt,w_glb);
 	  hden_glbIDtrgwt_21_24->Fill(genpt,w_glb*w_idtrg);
 	  if(recmuplIdx>-1 && (Reco_mu_SelectionType[recmuplIdx]&2)>0){ //use only muons with kinematics of global muons for the muidtrg eff
 	    hden_glbwtFromGlb_21_24->Fill(genpt,1);
@@ -346,11 +380,6 @@ void ClosureTestPP::Loop(const char* filename)
 	}
       }
     } // genQQsize loop
-
-
-
-
-
 
 
     for (int irecTag=0; irecTag<Reco_mu_size; irecTag++) {
@@ -380,41 +409,159 @@ void ClosureTestPP::Loop(const char* filename)
 	 ) {
 	isATag = true;// tlvrecomatchtagpl = recmu;	  
       }
+   
 
-      
-  
+      Short_t tagGenIdx = Reco_mu_whichGen[irecTag];	  
       if(isATag){
+
+   	//For the GlobalMuon efficiency, start from gen muons, which are assumed to have 100% tracking efficiency (=generalTracks probes in TnP)
+	vector<float> seenPt;
+	for (Short_t itrkProbe=0; itrkProbe<Reco_trk_size; itrkProbe++) {
+	  int igenProbe = Reco_trk_whichGenmu[itrkProbe];
+	  if(igenProbe==-1) continue;
+	  TLorentzVector trkGenMu = *((TLorentzVector*) Gen_mu_4mom->At(igenProbe));
+
+	  Short_t probRecIdx = Gen_mu_whichRec[igenProbe];
+	  TLorentzVector probeMu = *((TLorentzVector*) Reco_trk_4mom->At(itrkProbe));
+	  
+	  //Keep this tag-probe pair if the dimuon is in Jpsi mass range, and has charge 0
+	  if(probRecIdx>-1 && irecTag==probRecIdx) continue; //drop the pair if it is a duplicate muon
+	  TLorentzVector recQQ = probeMu + tagRecMu;
+	  if(recQQ.M()<2.7 || recQQ.M()>3.3) continue;
+	  if(Reco_mu_charge[irecTag] + ((probRecIdx>-1)?(Reco_mu_charge[probRecIdx]):(Reco_trk_charge[itrkProbe])) != 0) continue;
+	  //	  if(tagGenIdx==igenProbe) continue; //drop the pair if it is a duplicate muon	  
+
+
+
+
+	  // bool foundGenJpsi = false;
+	  // if(tagGenIdx==-1){ //If the tag is not matched to a gen (from PV), then make harder Jpsi cuts
+	  //   nTagNotGen+=1; 
+	  //   continue;
+	  //   //if(recQQ.M()<2.95 || recQQ.M()>3.21) continue;
+	  //   //if(Reco_mu_dz[irecTag]>0.5 && Reco_mu_dxy[irecTag]>0.2) continue;
+	  // }
+	  // else{
+	  //   for (int iQQ=0;iQQ<Gen_QQ_size;iQQ++){
+	  //     if((tagGenIdx==Gen_QQ_mumi_idx[iQQ] && igenProbe==Gen_QQ_mupl_idx[iQQ]) || (tagGenIdx==Gen_QQ_mupl_idx[iQQ] && igenProbe==Gen_QQ_mumi_idx[iQQ])){ foundGenJpsi=true; break;}
+	  //   }
+	  //   // if(!foundGenJpsi){
+	  //   //   for (int iQQ=0;iQQ<Gen_QQ_size;iQQ++){
+	  //   //     if((tagGenIdx==Gen_QQ_mumi_idx[iQQ] && igenProbe==Gen_QQ_mupl_idx[iQQ]) || (tagGenIdx==Gen_QQ_mupl_idx[iQQ] && igenProbe==Gen_QQ_mumi_idx[iQQ])){ foundGenJpsi=true; break;}
+	  //   //     else{
+	  //   // 	cout<<"Muons do not fit this gen Jpsi#"<<iQQ<<" , genmiidx, genplidx = "<<Gen_QQ_mumi_idx[iQQ]<<" "<<Gen_QQ_mupl_idx[iQQ]<<endl;
+	  //   // 	cout<<"tag recoIdx, genIdx = "<<irecTag<<" "<<tagGenIdx<<endl;
+	  //   // 	cout<<"probe recoIdx, genIdx = "<<probRecIdx<<" "<<igenProbe<<endl;
+	  //   //     }
+	  //   //   }
+	  //   // }
+	  //   if(!foundGenJpsi) {nTnpPairNotGen+=1; continue;}
+	  // }
+
+	  //is probe in acceptance?
+	  if(isGlobalMuonInTightAccept2018(&probeMu)){
+	    if(Reco_trk_originalAlgo[itrkProbe]!=13 && Reco_trk_originalAlgo[itrkProbe]!=14){//Reco_trk_nPixWMea[itrkProbe]>0 && Reco_trk_nTrkWMea[itrkProbe]>5 && Reco_trk_originalAlgo[itrkProbe]!=13 && Reco_trk_originalAlgo[itrkProbe]!=14){// && probRecIdx>-1){
+
+	      //temporary fix to bug in the oniatree Gen_mu branches. Has a completely negligible effect anyway. 
+	      bool bad=false;
+	      for(int l=0;l<seenPt.size();l++){
+		if(fabs(trkGenMu.Pt()-seenPt[l])/trkGenMu.Pt() < 0.001) {cout<<"Already seen a gen muon with this pt !!!"<<endl; bad=true;}
+	      }
+	      seenPt.push_back(trkGenMu.Pt());
+	      //	  if(bad) continue;
+
+
+
+	      if (fabs((&probeMu)->Eta())<1.2){ hnumAcc_00_12->Fill((&probeMu)->Pt());
+		hnumPt_Acc_00_12->Fill((&probeMu)->Pt());
+		hnumAbseta_Acc_00_12->Fill(fabs((&probeMu)->Eta()));}
+	      else if (fabs((&probeMu)->Eta())<1.8){ hnumAcc_12_18->Fill((&probeMu)->Pt()); 
+		hnumPt_Acc_12_18->Fill((&probeMu)->Pt());
+		hnumAbseta_Acc_12_18->Fill(fabs((&probeMu)->Eta()));}
+	      else if (fabs((&probeMu)->Eta())<2.1){ hnumAcc_18_21->Fill((&probeMu)->Pt()); 
+		hnumPt_Acc_18_21->Fill((&probeMu)->Pt());
+		hnumAbseta_Acc_18_21->Fill(fabs((&probeMu)->Eta()));}
+	      else if (fabs((&probeMu)->Eta())<2.4){ hnumAcc_21_24->Fill((&probeMu)->Pt()); 
+		hnumPt_Acc_21_24->Fill((&probeMu)->Pt());
+		hnumAbseta_Acc_21_24->Fill(fabs((&probeMu)->Eta()));}
+	      
+	      if(probRecIdx==-1){
+		float drmin = 0.05;
+		bool foundit = false;
+		for (Short_t irecmu=0; irecmu<Reco_mu_size; irecmu++) {
+		  TLorentzVector recmuMom = *((TLorentzVector*) Reco_mu_4mom->At(irecmu));
+		  if(recmuMom.DeltaR(trkGenMu)<drmin && fabs(recmuMom.Pt()-trkGenMu.Pt())/trkGenMu.Pt()<0.1 && Reco_mu_charge[irecmu]==Reco_trk_charge[itrkProbe]){
+		    drmin = recmuMom.DeltaR(trkGenMu); foundit = true;
+		    probRecIdx=irecmu;
+		  }
+		}
+		//if(foundit && drmin>0.01) cout<<"dR of genmatching = "<<drmin<<endl;
+	      }
+	    
+	      nInAcc+=1;
+	      if (probRecIdx>-1) nisTrkOrGlb+=1;
+	      // is probe GLB?
+	      if(probRecIdx>-1 && (Reco_mu_SelectionType[probRecIdx]&2)>0){
+		if (fabs((&probeMu)->Eta())<1.2){ hnumglbFromGen_00_12->Fill((&probeMu)->Pt());
+		  hnumPt_GlbFromGen_00_12->Fill((&probeMu)->Pt());
+		  hnumAbseta_GlbFromGen_00_12->Fill(fabs((&probeMu)->Eta()));}
+		else if (fabs((&probeMu)->Eta())<1.8){ hnumglbFromGen_12_18->Fill((&probeMu)->Pt());
+		  hnumPt_GlbFromGen_12_18->Fill((&probeMu)->Pt());
+		  hnumAbseta_GlbFromGen_12_18->Fill(fabs((&probeMu)->Eta()));}
+		else if (fabs((&probeMu)->Eta())<2.1){ hnumglbFromGen_18_21->Fill((&probeMu)->Pt());
+		  hnumPt_GlbFromGen_18_21->Fill((&probeMu)->Pt());
+		  hnumAbseta_GlbFromGen_18_21->Fill(fabs((&probeMu)->Eta()));}
+		else if (fabs((&probeMu)->Eta())<2.4){ hnumglbFromGen_21_24->Fill((&probeMu)->Pt());
+		  hnumPt_GlbFromGen_21_24->Fill((&probeMu)->Pt());
+		  hnumAbseta_GlbFromGen_21_24->Fill(fabs((&probeMu)->Eta()));}
+		nisGlb+=1;
+	      }// probe mu isGlobal
+	    } //probe mu in acceptance
+	    else{
+	      nTrkNotAcc+=1;
+	    }
+	  }
+
+	} //loop on gen muon probes
+
+
 
 	// //For the GlobalMuon efficiency, start from gen muons, which are assumed to have 100% tracking efficiency (=generalTracks probes in TnP)
 	// for (Short_t igenProbe=0; igenProbe<Gen_mu_size; igenProbe++) {
 	//   TLorentzVector probeGenMu = *((TLorentzVector*) Gen_mu_4mom->At(igenProbe));
 	//   Short_t probRecIdx = Gen_mu_whichRec[igenProbe];
-	//   Short_t tagGenIdx = Reco_mu_whichGen[irecTag];	  
 	//   TLorentzVector probeMu = (probRecIdx>-1)?( *((TLorentzVector*) Reco_mu_4mom->At(probRecIdx)) ):probeGenMu;
 
 	//   //Keep this tag-probe pair if the dimuon is in Jpsi mass range, and has charge 0
 	//   if(probRecIdx>-1 && irecTag==probRecIdx) continue; //drop the pair if it is a duplicate muon
 	//   TLorentzVector recQQ = probeMu + tagRecMu;
-	//   if(recQQ.M()<2.75 || recQQ.M()>3.25) continue;
+	//   if(recQQ.M()<2.7 || recQQ.M()>3.3) continue;
 	//   if(Reco_mu_charge[irecTag] + ((probRecIdx>-1)?(Reco_mu_charge[probRecIdx]):(Gen_mu_charge[igenProbe])) != 0) continue;
-	//   if(tagGenIdx==-1){ nTagNotGen+=1; continue;}
-	//   if(tagGenIdx==igenProbe) continue; //drop the pair if it is a duplicate muon	  
+	//   //	  if(tagGenIdx==igenProbe) continue; //drop the pair if it is a duplicate muon	  
 
-	//   // bool foundGenJpsi = false;
-	//   // for (int iQQ=0;iQQ<Gen_QQ_size;iQQ++){
-	//   //   if((tagGenIdx==Gen_QQ_mumi_idx[iQQ] && igenProbe==Gen_QQ_mupl_idx[iQQ]) || (tagGenIdx==Gen_QQ_mupl_idx[iQQ] && igenProbe==Gen_QQ_mumi_idx[iQQ])){ foundGenJpsi=true; break;}
-	//   // }
-	//   // // if(!foundGenJpsi){
-	//   // //   for (int iQQ=0;iQQ<Gen_QQ_size;iQQ++){
-	//   // //     if((tagGenIdx==Gen_QQ_mumi_idx[iQQ] && igenProbe==Gen_QQ_mupl_idx[iQQ]) || (tagGenIdx==Gen_QQ_mupl_idx[iQQ] && igenProbe==Gen_QQ_mumi_idx[iQQ])){ foundGenJpsi=true; break;}
-	//   // //     else{
-	//   // // 	cout<<"Muons do not fit this gen Jpsi#"<<iQQ<<" , genmiidx, genplidx = "<<Gen_QQ_mumi_idx[iQQ]<<" "<<Gen_QQ_mupl_idx[iQQ]<<endl;
-	//   // // 	cout<<"tag recoIdx, genIdx = "<<irecTag<<" "<<tagGenIdx<<endl;
-	//   // // 	cout<<"probe recoIdx, genIdx = "<<probRecIdx<<" "<<igenProbe<<endl;
-	//   // //     }
-	//   // //   }
-	//   // // }
-	//   // if(!foundGenJpsi) {nTnpPairNotGen+=1; continue;}
+	//   bool foundGenJpsi = false;
+	//   if(tagGenIdx==-1){ //If the tag is not matched to a gen (from PV), then make harder Jpsi cuts
+	//     nTagNotGen+=1; 
+	//     continue;
+	//     // if(recQQ.M()<2.95 || recQQ.M()>3.21) continue;
+	//     // if(Reco_mu_dz[irecTag]>0.5 && Reco_mu_dxy[irecTag]>0.2) continue;
+	//   }
+	//   else{
+	//     for (int iQQ=0;iQQ<Gen_QQ_size;iQQ++){
+	//       if((tagGenIdx==Gen_QQ_mumi_idx[iQQ] && igenProbe==Gen_QQ_mupl_idx[iQQ]) || (tagGenIdx==Gen_QQ_mupl_idx[iQQ] && igenProbe==Gen_QQ_mumi_idx[iQQ])){ foundGenJpsi=true; break;}
+	//     }
+	//     // if(!foundGenJpsi){
+	//     //   for (int iQQ=0;iQQ<Gen_QQ_size;iQQ++){
+	//     //     if((tagGenIdx==Gen_QQ_mumi_idx[iQQ] && igenProbe==Gen_QQ_mupl_idx[iQQ]) || (tagGenIdx==Gen_QQ_mupl_idx[iQQ] && igenProbe==Gen_QQ_mumi_idx[iQQ])){ foundGenJpsi=true; break;}
+	//     //     else{
+	//     // 	cout<<"Muons do not fit this gen Jpsi#"<<iQQ<<" , genmiidx, genplidx = "<<Gen_QQ_mumi_idx[iQQ]<<" "<<Gen_QQ_mupl_idx[iQQ]<<endl;
+	//     // 	cout<<"tag recoIdx, genIdx = "<<irecTag<<" "<<tagGenIdx<<endl;
+	//     // 	cout<<"probe recoIdx, genIdx = "<<probRecIdx<<" "<<igenProbe<<endl;
+	//     //     }
+	//     //   }
+	//     // }
+	//     if(!foundGenJpsi) {nTnpPairNotGen+=1; continue;}
+	//   }
 
 	//   //is probe in acceptance?
 	//   if(isGlobalMuonInTightAccept2018(&probeMu) && probRecIdx>-1){
@@ -456,6 +603,10 @@ void ClosureTestPP::Loop(const char* filename)
 
 
 
+
+
+
+
 	//Consider the reco muons as potential Glb probes, for MuIdTrg efficiency
 	for (Short_t irecProbe=0; irecProbe<Reco_mu_size; irecProbe++) {
 	  if(irecTag==irecProbe) continue; //drop the pair if it is a duplicate muon
@@ -469,20 +620,20 @@ void ClosureTestPP::Loop(const char* filename)
 
 	  //is probe in acceptance + reco as trk or glb? This assumes that the efficiency to reconstruct a gen muon as a tracker or global is close to 100% (in tight acceptance)
 	  if(isGlobalMuonInTightAccept2018(&probeRecMu) && irecProbe>-1){
-	    if (fabs((&probeRecMu)->Eta())<1.2){ hnumAcc_00_12->Fill((&probeRecMu)->Pt()); 
-	      hnumPt_Acc_00_12->Fill((&probeRecMu)->Pt());
-	      hnumAbseta_Acc_00_12->Fill(fabs((&probeRecMu)->Eta()));}
-	    else if (fabs((&probeRecMu)->Eta())<1.8){ hnumAcc_12_18->Fill((&probeRecMu)->Pt()); 
-	      hnumPt_Acc_12_18->Fill((&probeRecMu)->Pt());
-	      hnumAbseta_Acc_12_18->Fill(fabs((&probeRecMu)->Eta()));}
-	    else if (fabs((&probeRecMu)->Eta())<2.1){ hnumAcc_18_21->Fill((&probeRecMu)->Pt()); 
-	      hnumPt_Acc_18_21->Fill((&probeRecMu)->Pt());
-	      hnumAbseta_Acc_18_21->Fill(fabs((&probeRecMu)->Eta()));}
-	    else if (fabs((&probeRecMu)->Eta())<2.4){ hnumAcc_21_24->Fill((&probeRecMu)->Pt()); 
-	      hnumPt_Acc_21_24->Fill((&probeRecMu)->Pt());
-	      hnumAbseta_Acc_21_24->Fill(fabs((&probeRecMu)->Eta()));}
+	    // if (fabs((&probeRecMu)->Eta())<1.2){ hnumAcc_00_12->Fill((&probeRecMu)->Pt()); 
+	    //   hnumPt_Acc_00_12->Fill((&probeRecMu)->Pt());
+	    //   hnumAbseta_Acc_00_12->Fill(fabs((&probeRecMu)->Eta()));}
+	    // else if (fabs((&probeRecMu)->Eta())<1.8){ hnumAcc_12_18->Fill((&probeRecMu)->Pt()); 
+	    //   hnumPt_Acc_12_18->Fill((&probeRecMu)->Pt());
+	    //   hnumAbseta_Acc_12_18->Fill(fabs((&probeRecMu)->Eta()));}
+	    // else if (fabs((&probeRecMu)->Eta())<2.1){ hnumAcc_18_21->Fill((&probeRecMu)->Pt()); 
+	    //   hnumPt_Acc_18_21->Fill((&probeRecMu)->Pt());
+	    //   hnumAbseta_Acc_18_21->Fill(fabs((&probeRecMu)->Eta()));}
+	    // else if (fabs((&probeRecMu)->Eta())<2.4){ hnumAcc_21_24->Fill((&probeRecMu)->Pt()); 
+	    //   hnumPt_Acc_21_24->Fill((&probeRecMu)->Pt());
+	    //   hnumAbseta_Acc_21_24->Fill(fabs((&probeRecMu)->Eta()));}
 	    
-	    nInAcc+=1;
+	    //	    nInAcc+=1;
 
 	    // bool isProbeATag=false;
 	    // if(CutSgMuon(irecProbe) &&  
@@ -501,7 +652,7 @@ void ClosureTestPP::Loop(const char* filename)
 	    //     ((HLTriggers&trg_tag12)>0 && (Reco_mu_trig[irecProbe]&trg_tag12)>0) ||
 	    //     ((HLTriggers&trg_tag13)>0 && (Reco_mu_trig[irecProbe]&trg_tag13)>0) ||
 	    //     ((HLTriggers&trg_tag14)>0 && (Reco_mu_trig[irecProbe]&trg_tag14)>0))
-	    //    && isGlobalMuonInAccept2015(&probeRecMu)
+	    //    && isGlobalMuonInTightAccept2018(&probeRecMu)
 	    //    ) {
 	    //   isProbeATag = true;// tlvrecomatchtagpl = recmu;	  
 	    //   n2Tags +=1;
@@ -548,7 +699,7 @@ void ClosureTestPP::Loop(const char* filename)
 	    //Fill denominator of MuIdTrg efficiency
 	    //Keep only the probes that are Global & in acceptance
 	    if((Reco_mu_SelectionType[irecProbe]&2)>0) {
-	      nisGlb+=1;
+	      //	      nisGlb+=1;
 	      if (fabs((&probeRecMu)->Eta())<1.2){ hnumglb_00_12->Fill((&probeRecMu)->Pt());
 		hnumPt_Glb_00_12->Fill((&probeRecMu)->Pt());
 		hnumAbseta_Glb_00_12->Fill(fabs((&probeRecMu)->Eta()));}
@@ -712,7 +863,9 @@ void ClosureTestPP::Loop(const char* filename)
 
 
   cout<<"# of gen muons in acceptance = "<<nInAcc<<endl;
+  cout<<"# of gen muons in acceptance & TrkOrGlb = "<<nisTrkOrGlb<<endl;
   cout<<"# of gen muons in acceptance & Glb = "<<nisGlb<<endl;
+  cout<<"# of tacks matched to gen muons but not in track acceptance = "<<nTrkNotAcc<<endl;
 
   f->Write();
   f->Close();

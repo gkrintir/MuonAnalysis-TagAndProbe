@@ -6,12 +6,32 @@
 #include "TGraphAsymmErrors.h"
 
 ///////////////////////////////////////////////////
+//                   T R K    P P                //
+///////////////////////////////////////////////////
+//Extracted with rt -b "../extractEffs.C('../../test/tnp_fitOutput_Trk_MC_pp_twoGaussPlusPol2.root','tnp_efficiencies_Trk_MC_pp_twoGaussPlusPol2.root')"
+
+TFile* fTrk = new TFile("tnp_efficiencies_Trk_MC_pp_twoGaussPlusPol2.root");
+TGraphAsymmErrors* g_Trk_00_12 = (TGraphAsymmErrors*)fTrk->Get("TM_abseta00_12"); 
+TGraphAsymmErrors* g_Trk_12_18 = (TGraphAsymmErrors*)fTrk->Get("TM_abseta12_18");
+TGraphAsymmErrors* g_Trk_18_24 = (TGraphAsymmErrors*)fTrk->Get("TM_abseta18_24");
+
+double tnpEff_mc_trk_pp(double x, double eta) {
+  double eff=1;
+  if(fabs(eta)<1.2) eff = g_Trk_00_12->Eval(x);
+  else if(fabs(eta)<1.8) eff = g_Trk_12_18->Eval(x);
+  else if(fabs(eta)<2.4) eff = g_Trk_18_24->Eval(x);
+  return eff;
+}
+
+
+
+///////////////////////////////////////////////////
 //                   G L B    P P                //
 ///////////////////////////////////////////////////
 //Extracted with rt -b "../extractEffs.C('../../test/tnp_fitOutput_Glb_MC_pp_twoGaussPlusPol2.root','tnp_efficiencies_Glb_MC_pp_twoGaussPlusPol2.root')"
 
 TFile* fGlb = new TFile("tnp_efficiencies_Glb_MC_pp_twoGaussPlusPol2.root");
-TGraphAsymmErrors* g_Glb_00_12 = (TGraphAsymmErrors*)fGlb->Get("Glb_abseta00_12"); //Maybe TGraphAsymmErrors* g_Glb_00_12 = (TGraphAsymmErrors*)(fGlb->Get("Glb_abseta00_12"))->Clone();
+TGraphAsymmErrors* g_Glb_00_12 = (TGraphAsymmErrors*)fGlb->Get("Glb_abseta00_12"); 
 TGraphAsymmErrors* g_Glb_12_18 = (TGraphAsymmErrors*)fGlb->Get("Glb_abseta12_18");
 TGraphAsymmErrors* g_Glb_18_24 = (TGraphAsymmErrors*)fGlb->Get("Glb_abseta18_24");
 

@@ -81,7 +81,7 @@ void closure2017pp() {
   c1->Update();
   tr->GetUpperPad()->cd();
   tleg->Draw();
-  g_MuIdTrg_00_12->Draw("P");
+  //  g_MuIdTrg_00_12->Draw("P");
   c1->SaveAs("pp_muidtrg_binned_00_12.pdf");
 
   // 1.2<|y|<1.8
@@ -106,7 +106,7 @@ void closure2017pp() {
   c1->Update();
   tr->GetUpperPad()->cd();
   tleg->Draw();
-  g_MuIdTrg_12_18->Draw("P");
+  //  g_MuIdTrg_12_18->Draw("P");
   c1->SaveAs("pp_muidtrg_binned_12_18.pdf");
 
   // 1.8<|y|<2.1
@@ -131,7 +131,7 @@ void closure2017pp() {
   c1->Update();
   tr->GetUpperPad()->cd();
   tleg->Draw();
-  g_MuIdTrg_18_21->Draw("P");
+  //  g_MuIdTrg_18_21->Draw("P");
   c1->SaveAs("pp_muidtrg_binned_18_21.pdf");
 
   // 2.1<|y|<2.4
@@ -182,7 +182,7 @@ void closure2017pp() {
   c1->Update();
   tr->GetUpperPad()->cd();
   tleg->Draw();
-  g_MuIdTrg_21_24->Draw("P");
+  //  g_MuIdTrg_21_24->Draw("P");
   c1->SaveAs("pp_muidtrg_binned_21_24.pdf");
 
 
@@ -317,7 +317,121 @@ void closure2017pp() {
 
 
 
-  // // Full eff comparison: Trd vs Tnp (method from reco muons)
+  // Full eff comparison: Trd vs Tnp (method from gen muons for glb)
+
+  // 0<|y|<1.2
+  c1->cd(); c1->Clear();
+  htnp_num = (TH1D*) f->Get("hden_glbIDtrgwt_00_12");
+  htnp_den = (TH1D*) f->Get("hden_00_12");
+  gmuidtrg->Divide(htnp_num,htnp_den,"pois");
+  SetGoodTnpError(gmuidtrg, g_MuIdTrg_00_12, htnp_num, g_Glb_00_12);
+  gmuidtrg->SetLineColor(kRed);
+  gmuidtrg->SetMarkerColor(kRed);
+  hnum = (TH1D*) f->Get("hnumglbFromGen_00_12");
+  hden = (TH1D*) f->Get("hnumAcc_00_12");
+  eff->Divide(hnum,hden,"pois");
+  eff->SetLineColor(kBlack);
+  eff->SetMarkerColor(kBlack);
+  tleg->SetHeader("pp, full eff, 0<|y|<1.2");
+  TH1F *hTrdGlb_00_12 = g2h(eff,20);
+  TH1F *hFullEff_00_12 = Multiply(hTrdMuidtrg_00_12, hTrdGlb_00_12, "hFullEff_00_12");
+  tr = new TRatioPlot(hFullEff_00_12,g2h(gmuidtrg,2));
+  tr->Draw();
+  setTRatioPlotStyle(tr);
+  c1->Update();
+  tr->GetUpperPad()->cd();
+  tleg->Draw();
+  c1->SaveAs("pp_full_binned_00_12.pdf");
+
+  // 1.2<|y|<1.8
+  c1->cd(); c1->Clear();
+  htnp_num = (TH1D*) f->Get("hden_glbIDtrgwt_12_18");
+  htnp_den = (TH1D*) f->Get("hden_12_18");
+  gmuidtrg->Divide(htnp_num,htnp_den,"pois");
+  SetGoodTnpError(gmuidtrg, g_MuIdTrg_12_18, htnp_num, g_Glb_12_18);
+  gmuidtrg->SetLineColor(kRed);
+  gmuidtrg->SetMarkerColor(kRed);
+  hnum = (TH1D*) f->Get("hnumglbFromGen_12_18");
+  hden = (TH1D*) f->Get("hnumAcc_12_18");
+  eff->Divide(hnum,hden,"pois");
+  eff->SetLineColor(kBlack);
+  eff->SetMarkerColor(kBlack);
+  tleg->SetHeader("pp, full eff, 1.2<|y|<1.8");
+  TH1F *hTrdGlb_12_18 = g2h(eff,20);
+  TH1F *hFullEff_12_18 = Multiply(hTrdMuidtrg_12_18, hTrdGlb_12_18,"hFullEff_12_18");
+  tr = new TRatioPlot(hFullEff_12_18,g2h(gmuidtrg,2));
+  tr->Draw();
+  setTRatioPlotStyle(tr);
+  c1->Update();
+  tr->GetUpperPad()->cd();
+  tleg->Draw();
+  c1->SaveAs("pp_full_binned_12_18.pdf");
+
+  // 1.8<|y|<2.1
+  c1->cd(); c1->Clear();
+  htnp_num = (TH1D*) f->Get("hden_glbIDtrgwt_18_21");
+  htnp_den = (TH1D*) f->Get("hden_18_21");
+  gmuidtrg->Divide(htnp_num,htnp_den,"pois");
+  SetGoodTnpError(gmuidtrg, g_MuIdTrg_18_21, htnp_num, g_Glb_18_24);
+  gmuidtrg->SetLineColor(kRed);
+  gmuidtrg->SetMarkerColor(kRed);
+  hnum = (TH1D*) f->Get("hnumglbFromGen_18_21");
+  hden = (TH1D*) f->Get("hnumAcc_18_21");
+  eff->Divide(hnum,hden,"pois");
+  eff->SetLineColor(kBlack);
+  eff->SetMarkerColor(kBlack);
+  tleg->SetHeader("pp, full eff, 1.8<|y|<2.1");
+  TH1F *hTrdGlb_18_21 = g2h(eff,20);
+  TH1F *hFullEff_18_21 = Multiply(hTrdMuidtrg_18_21, hTrdGlb_18_21,"hFullEff_18_21");
+  tr = new TRatioPlot(hFullEff_18_21,g2h(gmuidtrg,2));
+  tr->Draw();
+  setTRatioPlotStyle(tr);
+  c1->Update();
+  tr->GetUpperPad()->cd();
+  tleg->Draw();
+  c1->SaveAs("pp_full_binned_18_21.pdf");
+
+  // 2.1<|y|<2.4
+  c1->cd(); c1->Clear();
+  htnp_num = (TH1D*) f->Get("hden_glbIDtrgwt_21_24");
+  htnp_den = (TH1D*) f->Get("hden_21_24");
+  gmuidtrg->Divide(htnp_num,htnp_den,"pois");
+  SetGoodTnpError(gmuidtrg, g_MuIdTrg_21_24, htnp_num, g_Glb_18_24);
+  gmuidtrg->SetLineColor(kRed);
+  gmuidtrg->SetMarkerColor(kRed);
+  hnum = (TH1D*) f->Get("hnumglbFromGen_21_24");
+  hden = (TH1D*) f->Get("hnumAcc_21_24");
+  eff->Divide(hnum,hden,"pois");
+  eff->SetLineColor(kBlack);
+  eff->SetMarkerColor(kBlack);
+  tleg->SetHeader("pp, full eff, 2.1<|y|<2.4");
+  TH1F *hTrdGlb_21_24 = g2h(eff,20);
+  TH1F *hFullEff_21_24 = Multiply(hTrdMuidtrg_21_24, hTrdGlb_21_24,"hFullEff_21_24");
+  tr = new TRatioPlot(hFullEff_21_24,g2h(gmuidtrg,2));
+  tr->Draw();
+  setTRatioPlotStyle(tr);
+  c1->Update();
+  tr->GetUpperPad()->cd();
+  tleg->Draw();
+  c1->SaveAs("pp_full_binned_21_24.pdf");
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  // // Full eff comparison: Trd vs Tnp 
 
   // // 0<|y|<1.2
   // c1->cd(); c1->Clear();
@@ -327,15 +441,13 @@ void closure2017pp() {
   // SetGoodTnpError(gmuidtrg, g_MuIdTrg_00_12, htnp_num, g_Glb_00_12);
   // gmuidtrg->SetLineColor(kRed);
   // gmuidtrg->SetMarkerColor(kRed);
-  // hnum = (TH1D*) f->Get("hnumglbFromGen_00_12");
+  // hnum = (TH1D*) f->Get("hnumglbIDtrg_00_12");
   // hden = (TH1D*) f->Get("hnumAcc_00_12");
   // eff->Divide(hnum,hden,"pois");
   // eff->SetLineColor(kBlack);
   // eff->SetMarkerColor(kBlack);
   // tleg->SetHeader("pp, full eff, 0<|y|<1.2");
-  // TH1F *hTrdGlb_00_12 = g2h(eff,20);
-  // TH1F *hFullEff = Multiply(hTrdMuidtrg_00_12, hTrdGlb_00_12);
-  // tr = new TRatioPlot(hFullEff,g2h(gmuidtrg,2));
+  // tr = new TRatioPlot(g2h(eff,20),g2h(gmuidtrg,2));
   // tr->Draw();
   // setTRatioPlotStyle(tr);
   // c1->Update();
@@ -414,103 +526,95 @@ void closure2017pp() {
 
 
 
-
-
-
-
-
-
-
-
-  // Full eff comparison: Trd vs Tnp 
+  // Global eff comparison: Trd vs Tnp 
 
   // 0<|y|<1.2
   c1->cd(); c1->Clear();
-  htnp_num = (TH1D*) f->Get("hden_glbIDtrgwt_00_12");
+  htnp_num = (TH1D*) f->Get("hden_glbwt_00_12");
   htnp_den = (TH1D*) f->Get("hden_00_12");
   gmuidtrg->Divide(htnp_num,htnp_den,"pois");
-  SetGoodTnpError(gmuidtrg, g_MuIdTrg_00_12, htnp_num, g_Glb_00_12);
+  SetGoodTnpError(gmuidtrg, g_Glb_00_12, htnp_num);
   gmuidtrg->SetLineColor(kRed);
   gmuidtrg->SetMarkerColor(kRed);
-  hnum = (TH1D*) f->Get("hnumglbIDtrg_00_12");
+  hnum = (TH1D*) f->Get("hnumglbFromGen_00_12");
   hden = (TH1D*) f->Get("hnumAcc_00_12");
   eff->Divide(hnum,hden,"pois");
   eff->SetLineColor(kBlack);
   eff->SetMarkerColor(kBlack);
-  tleg->SetHeader("pp, full eff, 0<|y|<1.2");
+  tleg->SetHeader("pp, Global eff, 0<|y|<1.2");
   tr = new TRatioPlot(g2h(eff,20),g2h(gmuidtrg,2));
   tr->Draw();
   setTRatioPlotStyle(tr);
   c1->Update();
   tr->GetUpperPad()->cd();
   tleg->Draw();
-  c1->SaveAs("pp_full_binned_00_12.pdf");
+  c1->SaveAs("pp_glb_binned_00_12.pdf");
 
   // 1.2<|y|<1.8
   c1->cd(); c1->Clear();
-  htnp_num = (TH1D*) f->Get("hden_glbIDtrgwt_12_18");
+  htnp_num = (TH1D*) f->Get("hden_glbwt_12_18");
   htnp_den = (TH1D*) f->Get("hden_12_18");
   gmuidtrg->Divide(htnp_num,htnp_den,"pois");
-  SetGoodTnpError(gmuidtrg, g_MuIdTrg_12_18, htnp_num, g_Glb_12_18);
+  SetGoodTnpError(gmuidtrg, g_Glb_12_18, htnp_num);
   gmuidtrg->SetLineColor(kRed);
   gmuidtrg->SetMarkerColor(kRed);
-  hnum = (TH1D*) f->Get("hnumglbIDtrg_12_18");
+  hnum = (TH1D*) f->Get("hnumglbFromGen_12_18");
   hden = (TH1D*) f->Get("hnumAcc_12_18");
   eff->Divide(hnum,hden,"pois");
   eff->SetLineColor(kBlack);
   eff->SetMarkerColor(kBlack);
-  tleg->SetHeader("pp, full eff, 1.2<|y|<1.8");
+  tleg->SetHeader("pp, Global eff, 1.2<|y|<1.8");
   tr = new TRatioPlot(g2h(eff,20),g2h(gmuidtrg,2));
   tr->Draw();
   setTRatioPlotStyle(tr);
   c1->Update();
   tr->GetUpperPad()->cd();
   tleg->Draw();
-  c1->SaveAs("pp_full_binned_12_18.pdf");
+  c1->SaveAs("pp_glb_binned_12_18.pdf");
 
   // 1.8<|y|<2.1
   c1->cd(); c1->Clear();
-  htnp_num = (TH1D*) f->Get("hden_glbIDtrgwt_18_21");
+  htnp_num = (TH1D*) f->Get("hden_glbwt_18_21");
   htnp_den = (TH1D*) f->Get("hden_18_21");
   gmuidtrg->Divide(htnp_num,htnp_den,"pois");
-  SetGoodTnpError(gmuidtrg, g_MuIdTrg_18_21, htnp_num, g_Glb_18_24);
+  SetGoodTnpError(gmuidtrg, g_Glb_18_24, htnp_num);
   gmuidtrg->SetLineColor(kRed);
   gmuidtrg->SetMarkerColor(kRed);
-  hnum = (TH1D*) f->Get("hnumglbIDtrg_18_21");
+  hnum = (TH1D*) f->Get("hnumglbFromGen_18_21");
   hden = (TH1D*) f->Get("hnumAcc_18_21");
   eff->Divide(hnum,hden,"pois");
   eff->SetLineColor(kBlack);
   eff->SetMarkerColor(kBlack);
-  tleg->SetHeader("pp, full eff, 1.8<|y|<2.1");
+  tleg->SetHeader("pp, Global eff, 1.8<|y|<2.1");
   tr = new TRatioPlot(g2h(eff,20),g2h(gmuidtrg,2));
   tr->Draw();
   setTRatioPlotStyle(tr);
   c1->Update();
   tr->GetUpperPad()->cd();
   tleg->Draw();
-  c1->SaveAs("pp_full_binned_18_21.pdf");
+  c1->SaveAs("pp_glb_binned_18_21.pdf");
 
   // 2.1<|y|<2.4
   c1->cd(); c1->Clear();
-  htnp_num = (TH1D*) f->Get("hden_glbIDtrgwt_21_24");
+  htnp_num = (TH1D*) f->Get("hden_glbwt_21_24");
   htnp_den = (TH1D*) f->Get("hden_21_24");
   gmuidtrg->Divide(htnp_num,htnp_den,"pois");
-  SetGoodTnpError(gmuidtrg, g_MuIdTrg_21_24, htnp_num, g_Glb_18_24);
+  SetGoodTnpError(gmuidtrg, g_Glb_18_24, htnp_num);
   gmuidtrg->SetLineColor(kRed);
   gmuidtrg->SetMarkerColor(kRed);
-  hnum = (TH1D*) f->Get("hnumglbIDtrg_21_24");
+  hnum = (TH1D*) f->Get("hnumglbFromGen_21_24");
   hden = (TH1D*) f->Get("hnumAcc_21_24");
   eff->Divide(hnum,hden,"pois");
   eff->SetLineColor(kBlack);
   eff->SetMarkerColor(kBlack);
-  tleg->SetHeader("pp, full eff, 2.1<|y|<2.4");
+  tleg->SetHeader("pp, Global eff, 2.1<|y|<2.4");
   tr = new TRatioPlot(g2h(eff,20),g2h(gmuidtrg,2));
   tr->Draw();
   setTRatioPlotStyle(tr);
   c1->Update();
   tr->GetUpperPad()->cd();
   tleg->Draw();
-  c1->SaveAs("pp_full_binned_21_24.pdf");
+  c1->SaveAs("pp_glb_binned_21_24.pdf");
 
 
 

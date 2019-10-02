@@ -44,7 +44,7 @@ using namespace std;
 
 // Choose the efficiency type.
 // Possible values: MUIDTRG, TRK, STA, MUID, TRG
-#define MUID
+#define GLB
 
 // pp or PbPb?
 bool isPbPb = false; // if true, will compute the centrality dependence
@@ -74,16 +74,17 @@ const char* fMCName[nSyst] = {
 
 // names for systematics
 const char* systName[nSyst] = {
-  "nominal (CB+pol2)","Background_pol2","Signal_CB","MassRange_narrow"//,"TightAcceptance"
+  "nominal (2Gauss+pol2)","Background_pol3","Signal_CB+Gauss","MassRange_narrow"
+//  "nominal (CB+pol2)","Background_pol2","Signal_CB","MassRange_narrow"//,"TightAcceptance"
 };
 //GLB:   "nominal","Background_pol3","Signal_CB+Gauss","MassRange_narrow","LooseAcceptance"
 //MUID:  "nominal (CB+pol2)","Background_pol2","Signal_CB","MassRange_narrow","TightAcceptance"
 //MUIDTRG:   "nominal (CB+pol2)","Background_pol2","Signal_CB","MassRange_narrow"
 //TRK:  "nominal (3Gauss+pol2)","Background_pol3","Signal_Voigt+Gauss","MassRange_narrow"//,"LooseAcceptance"
 
-const double rsystrange = 0.0035;
+const double rsystrange = 0.02;
 //GLB:0.02
-//MUID:0.005
+//MUID:0.0035
 //MUIDTRG:0.018
 //TRK: 0.02
 
@@ -147,16 +148,16 @@ TString cutTag("tpTree");
 TString cutLegend("HybridSoft ID");
 const double effmin = 0.85;
 const double sfrange = 0.013;
-const char* fDataName[nSyst] = { "../../tnp_fitOutput_HybridSoftID_data_pp_CBGPlusPol1.root", "../../tnp_fitOutput_HybridSoftID_data_pp_CBGPlusPol2.root", "../../tnp_fitOutput_HybridSoftID_data_pp_CBPlusPol1.root", "../../tnp_fitOutput_HybridSoftID_data_pp_CBGPlusPol1_narrowMrange.root" };// , "../../tnp_fitOutput_HybridSoftID_data_pp_TightAcceptance_CBGPlusPol1.root"
-const char* fMCName[nSyst] = { "../../tnp_fitOutput_HybridSoftID_MC_pp_CBGPlusPol1.root", "../../tnp_fitOutput_HybridSoftID_MC_pp_CBGPlusPol2.root", "../../tnp_fitOutput_HybridSoftID_MC_pp_CBPlusPol1.root", "../../tnp_fitOutput_HybridSoftID_MC_pp_CBGPlusPol1_narrowMrange.root" } ;//"../../tnp_fitOutput_HybridSoftID_MC_pp_TightAcceptance_CBGPlusPol1.root"
+const char* fDataName[nSyst] = { "../../tnp_fitOutput_HybridSoftID_data_pp_TightAcceptance_CBGPlusPol1.root"};//"../../tnp_fitOutput_HybridSoftID_data_pp_CBGPlusPol1.root", "../../tnp_fitOutput_HybridSoftID_data_pp_CBGPlusPol2.root", "../../tnp_fitOutput_HybridSoftID_data_pp_CBPlusPol1.root", "../../tnp_fitOutput_HybridSoftID_data_pp_CBGPlusPol1_narrowMrange.root" };// , "../../tnp_fitOutput_HybridSoftID_data_pp_TightAcceptance_CBGPlusPol1.root"
+const char* fMCName[nSyst] = { "../../tnp_fitOutput_HybridSoftID_MC_pp_TightAcceptance_CBGPlusPol1.root"};//"../../tnp_fitOutput_HybridSoftID_MC_pp_CBGPlusPol1.root", "../../tnp_fitOutput_HybridSoftID_MC_pp_CBGPlusPol2.root", "../../tnp_fitOutput_HybridSoftID_MC_pp_CBPlusPol1.root", "../../tnp_fitOutput_HybridSoftID_MC_pp_CBGPlusPol1_narrowMrange.root" } ;//"../../tnp_fitOutput_HybridSoftID_MC_pp_TightAcceptance_CBGPlusPol1.root"
 #endif
 
 #ifdef TRG
 TString etaTag("Trg_etadep");
 TString absetaTag("Trg_absetadep");
 TString centTag("Trg_centdep");
-const int nAbsEtaBins = 4;
-TString ptTag[nAbsEtaBins] = { "Trg_abseta00_12", "Trg_abseta12_18", "Trg_abseta18_21", "Trg_abseta21_24" };
+const int nAbsEtaBins = 5;
+TString ptTag[nAbsEtaBins] = { "Trg_abseta00_09", "Trg_abseta09_12", "Trg_abseta12_18", "Trg_abseta18_21", "Trg_abseta21_24" };
 TString allTag("Trg_1bin");
 TString absetaVar("abseta");
 TString centVar("tag_hiBin");
@@ -167,11 +168,10 @@ ofstream file_TestErr("Trg_ExpErr.txt");
 TString cutTag("tpTree");
 TString cutLegend("DoubleMu0 trigger");
 const double effmin = 0.;
-const double sfrange = 0.35;
-const char* fDataName[nSyst] = { "../../tnp_fitOutput_Trigger_data_pp_pol1.root" };
-const char* fMCName[nSyst] = { "../../tnp_fitOutput_Trigger_MC_pp_pol1.root" };
+const double sfrange = 0.15;
+const char* fDataName[nSyst] = { "../../tnp_fitOutput_Trigger_data_pp_CBGPlusPol1_separateBarrel.root" };
+const char* fMCName[nSyst] = { "../../tnp_fitOutput_Trigger_MC_pp_CBGPlusPol1_separateBarrel.root" };
 #endif
-
 
 #ifdef STA
 TString etaTag("STA_etadep");
@@ -252,8 +252,8 @@ TString cutTag("tpTreeTrk");
 TString cutLegend("Global muon reconstruction");
 const double effmin = 0.;
 const double sfrange = 0.075;
-const char* fDataName[nSyst] = { "../../tnp_fitOutput_Glb_data_pp_twoGaussPlusPol2.root","../../tnp_fitOutput_Glb_data_pp_twoGaussPlusPol3.root","../../tnp_fitOutput_Glb_data_pp_CBGPlusPol2.root","../../tnp_fitOutput_Glb_data_pp_twoGaussPlusPol2_narrowMrange.root"};//,"../../tnp_fitOutput_Glb_LooseAcceptance_data_pp_twoGaussPlusPol2.root" 
-const char* fMCName[nSyst] = { "../../tnp_fitOutput_Glb_MC_pp_twoGaussPlusPol2.root","../../tnp_fitOutput_Glb_MC_pp_twoGaussPlusPol3.root","../../tnp_fitOutput_Glb_MC_pp_CBGPlusPol2.root","../../tnp_fitOutput_Glb_MC_pp_twoGaussPlusPol2_narrowMrange.root" };//,"../../tnp_fitOutput_Glb_LooseAcceptance_MC_pp_twoGaussPlusPol2.root"
+const char* fDataName[nSyst] = { "../../tnp_fitOutput_Glb_wTrackID_data_pp_twoGaussPlusPol2.root","../../tnp_fitOutput_Glb_wTrackID_data_pp_twoGaussPlusPol3.root","../../tnp_fitOutput_Glb_wTrackID_data_pp_CBGPlusPol2.root","../../tnp_fitOutput_Glb_wTrackID_data_pp_twoGaussPlusPol2_narrowMrange.root"};//,"../../tnp_fitOutput_Glb_LooseAcceptance_data_pp_twoGaussPlusPol2.root" 
+const char* fMCName[nSyst] = { "../../tnp_fitOutput_Glb_wTrackID_MC_pp_twoGaussPlusPol2.root","../../tnp_fitOutput_Glb_wTrackID_MC_pp_twoGaussPlusPol3.root","../../tnp_fitOutput_Glb_wTrackID_MC_pp_CBGPlusPol2.root","../../tnp_fitOutput_Glb_wTrackID_MC_pp_twoGaussPlusPol2_narrowMrange.root" };//,"../../tnp_fitOutput_Glb_LooseAcceptance_MC_pp_twoGaussPlusPol2.root"
 #endif
 
 // Function Define
