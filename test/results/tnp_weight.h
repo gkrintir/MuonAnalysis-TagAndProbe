@@ -31,11 +31,11 @@
 
 std::tuple<double,double,double,double> tnp_weight_GlobalMuon_TightAcceptance_pp(double pt, double eta){
   if( (fabs(eta) > 0) && (fabs(eta) < 1.2) ){
-    if (pt<3.7) return std::make_tuple(1.05682, 0.0065723, 0.00130442, 0.00670049);
-    else if (pt<3.9) return std::make_tuple(1.01678, 0.00586556, 0.189899, 0.189989);
+    if (pt<3.7) return std::make_tuple(1.05682, 0.0065723, 0.00108251, 0.00666085);
+    else if (pt<3.9) return std::make_tuple(1.01678, 0.00586556, 0.000211988, 0.00586939);
     else if (pt<4.2) return std::make_tuple(1.00333, 0.00448914, 0.000743086, 0.00455023);
     else if (pt<4.6) return std::make_tuple(0.992136, 0.00379769, 0.0014736, 0.00407357);
-    else if (pt<5.2) return std::make_tuple(0.99067, 0.00315441, 0.000182057, 0.00315966);
+    else if (pt<5.2) return std::make_tuple(0.99067, 0.00315441, 9.585e-05, 0.00315587);
     else if (pt<7) return std::make_tuple(0.996967, 0.00215854, 0.00149636, 0.00262647);
     else if (pt<10.5) return std::make_tuple(0.991201, 0.0024164, 0.000896526, 0.00257735);
     else if (pt<30) return std::make_tuple(0.980219, 0.0037124, 0.00096564, 0.00383593);
@@ -43,7 +43,7 @@ std::tuple<double,double,double,double> tnp_weight_GlobalMuon_TightAcceptance_pp
 
   if( (fabs(eta) > 1.2) && (fabs(eta) < 1.8) ){
     if (pt<2.4) return std::make_tuple(1.00302, 0.0248043, 0.0104505, 0.0269159);
-    else if (pt<2.8) return std::make_tuple(1.00085, 0.0107777, 0.114993, 0.115497);
+    else if (pt<2.8) return std::make_tuple(1.00085, 0.0107777, 0.003583, 0.0113577);
     else if (pt<3.2) return std::make_tuple(1.00227, 0.00740985, 0.00125896, 0.00751604);
     else if (pt<3.9) return std::make_tuple(0.994838, 0.00489704, 0.00233562, 0.00542551);
     else if (pt<5) return std::make_tuple(0.98849, 0.00412823, 0.00213652, 0.00464833);

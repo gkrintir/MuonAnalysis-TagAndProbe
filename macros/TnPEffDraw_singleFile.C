@@ -74,7 +74,7 @@ const char* fMCName[nSyst] = {
 
 // names for systematics
 const char* systName[nSyst] = {
-  "nominal (2Gauss+pol2)"//,"Background_pol3","Signal_CB+Gauss","MassRange_narrow"
+  "nominal (2Gauss+pol2)","Background_pol3","Signal_CB+Gauss","MassRange_narrow"
 //  "nominal (CB+pol2)","Background_pol2","Signal_CB","MassRange_narrow"//,"TightAcceptance"
 };
 //GLB:   "nominal","Background_pol3","Signal_CB+Gauss","MassRange_narrow","LooseAcceptance"
