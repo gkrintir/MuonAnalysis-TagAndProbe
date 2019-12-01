@@ -379,6 +379,34 @@ process.tnpSimpleSequenceSta = cms.Sequence(
     process.tpTreeSta
 )
 
+if True: # turn on for tracking efficiency from RECO/AOD + earlyGeneralTracks
+    process.tracksNoMuonSeeded = cms.EDFilter("TrackSelector",
+      src = cms.InputTag("generalTracks"),
+      cut = cms.string(" || ".join("isAlgoInMask('%s')" % a for a in [
+                    'initialStep', 'lowPtTripletStep', 'pixelPairStep', 'detachedTripletStep',
+                    'mixedTripletStep', 'pixelLessStep', 'tobTecStep', 'jetCoreRegionalStep' ] ) )
+    )
+    process.pCutTracks0 = process.pCutTracks.clone(src = 'tracksNoMuonSeeded')
+    process.tkTracks0 = process.tkTracks.clone(src = 'pCutTracks0')
+    process.tkTracksNoJPsi0 = process.tkTracksNoJPsi.clone(src = 'tkTracks0')
+    process.tkTracksNoBestJPsi0 = process.tkTracksNoBestJPsi.clone(src = 'tkTracks0')
+    process.preTkMatchSequenceJPsi.replace(
+            process.tkTracksNoJPsi, process.tkTracksNoJPsi +
+            process.tracksNoMuonSeeded + process.pCutTracks0 + process.tkTracks0 + process.tkTracksNoJPsi0 +process.tkTracksNoBestJPsi0
+    )
+    process.staToTkMatch0 = process.staToTkMatch.clone(matched = 'tkTracks0')
+    process.staToTkMatchNoJPsi0 = process.staToTkMatchNoJPsi.clone(matched = 'tkTracksNoJPsi0')
+    process.staToTkMatchNoBestJPsi0 = process.staToTkMatchNoBestJPsi.clone(matched = 'tkTracksNoJPsi0')
+    process.staToTkMatchSequenceJPsi.replace( process.staToTkMatch, process.staToTkMatch + process.staToTkMatch0 )
+    process.staToTkMatchSequenceJPsi.replace( process.staToTkMatchNoJPsi, process.staToTkMatchNoJPsi + process.staToTkMatchNoJPsi0 )
+    process.staToTkMatchSequenceJPsi.replace( process.staToTkMatchNoBestJPsi, process.staToTkMatchNoBestJPsi + process.staToTkMatchNoBestJPsi0 )
+    process.tpTreeSta.variables.tk0_deltaR     = cms.InputTag("staToTkMatch0","deltaR")
+    process.tpTreeSta.variables.tk0_deltaEta   = cms.InputTag("staToTkMatch0","deltaEta")
+    process.tpTreeSta.variables.tk0_deltaR_NoJPsi   = cms.InputTag("staToTkMatchNoJPsi0","deltaR")
+    process.tpTreeSta.variables.tk0_deltaEta_NoJPsi = cms.InputTag("staToTkMatchNoJPsi0","deltaEta")
+    process.tpTreeSta.variables.tk0_deltaR_NoBestJPsi   = cms.InputTag("staToTkMatchNoBestJPsi0","deltaR")
+    process.tpTreeSta.variables.tk0_deltaEta_NoBestJPsi = cms.InputTag("staToTkMatchNoBestJPsi0","deltaEta")
+
 process.tagAndProbeSta = cms.Path(
     process.fastFilter
     * process.fastPseudoTnPSta
@@ -395,6 +423,8 @@ process.schedule = cms.Schedule(
 
 process.RandomNumberGeneratorService.tkTracksNoJPsi = cms.PSet( initialSeed = cms.untracked.uint32(81) )
 process.RandomNumberGeneratorService.tkTracksNoBestJPsi = cms.PSet( initialSeed = cms.untracked.uint32(81) )
+process.RandomNumberGeneratorService.tkTracksNoJPsi0 = cms.PSet( initialSeed = cms.untracked.uint32(81) )
+process.RandomNumberGeneratorService.tkTracksNoBestJPsi0 = cms.PSet( initialSeed = cms.untracked.uint32(81) )
 
 process.TFileService = cms.Service("TFileService", fileName = cms.string("tnpJpsi_MC_PbPb.root"))
 
