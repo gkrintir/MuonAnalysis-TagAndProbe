@@ -5,7 +5,7 @@ process = cms.Process("TagProbe")
 process.load('Configuration.StandardSequences.Services_cff')
 process.load('FWCore.MessageService.MessageLogger_cfi')
 process.options   = cms.untracked.PSet(wantSummary = cms.untracked.bool(True))
-process.MessageLogger.cerr.FwkReport.reportEvery = 1000
+process.MessageLogger.cerr.FwkReport.reportEvery = 10000
 
 process.source = cms.Source("PoolSource",
     fileNames = cms.untracked.vstring('file:/afs/cern.ch/work/o/okukral/TnP_pPb/CMSSW_8_0_30/src/MuonAnalysis/TagAndProbe/test/jpsiHI/0249A3C5-A2B1-E611-8E3E-FA163ED701FA.root')
@@ -51,8 +51,8 @@ process.fastFilter = cms.Sequence(process.hfCoincFilter + process.primaryVertexF
 ## ==== Merge CaloMuons and Tracks into the collection of reco::Muons  ====
 
 #InAcceptance = '((abs(eta)<1.2 && pt>=3.5) || (1.2<=abs(eta) && abs(eta)<2.1 && pt>=5.77-1.89*abs(eta)) || (2.1<=abs(eta) && abs(eta)<2.4 && pt>=1.8))'
-InAcceptance = '(p>=2.9)' # Updated to go to low pt
-
+InAcceptance = '(abs(eta) < 2.4 && ((abs(eta) < 0.8 && pt >= 3.3) || (0.8 <= abs(eta) && abs(eta) < 1.5 && pt >= 5.81 - 3.14*abs(eta)) ||  (1.5 <= abs(eta) && pt >= 0.8 && pt >= 1.89 - 0.526*abs(eta))))' # Updated to go to low pt
+InAcceptance_tag = '(abs(eta) < 2.4 && ((abs(eta) < 1.2 && pt >= 3.3) ||  (1.2 <= abs(eta) && abs(eta) < 2.1 && pt >= 3.93 - 1.11*abs(eta)) ||  (2.1 <= abs(eta) && abs(eta) < 2.4 && pt >= 1.3)))' # tight trigger acceptance
 
 from RecoMuon.MuonIdentification.calomuons_cfi import calomuons;
 process.mergedMuons = cms.EDProducer("CaloMuonMerger",
@@ -151,12 +151,12 @@ TrigTagFlags = cms.PSet(
 ## ==== Tag muons
 process.tagMuons = cms.EDFilter("PATMuonSelector",
     src = cms.InputTag("patMuonsWithTrigger"),
-    cut = cms.string(InAcceptance+" && "+HybridSoftId+" && (!triggerObjectMatchesByPath('HLT_PAL2Mu*_v*',1,0).empty() || !triggerObjectMatchesByPath('HLT_PAL3Mu*_v*',1,0).empty())"),
+    cut = cms.string(InAcceptance_tag+" && "+HybridSoftId+" && (!triggerObjectMatchesByPath('HLT_PAL2Mu*_v*',1,0).empty() || !triggerObjectMatchesByPath('HLT_PAL3Mu*_v*',1,0).empty())"),
 )
 process.oneTag = cms.EDFilter("CandViewCountFilter", src = cms.InputTag("tagMuons"), minNumber = cms.uint32(1))
 process.pseudoTag = cms.EDFilter("MuonSelector",
     src = cms.InputTag("mergedMuons"),
-    cut = cms.string(InAcceptance+" && "+HybridSoftIdReco),
+    cut = cms.string(InAcceptance_tag+" && "+HybridSoftIdReco),
 )
 process.onePseudoTag = process.oneTag.clone(src = cms.InputTag("pseudoTag"))
 
@@ -211,6 +211,7 @@ process.tpTree = cms.EDAnalyzer("TagProbeFitTreeProducer",
        StaTkSameCharge = cms.string("outerTrack.isNonnull && innerTrack.isNonnull && (outerTrack.charge == innerTrack.charge)"),
        outerValidHits = cms.string("outerTrack.isNonnull && outerTrack.numberOfValidHits > 0"),
        isNotMuonSeeded = cms.string("innerTrack.isNonnull && innerTrack.originalAlgo!=13 && innerTrack.originalAlgo!=14"), #   muonSeededStepInOut = 13,
+       isHighPurity = cms.string("innerTrack.quality(\"highPurity\")"),
     ),
     tagVariables = cms.PSet(
         KinematicVariables,
@@ -225,7 +226,8 @@ process.tpTree = cms.EDAnalyzer("TagProbeFitTreeProducer",
         dxyPV = cms.InputTag("muonDxyPVdzminTags","dxyPV"),
     ),
     tagFlags = cms.PSet(
-        TrigTagFlags
+        TrigTagFlags,
+        isHighPurity = cms.string("innerTrack.quality(\"highPurity\")"),
     ),
     pairVariables = cms.PSet(
         dz      = cms.string("daughter(0).vz - daughter(1).vz"),

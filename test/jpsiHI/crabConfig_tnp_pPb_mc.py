@@ -2,7 +2,7 @@ from CRABClient.UserUtilities import config, getUsernameFromSiteDB
 config = config()
 
 config.section_('General')
-config.General.requestName     = 'TNP_Psi1SToMuMu_pTMu-2p5_pPb-Bst_8p16-Pythia8-pPb816Summer16DR-pPbBst_80X_mcRun2_pA_v4-v3'
+config.General.requestName     = 'TnP_Psi1S_pPb-EmbEPOS_8p16TeV_Pythia-pPb816Summer16DR-pPbEmb_80X_mcRun2_pA_v4-v5'
 config.General.workArea        = 'crab_projects'
 config.General.transferOutputs = True
 config.General.transferLogs    = False
@@ -15,7 +15,7 @@ config.JobType.outputFiles = ['tnpJPsi_MC_pPb_AOD.root']
 config.JobType.allowUndistributedCMSSW = True #allow use of SL7
 
 config.section_('Data')
-config.Data.inputDataset  = '/Psi1SToMuMu_pTMu-2p5_pPb-Bst_8p16-Pythia8/pPb816Summer16DR-pPbBst_80X_mcRun2_pA_v4-v1/AODSIM'
+config.Data.inputDataset  = '/Psi1S_pPb-EmbEPOS_8p16TeV_Pythia/pPb816Summer16DR-pPbEmb_80X_mcRun2_pA_v4-v2/AODSIM'
 config.Data.inputDBS      = 'global'
 config.Data.unitsPerJob   = 10 #3 was suggested by dryrun, but turned out to be too small
 config.Data.totalUnits   = -1
