@@ -7,12 +7,15 @@
 // ++++++++++++++
 
 // - TrkM: 
-//	(tnp_weight_trkM_ppb) // NEEDS TO BE UPDATED
-//   * idx = 0:  nominal
-//   * idx = 1..100: toy variations, stat. only
-//   * idx = -1: syst variation, "new_MAX", +1 sigma NOT YET IMPLEMENTED
-//   * idx = -2: syst variation, "new_MAX", -1 sigma NOT YET IMPLEMENTED
-//   * idx = -10: binned
+//	(tnp_weight_trkM_ppb)
+//   * idx = 0: nominal
+//   * idx = -11: stat variation,  +1 sigma
+//   * idx = -12: stat variation,  -1 sigma
+//   * idx = -13: syst variation,  +1 sigma
+//   * idx = -14: syst variation,  -1 sigma
+//
+//      (tnp_weight_trkM_eta)
+//   * idx = 0: nominal
 
 // - MuID: 
 //	(tnp_weight_muid_ppb)
@@ -32,13 +35,14 @@
 //   * idx = 0: nominal
 //   * idx = -11: stat variation,  +1 sigma
 //   * idx = -12: stat variation,  -1 sigma
-//   * idx = -13: syst variation,  +1 sigma  //TO BE UPDATED
+//   * idx = -13: syst variation,  +1 sigma
 //   * idx = -14: syst variation,  -1 sigma
 
 // THE INDIVIDUAL SFs
 // ++++++++++++++++++
-double tnp_weight_trkM_ppb(double pt, double eta, int idx = 0); //TO BE UPDATED
-double tnp_weight_muid_ppb(double pt, double eta, int idx = 0); // HAS BEEN UPDATED
+double tnp_weight_trkM_ppb(double pt, double eta, int idx = 0);
+double tnp_weight_trkM_eta(double eta, int idx = 0);
+double tnp_weight_muid_ppb(double pt, double eta, int idx = 0);
 double tnp_weight_muid_nTrack(int nTrack, int idx = 0); //
 double tnp_weight_trg_ppb(double pt, double eta, int idx = 0);
 
@@ -47,49 +51,217 @@ double tnp_weight_trg_ppb(double pt, double eta, int idx = 0);
 ///////////////////////////////////////////////////
 //                 T r k M    P P b                //
 ///////////////////////////////////////////////////
-double tnp_weight_trkM_ppb(double pt, double eta, int idx) {
-	double x = pt;
+double tnp_weight_trkM_ppb(double pt, double eta, int idx)
+{
+  double num=1.0, den=0.0;  //intentionaly 0, so if asked for a corrections outside defined range, it returns NaN instead of 1
 
-	if (idx == 10) {
-		if (fabs(eta) < 0.9) {
-			// 0 < |eta| < 1.2
-			if (pt < 15) return 0.994131;
-			else if (pt < 25) return 0.960778;
-			else if (pt < 30) return 0.975896;
-			else if (pt < 35) return 0.981953;
-			else if (pt < 40) return 0.980849;
-			else if (pt < 45) return 0.994185;
-			else if (pt < 50) return 0.9948;
-			else if (pt < 80) return 0.991582;
-			else if (pt < 200) return 1.00307;
-		}
-		else if (fabs(eta) < 2.1) {
-			// 1.2 < |eta| < 2.1
-			if (pt < 15) return 1.01259;
-			else if (pt < 25) return 0.946523;
-			else if (pt < 30) return 0.989628;
-			else if (pt < 35) return 0.980356;
-			else if (pt < 40) return 0.990009;
-			else if (pt < 45) return 0.993151;
-			else if (pt < 50) return 0.994683;
-			else if (pt < 80) return 0.998054;
-			else if (pt < 200) return 1.00241;
-		}
-		else {
-			// 2.1 < |eta| < 2.4
-			if (pt < 15) return 0.871449;
-			else if (pt < 25) return 0.966795;
-			else if (pt < 40) return 0.975846;
-			else if (pt < 80) return 0.994159;
-			else if (pt < 200) return 0.971635;
-		}
-	}
+  //versus pt in bins of abseta
+  // MC
+  if (fabs(eta) > 0 && fabs(eta) <= 1) { 
+    if (pt > 3.3 && pt <= 4.5) den = 0.828172;
+    else if (pt <= 6.5) den = 0.989967;
+    else if (pt <= 8) den = 0.995977;
+    else if (pt <= 14) den = 0.996413;
+    else if (pt <= 25) den = 0.997164;
+  }
+  else if (fabs(eta) > 1 && fabs(eta) <= 1.5) { 
+    if (pt > 1.2 && pt <= 3.3) den = 0.784932;
+    else if (pt <= 6.5) den = 0.96759;
+    else if (pt <= 8) den = 0.997175;
+    else if (pt <= 14) den = 0.998082;
+    else if (pt <= 25) den = 0.997508;
+  }
+  else if (fabs(eta) > 1.5 && fabs(eta) <= 2) { 
+    if (pt > 0.8 && pt <= 3.3) den = 0.875976;
+    else if (pt <= 6.5) den = 0.996701;
+    else if (pt <= 10.5) den = 0.999353;
+    else if (pt <= 25) den = 0.9994;
+  }
+  else if (fabs(eta) > 2 && fabs(eta) <= 2.4) { 
+    if (pt > 0.8 && pt <= 3.3) den = 0.784331;
+    else if (pt <= 6.5) den = 0.997418;
+    else if (pt <= 10.5) den = 0.99895;
+    else if (pt <= 25) den = 0.998834;
+  }
 
-	double num = 1, den = 1;
-
-
-	return num / den;
+  // data
+  if (idx == 0) { // nominal
+    if (fabs(eta) > 0 && fabs(eta) <= 1) { 
+      if (pt > 3.3 && pt <= 4.5) num = 0.854987;
+      else if (pt <= 6.5) num = 0.984073;
+      else if (pt <= 8) num = 0.983683;
+      else if (pt <= 14) num = 0.995065;
+      else if (pt <= 25) num = 1;
+    }
+    else if (fabs(eta) > 1 && fabs(eta) <= 1.5) { 
+      if (pt > 1.2 && pt <= 3.3) num = 0.738779;
+      else if (pt <= 6.5) num = 0.972902;
+      else if (pt <= 8) num = 0.964183;
+      else if (pt <= 14) num = 0.99998;
+      else if (pt <= 25) num = 0.962675;
+    }
+    else if (fabs(eta) > 1.5 && fabs(eta) <= 2) { 
+      if (pt > 0.8 && pt <= 3.3) num = 0.863469;
+      else if (pt <= 6.5) num = 0.992568;
+      else if (pt <= 10.5) num = 0.999296;
+      else if (pt <= 25) num = 0.999996;
+    }
+    else if (fabs(eta) > 2 && fabs(eta) <= 2.4) { 
+      if (pt > 0.8 && pt <= 3.3) num = 0.668745;
+      else if (pt <= 6.5) num = 0.998159;
+      else if (pt <= 10.5) num = 0.999997;
+      else if (pt <= 25) num = 0.983567;
+    }
+  }
+  else if (idx == -11) { // stat up
+    if (fabs(eta) > 0 && fabs(eta) <= 1) { 
+      if (pt > 3.3 && pt <= 4.5) num = 0.859493;
+      else if (pt <= 6.5) num = 0.987713;
+      else if (pt <= 8) num = 0.992502;
+      else if (pt <= 14) num = 0.998501;
+      else if (pt <= 25) num = 1.00011;
+    }
+    else if (fabs(eta) > 1 && fabs(eta) <= 1.5) { 
+      if (pt > 1.2 && pt <= 3.3) num = 0.750961;
+      else if (pt <= 6.5) num = 0.98076;
+      else if (pt <= 8) num = 0.977418;
+      else if (pt <= 14) num = 1.0007;
+      else if (pt <= 25) num = 0.981704;
+    }
+    else if (fabs(eta) > 1.5 && fabs(eta) <= 2) { 
+      if (pt > 0.8 && pt <= 3.3) num = 0.864507;
+      else if (pt <= 6.5) num = 0.996854;
+      else if (pt <= 10.5) num = 0.999869;
+      else if (pt <= 25) num = 1.00075;
+    }
+    else if (fabs(eta) > 2 && fabs(eta) <= 2.4) { 
+      if (pt > 0.8 && pt <= 3.3) num = 0.674617;
+      else if (pt <= 6.5) num = 0.999223;
+      else if (pt <= 10.5) num = 1.00035;
+      else if (pt <= 25) num = 0.996075;
+    }
+  }
+  else if (idx == -12) { // stat down
+    if (fabs(eta) > 0 && fabs(eta) <= 1) { 
+      if (pt > 3.3 && pt <= 4.5) num = 0.850466;
+      else if (pt <= 6.5) num = 0.980108;
+      else if (pt <= 8) num = 0.969642;
+      else if (pt <= 14) num = 0.989608;
+      else if (pt <= 25) num = 0.981821;
+    }
+    else if (fabs(eta) > 1 && fabs(eta) <= 1.5) { 
+      if (pt > 1.2 && pt <= 3.3) num = 0.734002;
+      else if (pt <= 6.5) num = 0.9653;
+      else if (pt <= 8) num = 0.943677;
+      else if (pt <= 14) num = 0.999247;
+      else if (pt <= 25) num = 0.905647;
+    }
+    else if (fabs(eta) > 1.5 && fabs(eta) <= 2) { 
+      if (pt > 0.8 && pt <= 3.3) num = 0.862443;
+      else if (pt <= 6.5) num = 0.989147;
+      else if (pt <= 10.5) num = 0.989864;
+      else if (pt <= 25) num = 0.999241;
+    }
+    else if (fabs(eta) > 2 && fabs(eta) <= 2.4) { 
+      if (pt > 0.8 && pt <= 3.3) num = 0.66278;
+      else if (pt <= 6.5) num = 0.987237;
+      else if (pt <= 10.5) num = 0.999645;
+      else if (pt <= 25) num = 0.966846;
+    }
+  }
+  if (idx == -13) { // TnP fit syst up
+    if (fabs(eta) > 0 && fabs(eta) <= 1) { 
+      if (pt > 3.3 && pt <= 4.5) num = 0.860158;
+      else if (pt <= 6.5) num = 0.991169;
+      else if (pt <= 8) num = 0.990779;
+      else if (pt <= 14) num = 1.00039;
+      else if (pt <= 25) num = 1.00177;
+    }
+    else if (fabs(eta) > 1 && fabs(eta) <= 1.5) { 
+      if (pt > 1.2 && pt <= 3.3) num = 0.763945;
+      else if (pt <= 6.5) num = 0.987012;
+      else if (pt <= 8) num = 0.973985;
+      else if (pt <= 14) num = 1.00687;
+      else if (pt <= 25) num = 0.967144;
+    }
+    else if (fabs(eta) > 1.5 && fabs(eta) <= 2) { 
+      if (pt > 0.8 && pt <= 3.3) num = 0.89529;
+      else if (pt <= 6.5) num = 0.997346;
+      else if (pt <= 10.5) num = 1.00366;
+      else if (pt <= 25) num = 1.00276;
+    }
+    else if (fabs(eta) > 2 && fabs(eta) <= 2.4) { 
+      if (pt > 0.8 && pt <= 3.3) num = 0.74809;
+      else if (pt <= 6.5) num = 1.00562;
+      else if (pt <= 10.5) num = 1.00746;
+      else if (pt <= 25) num = 0.991028;
+    }
+  }
+  else if (idx == -14) { // TnP fit syst down
+    if (fabs(eta) > 0 && fabs(eta) <= 1) { 
+      if (pt > 3.3 && pt <= 4.5) num = 0.849815;
+      else if (pt <= 6.5) num = 0.976977;
+      else if (pt <= 8) num = 0.976587;
+      else if (pt <= 14) num = 0.989743;
+      else if (pt <= 25) num = 0.998226;
+    }
+    else if (fabs(eta) > 1 && fabs(eta) <= 1.5) { 
+      if (pt > 1.2 && pt <= 3.3) num = 0.713612;
+      else if (pt <= 6.5) num = 0.958792;
+      else if (pt <= 8) num = 0.954381;
+      else if (pt <= 14) num = 0.99309;
+      else if (pt <= 25) num = 0.958206;
+    }
+    else if (fabs(eta) > 1.5 && fabs(eta) <= 2) { 
+      if (pt > 0.8 && pt <= 3.3) num = 0.831648;
+      else if (pt <= 6.5) num = 0.98779;
+      else if (pt <= 10.5) num = 0.99493;
+      else if (pt <= 25) num = 0.997235;
+    }
+    else if (fabs(eta) > 2 && fabs(eta) <= 2.4) { 
+      if (pt > 0.8 && pt <= 3.3) num = 0.589399;
+      else if (pt <= 6.5) num = 0.990698;
+      else if (pt <= 10.5) num = 0.992536;
+      else if (pt <= 25) num = 0.976106;
+    }
+  }
+  return (num/den);
 }
+
+double tnp_weight_trkM_eta(double eta, int idx)
+{
+  double num=1.0, den=0.0;  //intentionaly 0, so if asked for a corrections outside defined range, it returns NaN instead of 1
+
+  //versus eta
+  // MC
+  if (eta >= -2.4 && eta <= -2) den = 0.80172;
+  else if (eta > -2 && eta <= -1.5) den = 0.89553;
+  else if (eta > -1.5 && eta <= -1) den = 0.873239;
+  else if (eta > -1 && eta <= -0.5) den = 0.932599;
+  else if (eta > -0.5 && eta <= 0) den = 0.911417;
+  else if (eta > 0 && eta <= 0.5) den = 0.904444;
+  else if (eta > 0.5 && eta <= 1) den = 0.931976;
+  else if (eta > 1 && eta <= 1.5) den = 0.879465;
+  else if (eta > 1.5 && eta <= 2) den = 0.895665;
+  else if (eta > 2 && eta <= 2.4) den = 0.806029;
+
+  // data
+  // nominal
+  if (eta >= -2.4 && eta <= -2) den = 0.698431;
+  else if (eta > -2 && eta <= -1.5) den = 0.925182;
+  else if (eta > -1.5 && eta <= -1) den = 0.87917;
+  else if (eta > -1 && eta <= -0.5) den = 0.948257;
+  else if (eta > -0.5 && eta <= 0) den = 0.930047;
+  else if (eta > 0 && eta <= 0.5) den = 0.919776;
+  else if (eta > 0.5 && eta <= 1) den = 0.930647;
+  else if (eta > 1 && eta <= 1.5) den = 0.862745;
+  else if (eta > 1.5 && eta <= 2) den = 0.885517;
+  else if (eta > 2 && eta <= 2.4) den = 0.778149;
+
+  return (num/den);
+}
+
+
 
 ///////////////////////////////////////////////////
 //               M U I D      P P b              //
@@ -380,195 +552,322 @@ double tnp_weight_muid_nTrack(int nTrack, int idx)
 
 double tnp_weight_trg_ppb(double pt, double eta, int idx)
 {
-	//
-	// nominal
-	//
-	if (idx == 0)
-	{
-		if (fabs(eta) < 0.9) {
-			// 0 < |eta| < 0.9
-			if (pt < 3.8) return 1.01005;
-			else if (pt < 4.5) return 1.00015;
-			else if (pt < 5.5) return 1.00859;
-			else if (pt < 6.5) return 0.994886;
-			else if (pt < 8) return 0.979021;
-			else if (pt < 10.5) return 0.978756;
-			else if (pt < 14) return 0.973643;
-			else if (pt < 18) return 0.96243;
-			else if (pt < 9999) return 0.954136;
-		}
+  double num=1.0, den=0.0;  //intentionaly 0, so if asked for a corrections outside defined range, it returns NaN instead of 1
 
-		else if (fabs(eta) < 1.2) {
-			// 0.9 < |eta| < 1.2
-			if (pt < 3.8) return 1.25081;
-			else if (pt < 4.5) return 1.03099;
-			else if (pt < 5.5) return 1.00102;
-			else if (pt < 6.5) return 0.999884;
-			else if (pt < 8) return 0.998999;
-			else if (pt < 10.5) return 0.99726;
-			else if (pt < 14) return 1.00131;
-			else if (pt < 18) return 0.999727;
-			else if (pt < 9999) return 0.98394;
-		}
+  // MC
+  if (fabs(eta) > 0 && fabs(eta) <= 0.9) { 
+    if (pt > 3.3 && pt <= 4.5) den = 0.715416;
+    else if (pt <= 5.5) den = 0.914315;
+    else if (pt <= 7) den = 0.946779;
+    else if (pt <= 9.5) den = 0.959295;
+    else if (pt <= 13) den = 0.956631;
+    else if (pt <= 18) den = 0.942065;
+    else if (pt <= 25) den = 0.923169;
+    else if (pt <= 35) den = 0.934265;
+    else if (pt <= 50) den = 0.92179;
+  }
+  else if (fabs(eta) > 0.9 && fabs(eta) <= 1.2) { 
+    if (pt > 3.3 && pt <= 4.5) den = 0.797148;
+    else if (pt <= 5.5) den = 0.990003;
+    else if (pt <= 7) den = 0.992797;
+    else if (pt <= 9.5) den = 0.994399;
+    else if (pt <= 13) den = 0.995945;
+    else if (pt <= 18) den = 0.988519;
+    else if (pt <= 25) den = 0.983467;
+    else if (pt <= 35) den = 0.965063;
+    else if (pt <= 50) den = 0.985891;
+  }
+  else if (fabs(eta) > 1.2 && fabs(eta) <= 1.6) { 
+    if (pt > 2.2 && pt <= 3) den = 0.419801;
+    else if (pt <= 4.5) den = 0.823984;
+    else if (pt <= 6.5) den = 0.951777;
+    else if (pt <= 10) den = 0.963024;
+    else if (pt <= 14) den = 0.965916;
+    else if (pt <= 25) den = 0.959984;
+    else if (pt <= 35) den = 0.944979;
+    else if (pt <= 50) den = 0.945456;
+  }
+  else if (fabs(eta) > 1.6 && fabs(eta) <= 2.1) { 
+    if (pt > 1.6 && pt <= 2.2) den = 0.616688;
+    else if (pt <= 3) den = 0.795546;
+    else if (pt <= 4.5) den = 0.91678;
+    else if (pt <= 8) den = 0.920914;
+    else if (pt <= 14) den = 0.900374;
+    else if (pt <= 25) den = 0.854198;
+    else if (pt <= 50) den = 0.836884;
+  }
+  else if (fabs(eta) > 2.1 && fabs(eta) <= 2.4) { 
+    if (pt > 1.3 && pt <= 1.6) den = 0.470736;
+    else if (pt <= 2.2) den = 0.804351;
+    else if (pt <= 3) den = 0.91407;
+    else if (pt <= 5.5) den = 0.935357;
+    else if (pt <= 12) den = 0.930796;
+    else if (pt <= 25) den = 0.884993;
+    else if (pt <= 50) den = 0.855078;
+  }
 
-		else if (fabs(eta) < 1.6) {
-			// 1.2 < |eta| < 1.6
-			if (pt < 3) return 1.22981;
-			else if (pt < 4.5) return 1.03105;
-			else if (pt < 6.5) return 1.0091;
-			else if (pt < 10) return 1.00626;
-			else if (pt < 14) return 1.00334;
-			else if (pt < 9999) return 1.01464;
-		}
-
-		else if (fabs(eta) < 2.1) {
-			// 1.6 < |eta| < 2.1
-			if (pt < 2.2) return 1.11018;
-			else if (pt < 3) return 1.02508;
-			else if (pt < 4.5) return 0.990083;
-			else if (pt < 6.5) return 0.987711;
-			else if (pt < 10) return 0.979898;
-			else if (pt < 14) return 0.985277;
-			else if (pt < 9999) return 0.994803;
-		}
-
-		else {
-			// 2.1 < |eta| < 2.4
-			if (pt < 2.2) return 1.13768;
-			else if (pt < 3.5) return 1.01454;
-			else if (pt < 5.5) return 1.01467;
-			else if (pt < 8) return 1.0195;
-			else if (pt < 12) return 1.02563;
-			else if (pt < 9999) return 1.01239;
-		}
-	}
-
-	//
-	// stat variation; +1 sigma
-	//
-	if (idx == -11) {
-		if (fabs(eta) < 0.9) {
-			// 0 < |eta| < 0.9
-			if (pt < 3.8) return 1.01483;
-			else if (pt < 4.5) return 1.00249;
-			else if (pt < 5.5) return 1.01012;
-			else if (pt < 6.5) return 0.996521;
-			else if (pt < 8) return 0.98077;
-			else if (pt < 10.5) return 0.980747;
-			else if (pt < 14) return 0.976601;
-			else if (pt < 18) return 0.967516;
-			else if (pt < 9999) return 0.961453;
-		}
-
-		if (fabs(eta) < 1.2) {
-			// 0.9 < |eta| < 1.2
-			if (pt < 3.8) return 1.25709;
-			else if (pt < 4.5) return 1.03244;
-			else if (pt < 5.5) return 1.00193;
-			else if (pt < 6.5) return 1.00081;
-			else if (pt < 8) return 0.999922;
-			else if (pt < 10.5) return 0.998407;
-			else if (pt < 14) return 1.00283;
-			else if (pt < 18) return 1.00312;
-			else if (pt < 9999) return 0.994154;
-		}
-
-		if (fabs(eta) < 1.6) {
-			// 1.2 < |eta| < 1.6
-			if (pt < 3) return 1.23642;
-			else if (pt < 4.5) return 1.03311;
-			else if (pt < 6.5) return 1.01042;
-			else if (pt < 10) return 1.00781;
-			else if (pt < 14) return 1.00603;
-			else if (pt < 9999) return 1.01855;
-		}
-
-
-		if (fabs(eta) < 2.1) {
-			// 1.6 < |eta| < 2.1
-			if (pt < 2.2) return 1.11552;
-			else if (pt < 3) return 1.02766;
-			else if (pt < 4.5) return 0.991703;
-			else if (pt < 6.5) return 0.989796;
-			else if (pt < 10) return 0.982867;
-			else if (pt < 14) return 0.991577;
-			else if (pt < 9999) return 1.00484;
-		}
-
-		else {
-			// 2.1 < |eta| < 2.4
-			if (pt < 2.2) return 1.14182;
-			else if (pt < 3.5) return 1.08768;
-			else if (pt < 5.5) return 1.01662;
-			else if (pt < 8) return 1.02257;
-			else if (pt < 12) return 1.03055;
-			else if (pt < 9999) return 1.02306;
-		}
-	}
-
-
-	//
-	// stat variation; -1 sigma
-	//
-	if (idx == -12) {
-		if (fabs(eta) < 0.9) {
-			// 0 < |eta| < 0.9
-			if (pt < 3.8) return 1.00521;
-			else if (pt < 4.5) return 0.997785;
-			else if (pt < 5.5) return 1.00706;
-			else if (pt < 6.5) return 0.993219;
-			else if (pt < 8) return 0.977251;
-			else if (pt < 10.5) return 0.976702;
-			else if (pt < 14) return 0.970625;
-			else if (pt < 18) return 0.957196;
-			else if (pt < 9999) return 0.946546;
-		}
-
-		if (fabs(eta) < 1.2) {
-			// 0.9 < |eta| < 1.2
-			if (pt < 3.8) return 1.24449;
-			else if (pt < 4.5) return 1.0295;
-			else if (pt < 5.5) return 1.00011;
-			else if (pt < 6.5) return 0.998877;
-			else if (pt < 8) return 0.99799;
-			else if (pt < 10.5) return 0.995996;
-			else if (pt < 14) return 0.999574;
-			else if (pt < 18) return 0.995765;
-			else if (pt < 9999) return 0.976418;
-		}
-
-		if (fabs(eta) < 1.6) {
-			// 1.2 < |eta| < 1.6
-			if (pt < 3) return 1.22322;
-			else if (pt < 4.5) return 1.029;
-			else if (pt < 6.5) return 1.00777;
-			else if (pt < 10) return 1.00467;
-			else if (pt < 14) return 1.00049;
-			else if (pt < 9999) return 1.01042;
-		}
-
-		if (fabs(eta) < 2.1) {
-			// 1.6 < |eta| < 2.1
-			if (pt < 2.2) return 1.10483;
-			else if (pt < 3) return 1.02249;
-			else if (pt < 4.5) return 0.988453;
-			else if (pt < 6.5) return 0.985607;
-			else if (pt < 10) return 0.976892;
-			else if (pt < 14) return 0.978845;
-			else if (pt < 9999) return 0.984486;
-		}
-
-		else {
-			// 2.1 < |eta| < 2.4
-			if (pt < 2.2) return 1.13354;
-			else if (pt < 3.5) return 1.01262;
-			else if (pt < 5.5) return 1.01268;
-			else if (pt < 8) return 1.01633;
-			else if (pt < 12) return 1.02048;
-			else if (pt < 9999) return 1.00124;
-		}
-	}
+  // data
+  if (idx == 0) { // nominal
+    if (fabs(eta) > 0 && fabs(eta) <= 0.9) { 
+      if (pt > 3.3 && pt <= 4.5) num = 0.718429;
+      else if (pt <= 5.5) num = 0.921994;
+      else if (pt <= 7) num = 0.940028;
+      else if (pt <= 9.5) num = 0.940515;
+      else if (pt <= 13) num = 0.936412;
+      else if (pt <= 18) num = 0.913907;
+      else if (pt <= 25) num = 0.893973;
+      else if (pt <= 35) num = 0.882136;
+      else if (pt <= 50) num = 0.883324;
+    }
+    else if (fabs(eta) > 0.9 && fabs(eta) <= 1.2) { 
+      if (pt > 3.3 && pt <= 4.5) num = 0.885708;
+      else if (pt <= 5.5) num = 0.990556;
+      else if (pt <= 7) num = 0.994184;
+      else if (pt <= 9.5) num = 0.991996;
+      else if (pt <= 13) num = 0.995224;
+      else if (pt <= 18) num = 0.987769;
+      else if (pt <= 25) num = 0.974292;
+      else if (pt <= 35) num = 0.934944;
+      else if (pt <= 50) num = 0.946611;
+    }
+    else if (fabs(eta) > 1.2 && fabs(eta) <= 1.6) { 
+      if (pt > 2.2 && pt <= 3) num = 0.521198;
+      else if (pt <= 4.5) num = 0.849;
+      else if (pt <= 6.5) num = 0.96056;
+      else if (pt <= 10) num = 0.969339;
+      else if (pt <= 14) num = 0.972008;
+      else if (pt <= 25) num = 0.973261;
+      else if (pt <= 35) num = 0.960692;
+      else if (pt <= 50) num = 0.91337;
+    }
+    else if (fabs(eta) > 1.6 && fabs(eta) <= 2.1) { 
+      if (pt > 1.6 && pt <= 2.2) num = 0.684707;
+      else if (pt <= 3) num = 0.816278;
+      else if (pt <= 4.5) num = 0.908258;
+      else if (pt <= 8) num = 0.906016;
+      else if (pt <= 14) num = 0.885768;
+      else if (pt <= 25) num = 0.861695;
+      else if (pt <= 50) num = 0.807972;
+    }
+    else if (fabs(eta) > 2.1 && fabs(eta) <= 2.4) { 
+      if (pt > 1.3 && pt <= 1.6) num = 0.596021;
+      else if (pt <= 2.2) num = 0.865222;
+      else if (pt <= 3) num = 0.928704;
+      else if (pt <= 5.5) num = 0.948319;
+      else if (pt <= 12) num = 0.951024;
+      else if (pt <= 25) num = 0.905403;
+      else if (pt <= 50) num = 0.751944;
+    }
+  }
+  else if (idx == -11) { // stat up
+    if (fabs(eta) > 0 && fabs(eta) <= 0.9) { 
+      if (pt > 3.3 && pt <= 4.5) num = 0.720127;
+      else if (pt <= 5.5) num = 0.923386;
+      else if (pt <= 7) num = 0.941371;
+      else if (pt <= 9.5) num = 0.942089;
+      else if (pt <= 13) num = 0.938711;
+      else if (pt <= 18) num = 0.917832;
+      else if (pt <= 25) num = 0.900844;
+      else if (pt <= 35) num = 0.894419;
+      else if (pt <= 50) num = 0.904105;
+    }
+    else if (fabs(eta) > 0.9 && fabs(eta) <= 1.2) { 
+      if (pt > 3.3 && pt <= 4.5) num = 0.887754;
+      else if (pt <= 5.5) num = 0.991488;
+      else if (pt <= 7) num = 0.994969;
+      else if (pt <= 9.5) num = 0.99298;
+      else if (pt <= 13) num = 0.996328;
+      else if (pt <= 18) num = 0.990382;
+      else if (pt <= 25) num = 1;
+      else if (pt <= 35) num = 0.95136;
+      else if (pt <= 50) num = 0.968864;
+    }
+    else if (fabs(eta) > 1.2 && fabs(eta) <= 1.6) { 
+      if (pt > 2.2 && pt <= 3) num = 0.524077;
+      else if (pt <= 4.5) num = 0.850728;
+      else if (pt <= 6.5) num = 0.961841;
+      else if (pt <= 10) num = 0.970871;
+      else if (pt <= 14) num = 0.974644;
+      else if (pt <= 25) num = 0.977027;
+      else if (pt <= 35) num = 0.972207;
+      else if (pt <= 50) num = 0.944911;
+    }
+    else if (fabs(eta) > 1.6 && fabs(eta) <= 2.1) { 
+      if (pt > 1.6 && pt <= 2.2) num = 0.688302;
+      else if (pt <= 3) num = 0.818528;
+      else if (pt <= 4.5) num = 0.909871;
+      else if (pt <= 8) num = 0.90777;
+      else if (pt <= 14) num = 0.88936;
+      else if (pt <= 25) num = 0.870578;
+      else if (pt <= 50) num = 0.835254;
+    }
+    else if (fabs(eta) > 2.1 && fabs(eta) <= 2.4) { 
+      if (pt > 1.3 && pt <= 1.6) num = 0.60151;
+      else if (pt <= 2.2) num = 0.868549;
+      else if (pt <= 3) num = 0.93108;
+      else if (pt <= 5.5) num = 0.949987;
+      else if (pt <= 12) num = 0.953617;
+      else if (pt <= 25) num = 0.915019;
+      else if (pt <= 50) num = 0.842972;
+    }
+  }
+  else if (idx == -12) { // stat down
+    if (fabs(eta) > 0 && fabs(eta) <= 0.9) { 
+      if (pt > 3.3 && pt <= 4.5) num = 0.716711;
+      else if (pt <= 5.5) num = 0.920586;
+      else if (pt <= 7) num = 0.938667;
+      else if (pt <= 9.5) num = 0.938917;
+      else if (pt <= 13) num = 0.934065;
+      else if (pt <= 18) num = 0.909881;
+      else if (pt <= 25) num = 0.886855;
+      else if (pt <= 35) num = 0.869172;
+      else if (pt <= 50) num = 0.86038;
+    }
+    else if (fabs(eta) > 0.9 && fabs(eta) <= 1.2) { 
+      if (pt > 3.3 && pt <= 4.5) num = 0.883645;
+      else if (pt <= 5.5) num = 0.989584;
+      else if (pt <= 7) num = 0.9934;
+      else if (pt <= 9.5) num = 0.990935;
+      else if (pt <= 13) num = 0.993954;
+      else if (pt <= 18) num = 0.984773;
+      else if (pt <= 25) num = 0.966908;
+      else if (pt <= 35) num = 0.916603;
+      else if (pt <= 50) num = 0.916029;
+    }
+    else if (fabs(eta) > 1.2 && fabs(eta) <= 1.6) { 
+      if (pt > 2.2 && pt <= 3) num = 0.518337;
+      else if (pt <= 4.5) num = 0.847264;
+      else if (pt <= 6.5) num = 0.959257;
+      else if (pt <= 10) num = 0.967767;
+      else if (pt <= 14) num = 0.969227;
+      else if (pt <= 25) num = 0.969198;
+      else if (pt <= 35) num = 0.9467;
+      else if (pt <= 50) num = 0.873367;
+    }
+    else if (fabs(eta) > 1.6 && fabs(eta) <= 2.1) { 
+      if (pt > 1.6 && pt <= 2.2) num = 0.681104;
+      else if (pt <= 3) num = 0.814019;
+      else if (pt <= 4.5) num = 0.908258;
+      else if (pt <= 8) num = 0.90425;
+      else if (pt <= 14) num = 0.882127;
+      else if (pt <= 25) num = 0.852572;
+      else if (pt <= 50) num = 0.779374;
+    }
+    else if (fabs(eta) > 2.1 && fabs(eta) <= 2.4) { 
+      if (pt > 1.3 && pt <= 1.6) num = 0.590535;
+      else if (pt <= 2.2) num = 0.861858;
+      else if (pt <= 3) num = 0.92629;
+      else if (pt <= 5.5) num = 0.946635;
+      else if (pt <= 12) num = 0.948372;
+      else if (pt <= 25) num = 0.895353;
+      else if (pt <= 50) num = 0.677999;
+    }
+  }
+  if (idx == -13) { // TnP fit syst up
+    if (fabs(eta) > 0 && fabs(eta) <= 0.9) { 
+      if (pt > 3.3 && pt <= 4.5) num = 0.718588;
+      else if (pt <= 5.5) num = 0.922126;
+      else if (pt <= 7) num = 0.940199;
+      else if (pt <= 9.5) num = 0.940714;
+      else if (pt <= 13) num = 0.936624;
+      else if (pt <= 18) num = 0.914144;
+      else if (pt <= 25) num = 0.89441;
+      else if (pt <= 35) num = 0.882908;
+      else if (pt <= 50) num = 0.884255;
+    }
+    else if (fabs(eta) > 0.9 && fabs(eta) <= 1.2) { 
+      if (pt > 3.3 && pt <= 4.5) num = 0.886374;
+      else if (pt <= 5.5) num = 0.990666;
+      else if (pt <= 7) num = 0.994288;
+      else if (pt <= 9.5) num = 0.992104;
+      else if (pt <= 13) num = 0.995363;
+      else if (pt <= 18) num = 0.987955;
+      else if (pt <= 25) num = 0.974963;
+      else if (pt <= 35) num = 0.936499;
+      else if (pt <= 50) num = 0.948594;
+    }
+    else if (fabs(eta) > 1.2 && fabs(eta) <= 1.6) { 
+      if (pt > 2.2 && pt <= 3) num = 0.521832;
+      else if (pt <= 4.5) num = 0.849255;
+      else if (pt <= 6.5) num = 0.960815;
+      else if (pt <= 10) num = 0.969595;
+      else if (pt <= 14) num = 0.9723;
+      else if (pt <= 25) num = 0.973913;
+      else if (pt <= 35) num = 0.961954;
+      else if (pt <= 50) num = 0.91492;
+    }
+    else if (fabs(eta) > 1.6 && fabs(eta) <= 2.1) { 
+      if (pt > 1.6 && pt <= 2.2) num = 0.689397;
+      else if (pt <= 3) num = 0.820294;
+      else if (pt <= 4.5) num = 0.910651;
+      else if (pt <= 8) num = 0.907799;
+      else if (pt <= 14) num = 0.887653;
+      else if (pt <= 25) num = 0.86381;
+      else if (pt <= 50) num = 0.810186;
+    }
+    else if (fabs(eta) > 2.1 && fabs(eta) <= 2.4) { 
+      if (pt > 1.3 && pt <= 1.6) num = 0.598604;
+      else if (pt <= 2.2) num = 0.866656;
+      else if (pt <= 3) num = 0.929481;
+      else if (pt <= 5.5) num = 0.949008;
+      else if (pt <= 12) num = 0.95239;
+      else if (pt <= 25) num = 0.90769;
+      else if (pt <= 50) num = 0.754614;
+    }
+  }
+  else if (idx == -14) { // TnP fit syst down
+    if (fabs(eta) > 0 && fabs(eta) <= 0.9) { 
+      if (pt > 3.3 && pt <= 4.5) num = 0.718269;
+      else if (pt <= 5.5) num = 0.921862;
+      else if (pt <= 7) num = 0.939857;
+      else if (pt <= 9.5) num = 0.940315;
+      else if (pt <= 13) num = 0.9362;
+      else if (pt <= 18) num = 0.91367;
+      else if (pt <= 25) num = 0.893536;
+      else if (pt <= 35) num = 0.881363;
+      else if (pt <= 50) num = 0.882393;
+    }
+    else if (fabs(eta) > 0.9 && fabs(eta) <= 1.2) { 
+      if (pt > 3.3 && pt <= 4.5) num = 0.885041;
+      else if (pt <= 5.5) num = 0.990446;
+      else if (pt <= 7) num = 0.994081;
+      else if (pt <= 9.5) num = 0.991888;
+      else if (pt <= 13) num = 0.995085;
+      else if (pt <= 18) num = 0.987582;
+      else if (pt <= 25) num = 0.973621;
+      else if (pt <= 35) num = 0.933389;
+      else if (pt <= 50) num = 0.944628;
+    }
+    else if (fabs(eta) > 1.2 && fabs(eta) <= 1.6) { 
+      if (pt > 2.2 && pt <= 3) num = 0.520565;
+      else if (pt <= 4.5) num = 0.848745;
+      else if (pt <= 6.5) num = 0.960305;
+      else if (pt <= 10) num = 0.969084;
+      else if (pt <= 14) num = 0.971717;
+      else if (pt <= 25) num = 0.97261;
+      else if (pt <= 35) num = 0.959429;
+      else if (pt <= 50) num = 0.91182;
+    }
+    else if (fabs(eta) > 1.6 && fabs(eta) <= 2.1) { 
+      if (pt > 1.6 && pt <= 2.2) num = 0.680018;
+      else if (pt <= 3) num = 0.812262;
+      else if (pt <= 4.5) num = 0.905865;
+      else if (pt <= 8) num = 0.904234;
+      else if (pt <= 14) num = 0.883883;
+      else if (pt <= 25) num = 0.85958;
+      else if (pt <= 50) num = 0.805759;
+    }
+    else if (fabs(eta) > 2.1 && fabs(eta) <= 2.4) { 
+      if (pt > 1.3 && pt <= 1.6) num = 0.593439;
+      else if (pt <= 2.2) num = 0.863788;
+      else if (pt <= 3) num = 0.927928;
+      else if (pt <= 5.5) num = 0.947629;
+      else if (pt <= 12) num = 0.949657;
+      else if (pt <= 25) num = 0.903116;
+      else if (pt <= 50) num = 0.749274;
+    }
+  }
+  return (num/den);
 }
-
 
 #endif //#ifndef tnp_weight_h
