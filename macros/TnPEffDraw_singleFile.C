@@ -44,7 +44,7 @@ using namespace std;
 
 // Choose the efficiency type.
 // Possible values: MUIDTRG, TRK, STA, MUID, TRG
-#define GLB
+#define TRK
 
 // pp or PbPb?
 bool isPbPb = false; // if true, will compute the centrality dependence
@@ -52,6 +52,9 @@ TString collTag = "pp"; // isPbPb ? "PbPb" : "pp";
 
 // do the toy study for the correction factors? (only applies if MUIDTRG)
 bool doToys = false;
+
+//Whether to use asymetric errors in plotting the efficiencies and scale factors
+bool asymErrs = false;
 
 // how to fit efficiencies?
 // 0 = [0]*Erf((x-[1])/[2])
@@ -74,12 +77,11 @@ const char* fMCName[nSyst] = {
 
 // names for systematics
 const char* systName[nSyst] = {
-  "nominal (2Gauss+pol2)","Background_pol3","Signal_CB+Gauss","MassRange_narrow"
-//  "nominal (CB+pol2)","Background_pol2","Signal_CB","MassRange_narrow"//,"TightAcceptance"
+  "nominal (3Gauss+pol2)","Background_pol3","Signal_Voigt+Gauss","MassRange_narrow"//,"LooseAcceptance"
 };
-//GLB:   "nominal","Background_pol3","Signal_CB+Gauss","MassRange_narrow","LooseAcceptance"
-//MUID:  "nominal (CB+pol2)","Background_pol2","Signal_CB","MassRange_narrow","TightAcceptance"
-//MUIDTRG:   "nominal (CB+pol2)","Background_pol2","Signal_CB","MassRange_narrow"
+//GLB:    "nominal (2Gauss+pol2)","Background_pol3","Signal_CB+Gauss","MassRange_narrow","LooseAcceptance"
+//MUID:  "nominal (CB+Gauss+pol1)","Background_pol2","Signal_CB","MassRange_narrow","TightAcceptance"
+//MUIDTRG:   "nominal (CB+Gauss+pol1)","Background_pol2","Signal_CB","MassRange_narrow"
 //TRK:  "nominal (3Gauss+pol2)","Background_pol3","Signal_Voigt+Gauss","MassRange_narrow"//,"LooseAcceptance"
 
 const double rsystrange = 0.02;
@@ -148,8 +150,8 @@ TString cutTag("tpTree");
 TString cutLegend("HybridSoft ID");
 const double effmin = 0.85;
 const double sfrange = 0.013;
-const char* fDataName[nSyst] = { "../../tnp_fitOutput_HybridSoftID_data_pp_TightAcceptance_CBGPlusPol1.root"};//"../../tnp_fitOutput_HybridSoftID_data_pp_CBGPlusPol1.root", "../../tnp_fitOutput_HybridSoftID_data_pp_CBGPlusPol2.root", "../../tnp_fitOutput_HybridSoftID_data_pp_CBPlusPol1.root", "../../tnp_fitOutput_HybridSoftID_data_pp_CBGPlusPol1_narrowMrange.root" };// , "../../tnp_fitOutput_HybridSoftID_data_pp_TightAcceptance_CBGPlusPol1.root"
-const char* fMCName[nSyst] = { "../../tnp_fitOutput_HybridSoftID_MC_pp_TightAcceptance_CBGPlusPol1.root"};//"../../tnp_fitOutput_HybridSoftID_MC_pp_CBGPlusPol1.root", "../../tnp_fitOutput_HybridSoftID_MC_pp_CBGPlusPol2.root", "../../tnp_fitOutput_HybridSoftID_MC_pp_CBPlusPol1.root", "../../tnp_fitOutput_HybridSoftID_MC_pp_CBGPlusPol1_narrowMrange.root" } ;//"../../tnp_fitOutput_HybridSoftID_MC_pp_TightAcceptance_CBGPlusPol1.root"
+const char* fDataName[nSyst] = { "../../tnp_fitOutput_HybridSoftID_data_pp_CBGPlusPol1.root", "../../tnp_fitOutput_HybridSoftID_data_pp_CBGPlusPol2.root", "../../tnp_fitOutput_HybridSoftID_data_pp_CBPlusPol1.root", "../../tnp_fitOutput_HybridSoftID_data_pp_CBGPlusPol1_narrowMrange.root" };// , "../../tnp_fitOutput_HybridSoftID_data_pp_TightAcceptance_CBGPlusPol1.root"
+const char* fMCName[nSyst] = { "../../tnp_fitOutput_HybridSoftID_MC_pp_CBGPlusPol1.root", "../../tnp_fitOutput_HybridSoftID_MC_pp_CBGPlusPol2.root", "../../tnp_fitOutput_HybridSoftID_MC_pp_CBPlusPol1.root", "../../tnp_fitOutput_HybridSoftID_MC_pp_CBGPlusPol1_narrowMrange.root" } ;//"../../tnp_fitOutput_HybridSoftID_MC_pp_TightAcceptance_CBGPlusPol1.root"
 #endif
 
 #ifdef TRG
@@ -259,7 +261,7 @@ const char* fMCName[nSyst] = { "../../tnp_fitOutput_Glb_wTrackID_MC_pp_twoGaussP
 // Function Define
 TH2F *plotEff2D(RooDataSet *a, TString b);
 vector<TGraphAsymmErrors*> plotEff_Nbins(RooDataSet *a, int aa, const char* varx, const char* var2);
-TGraphAsymmErrors *plotEff_1bin(RooDataSet *a, int aa, const char* varx, int rebin = 1, double* tntot = NULL);
+TGraphAsymmErrors *plotEff_1bin(RooDataSet *a, int aa, const char* varx, int rebin = 1, double* tntot = NULL, bool asymErrors = true, TString dirName = "", TFile *fIn = NULL);
 TGraphAsymmErrors *plotEffCent(RooDataSet **a1, int aa);
 void formatTH1F(TH1* a, int b, int c, int d);
 void formatTGraph(TGraph* a, int b, int c, int d);
@@ -304,7 +306,7 @@ cout << "point1" << endl;
 		{
 			daPtData0[k].push_back((RooDataSet*)fMC[k]->Get(cutTag + "/" + ptTag[i] + "/fit_eff"));
 			daPtData1[k].push_back((RooDataSet*)fData[k]->Get(cutTag + "/" + ptTag[i] + "/fit_eff"));
-		
+
 cout <<"Looking for"<<cutTag + "/" + ptTag[i] + "/fit_eff" << endl;
 cout << (RooDataSet*)fMC[k]->Get(cutTag + "/" + ptTag[i] + "/fit_eff") << endl;
 		}
@@ -317,9 +319,9 @@ cout << "k is " << k << endl;
 		for (unsigned int i = 0; i < daPtData0[k].size(); i++)
 		{
 			cout << k << " " << i << " " << daPtData1[k][i] << endl;
-			ComPt0[k].push_back(plotEff_1bin(daPtData0[k][i], 1, "pt"));
+			ComPt0[k].push_back(plotEff_1bin(daPtData0[k][i], 1, "pt", 1,NULL, asymErrs, cutTag + "/" + ptTag[i], fMC[k]));
 			cout << k << " " << i << " " << daPtData1[k][i] << endl;
-			ComPt1[k].push_back(plotEff_1bin(daPtData1[k][i], 1, "pt"));
+			ComPt1[k].push_back(plotEff_1bin(daPtData1[k][i], 1, "pt", 1,NULL, asymErrs, cutTag + "/" + ptTag[i], fData[k]));
 		}
 	}
 	
@@ -337,8 +339,8 @@ cout << "point2" << endl;
 	TGraphAsymmErrors* ComEta1[nSyst];
 
 	for (int i = 0; i < nSyst; i++) {
-		ComEta0[i] = plotEff_1bin(daEtaData0[i], 1, "eta");
-		ComEta1[i] = plotEff_1bin(daEtaData1[i], 1, "eta");
+	  ComEta0[i] = plotEff_1bin(daEtaData0[i], 1, "eta", 1,NULL, asymErrs, cutTag + "/" + etaTag, fMC[i]);
+	  ComEta1[i] = plotEff_1bin(daEtaData1[i], 1, "eta", 1,NULL, asymErrs, cutTag + "/" + etaTag, fData[i]);
 	}
 
 	RooDataSet* daPtMC1Bin0[nSyst];
@@ -372,8 +374,8 @@ cout << "point3" << endl;
 cout << "made tgraphs" << endl;
 	for (int k = 0; k < nSyst; k++) {
 cout << "entered the for loop" << endl;
-		effPtMC[k] = plotEff_1bin(daPtMC1Bin0[k], 0, "eta");
-		effPtData[k] = plotEff_1bin(daPtData1Bin0[k], 0, "eta");
+                effPtMC[k] = plotEff_1bin(daPtMC1Bin0[k], 0, "eta", 1,NULL, asymErrs, cutTag + "/" + etaTag, fMC[k]);
+	 	effPtData[k] = plotEff_1bin(daPtData1Bin0[k], 0, "eta", 1,NULL, asymErrs, cutTag + "/" + etaTag, fData[k]);
 cout << "pt was successful" << endl;
 		effAbsEtaMC[k] = plotEff_Nbins(daAbsEtaMC1[k], 0, "pt", absetaVar);
 		effAbsEtaData[k] = plotEff_Nbins(daAbsEtaData1[k], 0, "pt", absetaVar);
@@ -630,7 +632,7 @@ cout << "point5" << endl;
 					tntot[j] = ((RooRealVar*)fitres->floatParsFinal().find("numTot"))->getVal() * (((RooRealVar*)fitres->floatParsFinal().find("fSigAll"))->getVal());
 					delete fitres;
 				}
-				ComPt0_forRatio = plotEff_1bin(daPtData0[k][i], 1, "pt", nbins_mc / nbins, tntot);
+				ComPt0_forRatio = plotEff_1bin(daPtData0[k][i], 1, "pt", nbins_mc / nbins, tntot, asymErrs, cutTag + "/" + ptTag[i], fMC[0]);
 				delete[] tntot;
 			}
 
@@ -1113,7 +1115,7 @@ void formatTGraph(TGraph* a, int b, int c, int d)
 
 }
 
-TGraphAsymmErrors *plotEff_1bin(RooDataSet *a, int aa, const char* varx, int rebin, double *tntot) {
+TGraphAsymmErrors *plotEff_1bin(RooDataSet *a, int aa, const char* varx, int rebin, double *tntot, bool asymErrors, TString dirName, TFile *fIn) {
 	const RooArgSet *set = a->get();
 	RooRealVar *xAx = (RooRealVar*)set->find(varx);
 	RooRealVar *eff = (RooRealVar*)set->find("efficiency");
@@ -1131,6 +1133,34 @@ TGraphAsymmErrors *plotEff_1bin(RooDataSet *a, int aa, const char* varx, int reb
 		txlo[i] = fabs(xAx->getErrorLo());
 		tyhi[i] = fabs(eff->getErrorHi());
 		tylo[i] = fabs(eff->getErrorLo());
+	}
+
+	//Looking for the symmetric errors in the fit result
+	if(!asymErrors && dirName!="" && fIn!=NULL){
+	  for (int i = 0; i < nbins; i++) {
+
+	    RooFitResult *fitres = NULL;
+	    // Loop on the directories to find the one we are looking for
+	    TDirectory *tdir = (TDirectory*)fIn->Get(dirName);
+	    TIter next(tdir->GetListOfKeys()); TObject *obj;
+	    while ((obj = next())) {
+	      obj = ((TKey*)obj)->ReadObj();
+	      if (TString(obj->ClassName()) != "TDirectoryFile") continue;
+	      if (TString(obj->GetName()).Contains(Form(((TString)varx=="pt")?"__pt_bin%i":"eta_bin%i__", i))) { tdir = (TDirectory*)obj; break; }
+	    }
+
+	    fitres = (RooFitResult*)tdir->Get("fitresults");
+	    if (!fitres) cerr << "ERROR I couldn't find the fit results! Expect a crash soon..." << endl;
+	    RooRealVar* eff_fitresult = (RooRealVar*) ((fitres==NULL)?NULL:(fitres->floatParsFinal().find("efficiency")));
+	    delete fitres;
+
+	    // TString str1 = (TString)((varx=="pt")?( "abseta_bin0__pt_bin" + (TString)to_string(i) ):( "eta_bin"+(TString)to_string(i)+"__pt_bin0"  ));
+	    // RooFitResult* fitresult = (RooFitResult*) file->Get( cutTag + "/" + ptTag[i] +"/"+ str1 + fitresStr + "/fitresults");
+	    if(eff_fitresult!=NULL){
+	      tyhi[i] = eff_fitresult->getError();
+	      tylo[i] = eff_fitresult->getError();
+	    }
+	  }
 	}
 
 	// do the rebinning here if necessary
