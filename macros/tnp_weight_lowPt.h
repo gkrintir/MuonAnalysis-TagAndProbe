@@ -266,7 +266,7 @@ double tnp_weight_trkM_eta(double eta, int idx)
 ///////////////////////////////////////////////////
 //               M U I D      P P b              //
 ///////////////////////////////////////////////////
-double tnp_weight_muid_ppb(double pt, double eta, int idx) {
+double tnp_weight_muid_ppb(double pt, double eta, int idx) 
 {
   double num=1.0, den=0.0;  //intentionaly 0, so if asked for a corrections outside defined range, it returns NaN instead of 1
 
