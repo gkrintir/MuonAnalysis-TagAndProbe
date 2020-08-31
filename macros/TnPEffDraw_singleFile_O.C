@@ -44,7 +44,7 @@ using namespace std;
 
 // Choose the efficiency type.
 // Possible values: TRK, MUID, TRG
-#define TRK
+#define MUID
 
 // pp or PbPb?
 bool isPbPb = true; // if true, will compute the centrality dependence
@@ -65,46 +65,50 @@ TString collTag = "pPb"; // isPbPb ? "PbPb" : "pp";
 
 #ifdef MUID
 
- ////Location of the files
-const int nSyst = 1;
-const char* fDataName[nSyst] = { "tnp_Ana_RD_MuId_pPb_0.root" };
-const char* fMCName[nSyst] = { "tnp_Ana_MC_MuId_pPb_0.root" };
-const char* systName[nSyst] = { "Nominal" };
+ //Location of the files
+//const int nSyst = 1;
+//const char* fDataName[nSyst] = { "tnp_Ana_RD_MuId_pPb_0.root" };
+//const char* fMCName[nSyst] = { "tnp_Ana_MC_MuId_pPb_0.root" };
+//const char* systName[nSyst] = { "Nominal" };
+//TString saveDirName = "MuId_Eff";
 
 //const char* fDataName[nSyst] = { "tnp_Ana_RD_MuId_pPb_pPb_0.root" };
 //const char* fMCName[nSyst] = { "tnp_Ana_RD_MuId_pPb_Pbp_0.root" };
 //const char* systName[nSyst] = { "pPb vs Pbp" };
 
 
-//const int nSyst = 4;
-//const char* fDataName[nSyst] = { "tnp_Ana_RD_MuId_pPb_0.root", "tnp_Ana_RD_MuId_pPb_mass_0.root", "tnp_Ana_RD_MuId_pPb_sig_0.root", "tnp_Ana_RD_MuId_pPb_bkg_0.root" };
-//const char* fMCName[nSyst] = { "tnp_Ana_MC_MuId_pPb_0.root", "tnp_Ana_MC_MuId_pPb_mass_0.root", "tnp_Ana_MC_MuId_pPb_sig_0.root", "tnp_Ana_MC_MuId_pPb_bkg_0.root" };
-//const char* systName[nSyst] = {
-//   "Nominal",
-//   "Mass range 2.8-3.4",
-//   "Sig - Voigtian",
-//   "Bkg - exp(Pol3)",
-//};
+const int nSyst = 4;
+const char* fDataName[nSyst] = { "tnp_Ana_RD_MuId_pPb_0.root", "tnp_Ana_RD_MuId_pPb_mass_0.root", "tnp_Ana_RD_MuId_pPb_sig_0.root", "tnp_Ana_RD_MuId_pPb_bkg_0.root" };
+const char* fMCName[nSyst] = { "tnp_Ana_MC_MuId_pPb_0.root", "tnp_Ana_MC_MuId_pPb_mass_0.root", "tnp_Ana_MC_MuId_pPb_sig_0.root", "tnp_Ana_MC_MuId_pPb_bkg_0.root" };
+const char* systName[nSyst] = {
+   "Nominal",
+   "Mass range 2.6-3.5",
+   "Sig - Voigtian",
+   "Bkg - exp(Pol2/3)",
+};
+TString saveDirName = "MuId_Eff_syst";
+
 
 int fitfcn = 1;
 const bool bPlotAbseta = true;
-const bool bPlotSyst = false;
+const bool bPlotSyst = true;
 const bool doSF = false;
 const bool doToys = false; // do the toy study for the correction factors? //requires SFs
 
-TString saveDirName = "MuId_Eff";
+
 TString etaTag("MuId_etadep");
 TString absetaTag("MuId_absetadep");
 TString centTag("MuId_centdep");
 //TString centTag("MuId_centdepHF");
 //TString centTag("MuId_nVerticesDep");
-const int nAbsEtaBins = 6;
-TString ptTag[nAbsEtaBins] = {"MuId_abseta00_08", "MuId_abseta08_15", "MuId_abseta15_21", "MuId_abseta21_24", "MuId_pt", "MuId_abseta08_21" };
+const int nAbsEtaBins = 5;
+TString ptTag[nAbsEtaBins] = {"MuId_abseta00_10", "MuId_abseta10_15", "MuId_abseta15_20", "MuId_abseta20_24", "MuId_pt"};
+//TString ptTag[nAbsEtaBins] = { "MuId_abseta00_10", "MuId_abseta10_15", "MuId_abseta15_20", "MuId_abseta20_24", "MuId_pt","MuId_abseta00_10", "MuId_abseta10_15", "MuId_abseta15_20", "MuId_abseta20_24", "MuId_pt" }; 
 TString allTag("MuId_1bin");
 TString absetaVar("abseta");
-//TString centVar("tag_hiNtracks");
-//TString centVar("tag_hiBin");
 TString centVar("tag_hiNtracks");
+//TString centVar("tag_hiBin");
+//TString centVar("tag_nVertices");
 ofstream file_sfs("correction_functions.txt");
 ofstream file_Eta("EtaValues_MuId.txt");
 ofstream file_Cent("CentValues_MuId.txt");
@@ -113,11 +117,11 @@ TString treeTag("tpTree");
 TString cutLegend("Soft ID");
 const double effmin = 0.8;
 const double effmax = 1.02;
-const double sfrange = 0.02;
+const double sfrange = 0.05;
 const double c_ptRange = 25; // how far to plot the pt
 const double c_centralityRange = 300; // how far to plot the centrality (hibin goes to 200)
-const double cent_int_value = 0.9761;
-const double cent_int_Err = 0.0014; //copied by hand for now
+const double cent_int_value = 0.1; //removed now
+const double cent_int_Err = 0.1; //copied by hand for now
 
 #endif
 
@@ -806,7 +810,7 @@ void TnPEffDraw_singleFile_O() {
 			if (!rds_absetaPtDep_MC[0][i]->get()->find("abseta")) continue;
 			const auto& etamin = ((RooRealVar*)rds_absetaPtDep_MC[0][i]->get()->find("abseta"))->getBinning().binLow(0);
 			const auto& etamax = ((RooRealVar*)rds_absetaPtDep_MC[0][i]->get()->find("abseta"))->getBinning().binHigh(0);
-			if (!((etamin == 0.0 && etamax == 0.8) || (etamin == 0.8 && etamax == 1.5) || (etamin == 1.5 && etamax == 2.1) || (etamin == 2.1 && etamax == 2.4))) continue;
+			if (!((etamin == 0.0 && etamax == 1.0) || (etamin == 1.0 && etamax == 1.5) || (etamin == 1.5 && etamax == 2.0) || (etamin == 2.0 && etamax == 2.4))) continue;
 			file_binnedsfs << ((etamin == 0) ? "  if " : "  else if ") << "(fabs(eta) > " << etamin << " && fabs(eta) <= " << etamax << ") { " << endl;
 			const auto& nbins_pt = ComPt_MC[0][i]->GetN();
 			for (int j = 0; j < nbins_pt; j++) {
@@ -824,7 +828,7 @@ void TnPEffDraw_singleFile_O() {
 			if (!rds_absetaPtDep_RD[0][i]->get()->find("abseta")) continue;
 			const auto& etamin = ((RooRealVar*)rds_absetaPtDep_RD[0][i]->get()->find("abseta"))->getBinning().binLow(0);
 			const auto& etamax = ((RooRealVar*)rds_absetaPtDep_RD[0][i]->get()->find("abseta"))->getBinning().binHigh(0);
-			if (!((etamin == 0.0 && etamax == 0.8) || (etamin == 0.8 && etamax == 1.5) || (etamin == 1.5 && etamax == 2.1) || (etamin == 2.1 && etamax == 2.4))) continue;
+			if (!((etamin == 0.0 && etamax == 1.0) || (etamin == 1.0 && etamax == 1.5) || (etamin == 1.5 && etamax == 2.0) || (etamin == 2.0 && etamax == 2.4))) continue;
 			file_binnedsfs << ((etamin == 0) ? "    if " : "    else if ") << "(fabs(eta) > " << etamin << " && fabs(eta) <= " << etamax << ") { " << endl;
 			const auto& nbins_pt = ComPt_RD[0][i]->GetN();
 			for (int j = 0; j < nbins_pt; j++) {
@@ -841,7 +845,7 @@ void TnPEffDraw_singleFile_O() {
 			if (!rds_absetaPtDep_RD[0][i]->get()->find("abseta")) continue;
 			const auto& etamin = ((RooRealVar*)rds_absetaPtDep_RD[0][i]->get()->find("abseta"))->getBinning().binLow(0);
 			const auto& etamax = ((RooRealVar*)rds_absetaPtDep_RD[0][i]->get()->find("abseta"))->getBinning().binHigh(0);
-			if (!((etamin == 0.0 && etamax == 0.8) || (etamin == 0.8 && etamax == 1.5) || (etamin == 1.5 && etamax == 2.1) || (etamin == 2.1 && etamax == 2.4))) continue;
+			if (!((etamin == 0.0 && etamax == 1.0) || (etamin == 1.0 && etamax == 1.5) || (etamin == 1.5 && etamax == 2.0) || (etamin == 2.0 && etamax == 2.4))) continue;
 			file_binnedsfs << ((etamin == 0) ? "    if " : "    else if ") << "(fabs(eta) > " << etamin << " && fabs(eta) <= " << etamax << ") { " << endl;
 			const auto& nbins_pt = ComPt_RD[0][i]->GetN();
 			for (int j = 0; j < nbins_pt; j++) {
@@ -858,7 +862,7 @@ void TnPEffDraw_singleFile_O() {
 			if (!rds_absetaPtDep_RD[0][i]->get()->find("abseta")) continue;
 			const auto& etamin = ((RooRealVar*)rds_absetaPtDep_RD[0][i]->get()->find("abseta"))->getBinning().binLow(0);
 			const auto& etamax = ((RooRealVar*)rds_absetaPtDep_RD[0][i]->get()->find("abseta"))->getBinning().binHigh(0);
-			if (!((etamin == 0.0 && etamax == 0.8) || (etamin == 0.8 && etamax == 1.5) || (etamin == 1.5 && etamax == 2.1) || (etamin == 2.1 && etamax == 2.4))) continue;
+			if (!((etamin == 0.0 && etamax == 1.0) || (etamin == 1.0 && etamax == 1.5) || (etamin == 1.5 && etamax == 2.0) || (etamin == 2.0 && etamax == 2.4))) continue;
 			file_binnedsfs << ((etamin == 0) ? "    if " : "    else if ") << "(fabs(eta) > " << etamin << " && fabs(eta) <= " << etamax << ") { " << endl;
 			const auto& nbins_pt = ComPt_RD[0][i]->GetN();
 			for (int j = 0; j < nbins_pt; j++) {
@@ -875,7 +879,7 @@ void TnPEffDraw_singleFile_O() {
 			if (!rds_absetaPtDep_RD[0][i]->get()->find("abseta")) continue;
 			const auto& etamin = ((RooRealVar*)rds_absetaPtDep_RD[0][i]->get()->find("abseta"))->getBinning().binLow(0);
 			const auto& etamax = ((RooRealVar*)rds_absetaPtDep_RD[0][i]->get()->find("abseta"))->getBinning().binHigh(0);
-			if (!((etamin == 0.0 && etamax == 0.8) || (etamin == 0.8 && etamax == 1.5) || (etamin == 1.5 && etamax == 2.1) || (etamin == 2.1 && etamax == 2.4))) continue;
+			if (!((etamin == 0.0 && etamax == 1.0) || (etamin == 1.0 && etamax == 1.5) || (etamin == 1.5 && etamax == 2.0) || (etamin == 2.0 && etamax == 2.4))) continue;
 			file_binnedsfs << ((etamin == 0) ? "    if " : "    else if ") << "(fabs(eta) > " << etamin << " && fabs(eta) <= " << etamax << ") { " << endl;
 			const auto& nbins_pt = ComPt_RD[0][i]->GetN();
 			for (int j = 0; j < nbins_pt; j++) {
@@ -892,7 +896,7 @@ void TnPEffDraw_singleFile_O() {
 			if (!rds_absetaPtDep_RD[0][i]->get()->find("abseta")) continue;
 			const auto& etamin = ((RooRealVar*)rds_absetaPtDep_RD[0][i]->get()->find("abseta"))->getBinning().binLow(0);
 			const auto& etamax = ((RooRealVar*)rds_absetaPtDep_RD[0][i]->get()->find("abseta"))->getBinning().binHigh(0);
-			if (!((etamin == 0.0 && etamax == 0.8) || (etamin == 0.8 && etamax == 1.5) || (etamin == 1.5 && etamax == 2.1) || (etamin == 2.1 && etamax == 2.4))) continue;
+			if (!((etamin == 0.0 && etamax == 1.0) || (etamin == 1.0 && etamax == 1.5) || (etamin == 1.5 && etamax == 2.0) || (etamin == 2.0 && etamax == 2.4))) continue;
 			file_binnedsfs << ((etamin == 0) ? "    if " : "    else if ") << "(fabs(eta) > " << etamin << " && fabs(eta) <= " << etamax << ") { " << endl;
 			const auto& nbins_pt = ComPt_RD[0][i]->GetN();
 			for (int j = 0; j < nbins_pt; j++) {
@@ -1017,10 +1021,10 @@ void TnPEffDraw_singleFile_O() {
 		double ptmin = ((RooRealVar*)rds_eta_MC[k]->get()->find("pt"))->getBinning().binLow(0);
 		leg1->SetHeader(TString("#splitline{") + cutLegend + Form(" Efficiency}{(p^{#mu}_{T}>%.1f)}", ptmin));
 		sprintf(legs, "MC PYTHIA + HYDJET: %.4f^{ + %.3f}_{ - %.3f}", Trk0[k][0], Trk0[k][1], Trk0[k][2]);
-		//sprintf(legs, "RD Pbp: %.4f^{ + %.3f}_{ - %.3f}", Trk0[k][0], Trk0[k][1], Trk0[k][2]);
+		//sprintf(legs, "tag_Mu7: %.4f^{ + %.3f}_{ - %.3f}", Trk0[k][0], Trk0[k][1], Trk0[k][2]);
 		leg1->AddEntry(ComPt_MC[k][0], legs, "pl");
 		sprintf(legs, "Data: %.4f^{ + %.3f}_{ - %.3f}", Trk1[k][0], Trk1[k][1], Trk1[k][2]);
-		//sprintf(legs, "RD pPb: %.4f^{ + %.3f}_{ - %.3f}", Trk1[k][0], Trk1[k][1], Trk1[k][2]);
+		//sprintf(legs, "tag_Mu3: %.4f^{ + %.3f}_{ - %.3f}", Trk1[k][0], Trk1[k][1], Trk1[k][2]);
 		leg1->AddEntry(ComPt_RD[k][0], legs, "pl");
 		leg1->Draw("same");
 		leg1->Draw("same");
@@ -1099,8 +1103,11 @@ void TnPEffDraw_singleFile_O() {
 	{
 		//data
 		plotSysts(ComEta_RD, c1, pad1, hPad1_syst, pad2, hPad1r_syst, header, saveDirName + "/" + "syst_data_eta");
+		plotSysts(ComAbsEta_RD, c1, pad1, hPad3_syst, pad2, hPad3r_syst, header, saveDirName + "/" + "syst_data_abseta");
+
 		//mc
 		plotSysts(ComEta_MC, c1, pad1, hPad1_syst, pad2, hPad1r_syst, header, saveDirName + "/" + "syst_mc_eta");
+		plotSysts(ComAbsEta_MC, c1, pad1, hPad3_syst, pad2, hPad3r_syst, header, saveDirName + "/" + "syst_mc_abseta");
 	}
 
 	//-------- This is for centrality dependence
