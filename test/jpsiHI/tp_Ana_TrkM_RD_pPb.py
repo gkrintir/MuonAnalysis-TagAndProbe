@@ -30,16 +30,16 @@ massHigh = "3.5"
 altmass = ""
 if whichFunc=="0":
    #nominal
-   PDFName = "DCBPassFailPol3"
+   PDFName = "cbGausPol3"
 elif whichFunc=="1":
    #altbkg
-   PDFName = "DCBPassFailPol2"
+   PDFName = "cbGausExp3"
 elif whichFunc=="2":
    #altSig
-   PDFName = "cbGausPassFailPol3"
+   PDFName = "DCBPol3"
 elif whichFunc=="3":
    #nominal with alt mass range
-   PDFName = "DCBPassFailPol3"
+   PDFName = "cbGausPol3"
    massLow = "2.6"
    massHigh = "3.6"
    altmass = "altmass"
@@ -63,6 +63,10 @@ VEFFICIENCYSET =cms.VPSet(
                 #isNotMuonSeeded = cms.vstring("true"),
                 #Glb = cms.vstring("true"),
                 #PF = cms.vstring("true"),
+                tag_HLT_PAL3Mu3 = cms.vstring("true"),
+                probe_muid_newacceptance = cms.vstring("true"),
+                #pair_dz_cut = cms.vstring("true"),
+                #tag_pt_cut = cms.vstring("true"),
             ),
          BinToPDFmap = cms.vstring(PDFName)
         )
@@ -72,26 +76,30 @@ VEFFICIENCYSET =cms.VPSet(
            EfficiencyCategoryAndState = cms.vstring("TM","true"),
            UnbinnedVariables = cms.vstring("mass"),
            BinnedVariables = cms.PSet(
-               pt = cms.vdouble(0.8, 2.0, 3.3, 4.5, 5.5, 7.0, 10.5, 16.0, 25.0),
-               eta = cms.vdouble(-2.4,2.4),
-               tag_nVertices    = cms.vdouble(0.9,1.1),
+                pt = cms.vdouble(0.8, 1.7, 2.5, 3.3, 4.5, 5.5, 7.0, 10.5, 16.0, 25.0),
+                eta = cms.vdouble(-2.4,2.4),
+                tag_nVertices    = cms.vdouble(0.9,1.1),
                 #tag_acceptance = cms.vstring("true"),
                 #probe_acceptance_new = cms.vstring("true"),
-               #TM = cms.vstring("true"),
-               #isNotMuonSeeded = cms.vstring("true"),
-               #Glb = cms.vstring("true"),
-               #PF = cms.vstring("true"),
+                #TM = cms.vstring("true"),
+                #isNotMuonSeeded = cms.vstring("true"),
+                #Glb = cms.vstring("true"),
+                #PF = cms.vstring("true"),
+                tag_HLT_PAL3Mu3 = cms.vstring("true"),
+                probe_muid_newacceptance = cms.vstring("true"),
+                #pair_dz_cut = cms.vstring("true"),
+                #tag_pt_cut = cms.vstring("true"),
            ),
            BinToPDFmap = cms.vstring(PDFName)
        )
     ),
     cms.PSet(#2
-        TrkM_abseta00_10 = cms.PSet(
+        TrkM_abseta00_08 = cms.PSet(
             EfficiencyCategoryAndState = cms.vstring("TM","true"),
             UnbinnedVariables = cms.vstring("mass"),
             BinnedVariables = cms.PSet(
-                pt = cms.vdouble(3.3, 4.5, 6.5, 8.0, 14.0, 25.0),
-                abseta = cms.vdouble(0, 1.0),
+                pt = cms.vdouble(3.3, 4.0, 5.0, 6.5, 8.0, 14.0, 25.0),
+                abseta = cms.vdouble(0, 0.8),
                 tag_nVertices    = cms.vdouble(0.9,1.1),
                 #tag_acceptance = cms.vstring("true"),
                 #probe_acceptance_new = cms.vstring("true"),
@@ -99,17 +107,21 @@ VEFFICIENCYSET =cms.VPSet(
                 #isNotMuonSeeded = cms.vstring("true"),
                 #Glb = cms.vstring("true"),
                 #PF = cms.vstring("true"),
+                tag_HLT_PAL3Mu3 = cms.vstring("true"),
+                probe_muid_newacceptance = cms.vstring("true"),
+                #pair_dz_cut = cms.vstring("true"),
+                #tag_pt_cut = cms.vstring("true"),
             ),
             BinToPDFmap = cms.vstring(PDFName)
         )
     ), 
     cms.PSet(#3
-        TrkM_abseta10_15 = cms.PSet(
+        TrkM_abseta08_11 = cms.PSet(
             EfficiencyCategoryAndState = cms.vstring("TM","true"),
             UnbinnedVariables = cms.vstring("mass"),
             BinnedVariables = cms.PSet(
-                pt = cms.vdouble(1.2, 3.3, 6.5, 8.0, 14.0, 25.0),
-                abseta = cms.vdouble(1.0, 1.5),
+                pt = cms.vdouble(3.3, 4.0, 5.0, 6.5, 8.0, 14.0, 25.0),
+                abseta = cms.vdouble(0.8, 1.1),
                 tag_nVertices    = cms.vdouble(0.9,1.1),
                 #tag_acceptance = cms.vstring("true"),
                 #probe_acceptance_new = cms.vstring("true"),
@@ -117,6 +129,10 @@ VEFFICIENCYSET =cms.VPSet(
                 #isNotMuonSeeded = cms.vstring("true"),
                 #Glb = cms.vstring("true"),
                 #PF = cms.vstring("true"),
+                tag_HLT_PAL3Mu3 = cms.vstring("true"),
+                probe_muid_newacceptance = cms.vstring("true"),
+                #pair_dz_cut = cms.vstring("true"),
+                #tag_pt_cut = cms.vstring("true"),
             ),
             BinToPDFmap = cms.vstring(PDFName)
         )
@@ -135,17 +151,21 @@ VEFFICIENCYSET =cms.VPSet(
                 #isNotMuonSeeded = cms.vstring("true"),
                 #Glb = cms.vstring("true"),
                 #PF = cms.vstring("true"),
+                tag_HLT_PAL3Mu3 = cms.vstring("true"),
+                probe_muid_newacceptance = cms.vstring("true"),
+                #pair_dz_cut = cms.vstring("true"),
+                #tag_pt_cut = cms.vstring("true"),
             ),
             BinToPDFmap = cms.vstring(PDFName)
         )
     ), 
-    cms.PSet(#5 unused
-         TrkM_abseta12_16 = cms.PSet(
+    cms.PSet(#5 
+         TrkM_abseta11_15 = cms.PSet(
              EfficiencyCategoryAndState = cms.vstring("TM","true"),
              UnbinnedVariables = cms.vstring("mass"),
              BinnedVariables = cms.PSet(
-                pt = cms.vdouble(1.5, 3.0, 4.5, 6.5, 10.0, 14.0, 25.0),
-                abseta = cms.vdouble(1.2,1.6),
+                pt = cms.vdouble(1.2, 1.9, 2.6, 3.3, 4.0, 5.0, 6.5, 8.0, 14.0, 25.0),
+                abseta = cms.vdouble(1.1,1.5),
                 tag_nVertices    = cms.vdouble(0.9,1.1),
                 #tag_acceptance = cms.vstring("true"),
                 #probe_acceptance_new = cms.vstring("true"),
@@ -153,6 +173,10 @@ VEFFICIENCYSET =cms.VPSet(
                 #isNotMuonSeeded = cms.vstring("true"),
                 #Glb = cms.vstring("true"),
                 #PF = cms.vstring("true"),
+                tag_HLT_PAL3Mu3 = cms.vstring("true"),
+                probe_muid_newacceptance = cms.vstring("true"),
+                #pair_dz_cut = cms.vstring("true"),
+                #tag_pt_cut = cms.vstring("true"),
              ),
              BinToPDFmap = cms.vstring(PDFName)
         )
@@ -162,7 +186,7 @@ VEFFICIENCYSET =cms.VPSet(
              EfficiencyCategoryAndState = cms.vstring("TM","true"),
              UnbinnedVariables = cms.vstring("mass"),
              BinnedVariables = cms.PSet(
-                pt = cms.vdouble(0.8, 3.3, 6.5, 10.5, 25.0),
+                pt = cms.vdouble(0.8, 1.7, 2.5, 3.3, 4.0, 5.0, 6.5, 10.5, 25.0),
                 abseta = cms.vdouble(1.5,2.0),
                 tag_nVertices    = cms.vdouble(0.9,1.1),
                 #tag_acceptance = cms.vstring("true"),
@@ -171,6 +195,10 @@ VEFFICIENCYSET =cms.VPSet(
                 #isNotMuonSeeded = cms.vstring("true"),
                 #Glb = cms.vstring("true"),
                 #PF = cms.vstring("true"),
+                tag_HLT_PAL3Mu3 = cms.vstring("true"),
+                probe_muid_newacceptance = cms.vstring("true"),
+                #pair_dz_cut = cms.vstring("true"),
+                #tag_pt_cut = cms.vstring("true"),
              ),
              BinToPDFmap = cms.vstring(PDFName)
         )
@@ -189,6 +217,10 @@ VEFFICIENCYSET =cms.VPSet(
                 #isNotMuonSeeded = cms.vstring("true"),
                 #Glb = cms.vstring("true"),
                 #PF = cms.vstring("true"),
+                tag_HLT_PAL3Mu3 = cms.vstring("true"),
+                probe_muid_newacceptance = cms.vstring("true"),
+                #pair_dz_cut = cms.vstring("true"),
+                #tag_pt_cut = cms.vstring("true"),
              ),
              BinToPDFmap = cms.vstring(PDFName)
         )
@@ -198,7 +230,7 @@ VEFFICIENCYSET =cms.VPSet(
             EfficiencyCategoryAndState = cms.vstring("TM","true"),
             UnbinnedVariables = cms.vstring("mass"),
             BinnedVariables = cms.PSet(
-                pt = cms.vdouble(0.8, 3.3, 6.5, 10.5, 25.0),
+                pt = cms.vdouble(0.8, 1.7, 2.5, 3.3, 4.0, 5.0, 6.5, 10.5, 25.0),
                 abseta = cms.vdouble(2.0,2.4),
                 tag_nVertices    = cms.vdouble(0.9,1.1),
                 #tag_acceptance = cms.vstring("true"),
@@ -207,6 +239,10 @@ VEFFICIENCYSET =cms.VPSet(
                 #isNotMuonSeeded = cms.vstring("true"),
                 #Glb = cms.vstring("true"),
                 #PF = cms.vstring("true"),
+                tag_HLT_PAL3Mu3 = cms.vstring("true"),
+                probe_muid_newacceptance = cms.vstring("true"),
+                #pair_dz_cut = cms.vstring("true"),
+                #tag_pt_cut = cms.vstring("true"),
             ),
             BinToPDFmap = cms.vstring(PDFName)
         )
@@ -217,7 +253,7 @@ VEFFICIENCYSET =cms.VPSet(
             UnbinnedVariables = cms.vstring("mass"),
             BinnedVariables = cms.PSet(
                 pt = cms.vdouble(0.8, 25.0),
-                abseta = cms.vdouble(0, 1.0, 1.5 ,2.0, 2.4),
+                abseta = cms.vdouble(0, 0.8, 1.1, 1.5 ,2.0, 2.4),
                 tag_nVertices    = cms.vdouble(0.9,1.1),
                 #tag_acceptance = cms.vstring("true"),
                 #probe_acceptance_new = cms.vstring("true"),
@@ -225,6 +261,10 @@ VEFFICIENCYSET =cms.VPSet(
                 #isNotMuonSeeded = cms.vstring("true"),
                 #Glb = cms.vstring("true"),
                 #PF = cms.vstring("true"),
+                tag_HLT_PAL3Mu3 = cms.vstring("true"),
+                probe_muid_newacceptance = cms.vstring("true"),
+                #pair_dz_cut = cms.vstring("true"),
+                #tag_pt_cut = cms.vstring("true"),
             ),
             BinToPDFmap = cms.vstring(PDFName)
         )
@@ -236,13 +276,17 @@ VEFFICIENCYSET =cms.VPSet(
             BinnedVariables = cms.PSet(
                 pt = cms.vdouble(0.8, 25.0),
                 eta = cms.vdouble(-2.4,-2.0,-1.5,-1.0,-0.5,0,0.5,1.0,1.5,2.0,2.4),
-
+                tag_nVertices    = cms.vdouble(0.9,1.1),
                 #tag_acceptance = cms.vstring("true"),
                 #probe_acceptance_new = cms.vstring("true"),
                 #TM = cms.vstring("true"),
                 #isNotMuonSeeded = cms.vstring("true"),
                 #Glb = cms.vstring("true"),
                 #PF = cms.vstring("true"),
+                tag_HLT_PAL3Mu3 = cms.vstring("true"),
+                probe_muid_newacceptance = cms.vstring("true"),
+                #pair_dz_cut = cms.vstring("true"),
+                #tag_pt_cut = cms.vstring("true"),
             ),
             BinToPDFmap = cms.vstring(PDFName)
         )
@@ -262,6 +306,10 @@ VEFFICIENCYSET =cms.VPSet(
                 #isNotMuonSeeded = cms.vstring("true"),
                 #Glb = cms.vstring("true"),
                 #PF = cms.vstring("true"),
+                tag_HLT_PAL3Mu3 = cms.vstring("true"),
+                probe_muid_newacceptance = cms.vstring("true"),
+                #pair_dz_cut = cms.vstring("true"),
+                #tag_pt_cut = cms.vstring("true"),
             ),
             BinToPDFmap = cms.vstring(PDFName)
         )
@@ -281,6 +329,10 @@ VEFFICIENCYSET =cms.VPSet(
                 #isNotMuonSeeded = cms.vstring("true"),
                 #Glb = cms.vstring("true"),
                 #PF = cms.vstring("true"),
+                tag_HLT_PAL3Mu3 = cms.vstring("true"),
+                probe_muid_newacceptance = cms.vstring("true"),
+                #pair_dz_cut = cms.vstring("true"),
+                #tag_pt_cut = cms.vstring("true"),
             ),
             BinToPDFmap = cms.vstring(PDFName)
         )
@@ -292,7 +344,7 @@ VEFFICIENCYSET =cms.VPSet(
             UnbinnedVariables = cms.vstring("mass"),
             BinnedVariables = cms.PSet(
                 pt = cms.vdouble(0.0, 25.0),
-                eta = cms.vdouble(-2.4,-2.1,-1.6,-1.2,-0.9,-0.6,-0.3,0,0.3,0.6,0.9,1.2,1.6,2.1,2.4),
+                eta = cms.vdouble(-2.4,-2.0,-1.5,-1.0,-0.5,0,0.5,1.0,1.5,2.0,2.4),
                 tag_hiNtracks = cms.vdouble(0,30),
                 tag_nVertices    = cms.vdouble(0.9,1.1),
                 #tag_acceptance = cms.vstring("true"),
@@ -300,6 +352,10 @@ VEFFICIENCYSET =cms.VPSet(
                 #isNotMuonSeeded = cms.vstring("true"),
                 #Glb = cms.vstring("true"),
                 #PF = cms.vstring("true"),
+                tag_HLT_PAL3Mu3 = cms.vstring("true"),
+                probe_muid_newacceptance = cms.vstring("true"),
+                #pair_dz_cut = cms.vstring("true"),
+                #tag_pt_cut = cms.vstring("true"),
             ),
             BinToPDFmap = cms.vstring(PDFName)
         )
@@ -310,7 +366,7 @@ VEFFICIENCYSET =cms.VPSet(
             UnbinnedVariables = cms.vstring("mass"),
             BinnedVariables = cms.PSet(
                 pt = cms.vdouble(0.0, 25.0),
-                eta = cms.vdouble(-2.4,-2.1,-1.6,-1.2,-0.9,-0.6,-0.3,0,0.3,0.6,0.9,1.2,1.6,2.1,2.4),
+                eta = cms.vdouble(-2.4,-2.0,-1.5,-1.0,-0.5,0,0.5,1.0,1.5,2.0,2.4),
                 tag_hiNtracks = cms.vdouble(30,75),
                 tag_nVertices    = cms.vdouble(0.9,1.1),
                 #tag_acceptance = cms.vstring("true"),
@@ -318,6 +374,10 @@ VEFFICIENCYSET =cms.VPSet(
                 #isNotMuonSeeded = cms.vstring("true"),
                 #Glb = cms.vstring("true"),
                 #PF = cms.vstring("true"),
+                tag_HLT_PAL3Mu3 = cms.vstring("true"),
+                probe_muid_newacceptance = cms.vstring("true"),
+                #pair_dz_cut = cms.vstring("true"),
+                #tag_pt_cut = cms.vstring("true"),
             ),
             BinToPDFmap = cms.vstring(PDFName)
         )
@@ -328,7 +388,7 @@ VEFFICIENCYSET =cms.VPSet(
             UnbinnedVariables = cms.vstring("mass"),
             BinnedVariables = cms.PSet(
                 pt = cms.vdouble(0.0, 25.0),
-                eta = cms.vdouble(-2.4,-2.1,-1.6,-1.2,-0.9,-0.6,-0.3,0,0.3,0.6,0.9,1.2,1.6,2.1,2.4),
+                eta = cms.vdouble(-2.4,-2.0,-1.5,-1.0,-0.5,0,0.5,1.0,1.5,2.0,2.4),
                 tag_hiNtracks = cms.vdouble(75,400),
                 tag_nVertices    = cms.vdouble(0.9,1.1),
                 #tag_acceptance = cms.vstring("true"),
@@ -336,6 +396,10 @@ VEFFICIENCYSET =cms.VPSet(
                 #isNotMuonSeeded = cms.vstring("true"),
                 #Glb = cms.vstring("true"),
                 #PF = cms.vstring("true"),
+                tag_HLT_PAL3Mu3 = cms.vstring("true"),
+                probe_muid_newacceptance = cms.vstring("true"),
+                #pair_dz_cut = cms.vstring("true"),
+                #tag_pt_cut = cms.vstring("true"),
             ),
             BinToPDFmap = cms.vstring(PDFName)
         )
@@ -354,6 +418,10 @@ VEFFICIENCYSET =cms.VPSet(
                #isNotMuonSeeded = cms.vstring("true"),
                #Glb = cms.vstring("true"),
                #PF = cms.vstring("true"),
+                tag_HLT_PAL3Mu3 = cms.vstring("true"),
+                probe_muid_newacceptance = cms.vstring("true"),
+                #pair_dz_cut = cms.vstring("true"),
+                #tag_pt_cut = cms.vstring("true"),
            ),
            BinToPDFmap = cms.vstring(PDFName)
        )
@@ -372,6 +440,10 @@ VEFFICIENCYSET =cms.VPSet(
                #isNotMuonSeeded = cms.vstring("true"),
                #Glb = cms.vstring("true"),
                #PF = cms.vstring("true"),
+                tag_HLT_PAL3Mu3 = cms.vstring("true"),
+                probe_muid_newacceptance = cms.vstring("true"),
+                #pair_dz_cut = cms.vstring("true"),
+                #tag_pt_cut = cms.vstring("true"),
            ),
            BinToPDFmap = cms.vstring(PDFName)
        )
@@ -390,6 +462,10 @@ VEFFICIENCYSET =cms.VPSet(
                #isNotMuonSeeded = cms.vstring("true"),
                #Glb = cms.vstring("true"),
                #PF = cms.vstring("true"),
+                tag_HLT_PAL3Mu3 = cms.vstring("true"),
+                probe_muid_newacceptance = cms.vstring("true"),
+                #pair_dz_cut = cms.vstring("true"),
+                #tag_pt_cut = cms.vstring("true"),
            ),
            BinToPDFmap = cms.vstring(PDFName)
        )
@@ -404,7 +480,7 @@ if scenario == "2": EFFICIENCYSET = cms.PSet(VEFFICIENCYSET[1])
 if scenario == "3": EFFICIENCYSET = cms.PSet(VEFFICIENCYSET[2], VEFFICIENCYSET[3])
 #if scenario == "2": EFFICIENCYSET = cms.PSet(VEFFICIENCYSET[13], VEFFICIENCYSET[14],VEFFICIENCYSET[15])
 #if scenario == "3": EFFICIENCYSET = cms.PSet(VEFFICIENCYSET[16], VEFFICIENCYSET[17],VEFFICIENCYSET[18])
-if scenario == "4": EFFICIENCYSET = cms.PSet(VEFFICIENCYSET[6])
+if scenario == "4": EFFICIENCYSET = cms.PSet(VEFFICIENCYSET[5], VEFFICIENCYSET[6])
 if scenario == "5": EFFICIENCYSET = cms.PSet(VEFFICIENCYSET[8])
 if scenario == "6": EFFICIENCYSET = cms.PSet(VEFFICIENCYSET[9])
 if scenario == "7": EFFICIENCYSET = cms.PSet(VEFFICIENCYSET[10])
@@ -418,13 +494,17 @@ if scenario == "10": EFFICIENCYSET = cms.PSet(VEFFICIENCYSET[16], VEFFICIENCYSET
 
 process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
     # IO parameters:
-    #InputFileNames = cms.vstring("file:/afs/cern.ch/work/o/okukral/TnP_pPb/Data/PASingleMuon_PARun2016C-PromptReco-v1TnpTress_Pbpv1CentralityInfo.root"),
-    #InputFileNames = cms.vstring("file:/afs/cern.ch/user/o/okukral/Work/public/TnP_pPb/tnpJPsi_Data_pPb-mergedPartial.root"),
-    #InputFileNames = cms.vstring("file:/eos/cms/store/group/phys_heavyions/okukral/TagAndProbe2016/LowPt/tnpJPsi_Data_bothDirTrk_noTrackCutTenth.root"),
-    #InputFileNames = cms.vstring("file:/eos/cms/store/group/phys_heavyions/dileptons/jjay/TagAndProbe2016/tnpJPsi_Data_bothDirTrkQuarter%s.root" % (whichChunk)),
-    #InputFileNames = cms.vstring("file:/eos/cms/store/group/phys_heavyions/okukral/TagAndProbe2016/LowPt/tnpJPsi_Data_bothDir_twentieth.root"),
-    #InputFileNames = cms.vstring("file:/eos/cms/store/group/phys_heavyions/dileptons/jjay/TagAndProbe2016/tnpJPsi_Data_bothDir_v5_new_twentieth1.root"),
-    InputFileNames = cms.vstring("file:/eos/cms/store/group/phys_heavyions/dileptons/jjay/TagAndProbe2016/tnpJPsi_Data_bothDir_v5_TrkSpecial_Quarter%s.root" % (whichChunk)),
+    #bothDir:
+    InputFileNames = cms.vstring("file:/eos/cms/store/group/phys_heavyions/dileptons/jjay/TagAndProbe2016/tnpJPsi_Data_bothDir_noTC_v5_forTM_Quarter%s.root" % (whichChunk)),
+    #InputFileNames = cms.vstring("/eos/cms/store/group/phys_heavyions/okukral/TagAndProbe2016/LowPt/tnpJPsi_Data_bothDir_v5_NEW.root"),
+
+    #pPb only:
+    #InputFileNames = cms.vstring("file:/eos/cms/store/group/phys_heavyions/dileptons/jjay/TagAndProbe2016/tnpJPsi_Data_pPb_merged_v5_Quarter%s.root" % (whichChunk)),
+    #InputFileNames = cms.vstring("file:/eos/cms/store/group/phys_heavyions/okukral/TagAndProbe2016/LowPt/tnpJPsi_Data_pPb_merged_v5.root"),#Full pPb dataset
+
+
+    #Pbp only:
+    #InputFileNames = cms.vstring("file:/eos/cms/store/group/phys_heavyions/dileptons/jjay/TagAndProbe2016/tnpJPsi_Data_Pbp_merged_v5_Quarter%s.root" % (whichChunk)),
 
     InputDirectoryName = cms.string("tpTree"),
     InputTreeName = cms.string("fitter_tree"),
@@ -442,7 +522,7 @@ process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
     # defines all the real variables of the probes available in the input tree and intended for use in the efficiencies
     Variables = cms.PSet(
                          mass             = cms.vstring("Tag-Probe Mass", massLow, massHigh, "GeV/c^{2}"), # mass range syst: 2.8-3.4
-                         pt               = cms.vstring("Probe p_{T}", "0.0", "25", "GeV/c"),
+                         pt               = cms.vstring("Probe p_{T}", "0.0", "25.0", "GeV/c"),
                          eta              = cms.vstring("Probe #eta", "-2.4", "2.4", ""),
                          abseta           = cms.vstring("Probe |#eta|", "0", "2.4", ""),
                          tag_hiNtracks    = cms.vstring("N Tracks", "0", "400", ""),
@@ -457,11 +537,15 @@ process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
                         #PF = cms.vstring("PF", "dummy[true=1,false=0]"),
                         #hltL3fL1sSingleMu7BptxANDL1f0L2f0L3Filtered12 = cms.vstring("hltL3fL1sSingleMu7BptxANDL1f0L2f0L3Filtered12", "dummy[true=1,false=0]"),
                         #hltL3fL1sSingleMu7BptxANDL1f0L2f0L3Filtered15 = cms.vstring("hltL3fL1sSingleMu7BptxANDL1f0L2f0L3Filtered15", "dummy[true=1,false=0]"),
+                        #pair_dz_cut = cms.vstring("#pair_dz<=0.1", "dummy[true=1,false=0]"),
+                        #tag_pt_cut = cms.vstring("#tag_pt>=3.0", "dummy[true=1,false=0]"),
+                        #SoftID = cms.vstring("SoftID", "dummy[true=1,false=0]"),
                         TM = cms.vstring("TM", "dummy[true=1,false=0]"),
                         #isNotMuonSeeded = cms.vstring("#isNotMuonSeeded", "dummy[true=1,false=0]"),
                         #tag_acceptance = cms.vstring("tag_acceptance", "dummy[true=1,false=0]"),
                         #probe_acceptance_new = cms.vstring("probe_acceptance_new", "dummy[true=1,false=0]"),
-
+                        tag_HLT_PAL3Mu3 = cms.vstring("tag_HLT_PAL3Mu3", "dummy[true=1,false=0]"),
+                        probe_muid_newacceptance = cms.vstring("(abseta<0.3 && pt>3.4) || (abseta>0.3 && abseta<1.1 && pt>3.3) || (abseta>1.1 && abseta<1.5 && pt>(9.075-5.25*abseta)) || (abseta>1.5 && abseta<2.4 && pt>(2.4-0.8*abseta) && pt>0.8)", "dummy[true=1,false=0]"),
     ),
 
     # defines all the PDFs that will be available for the efficiency calculations; uses RooFit's "factory" syntax;
@@ -611,12 +695,42 @@ process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
         "efficiency[0.9,0,1]",
         "signalFractionInPassing[0.9]"
     ),
+    cbGausPol3 = cms.vstring( #n, alpha, fracS fixed to average value in the MC abseta fits on May 8, 2020
+        "CBShape::signal1(mass, mean[3.08,3.00,3.2], sigma1[0.03, 0.01, 0.10], alpha[1.91], n[2.15])",
+        "RooFormulaVar::sigma2('@0*@1',{fracS[1.57],sigma1})",
+        "Gaussian::signal2(mass, mean, sigma2)",
+        "SUM::signal(frac[0.8,0.5,1.]*signal1,signal2)",
+        "Chebychev::backgroundPass(mass, {cPass[0.,-1.1,1.1], cPass2[0.,-0.5,0.5], cPass3[0.,-0.5,0.5]})",
+        "Chebychev::backgroundFail(mass, {cFail[0.,-1.1,1.1], cFail2[0.,-0.5,0.5], cFail3[0.,-0.5,0.5]})",
+        "efficiency[0.9,0,1]",
+        "signalFractionInPassing[0.9]"
+    ),
+    cbGausExp3 = cms.vstring( #n, alpha, fracS fixed to average value in the MC abseta fits on May 8, 2020
+        "CBShape::signal1(mass, mean[3.08,3.00,3.2], sigma1[0.03, 0.01, 0.10], alpha[1.91], n[2.15])",
+        "RooFormulaVar::sigma2('@0*@1',{fracS[1.57],sigma1})",
+        "Gaussian::signal2(mass, mean, sigma2)",
+        "SUM::signal(frac[0.8,0.5,1.]*signal1,signal2)",
+        "Exponential::backgroundPass(RooFormulaVar::mass3p('@1*@0 + @2*@0*@0 + @2*@0*@0*@0',{mass, lp1[0,-20,20], lp2[0,-20,20], lp3[0,-20,20]}), One[1.0])",
+        "Exponential::backgroundFail(RooFormulaVar::mass3f('@1*@0 + @2*@0*@0 + @2*@0*@0*@0',{mass, lf1[0,-20,20], lf2[0,-20,20], lf3[0,-20,20]}), One[1.0])",
+        "efficiency[0.9,0,1]",
+        "signalFractionInPassing[0.9]"
+    ),
+    DCBPol3 = cms.vstring( #n, alpha, fracS fixed to average value in the MC abseta fits on May 8, 2020
+        "CBShape::signal1(mass, mean[3.08,3.00,3.3], sigma1[0.03, 0.01, 0.10], alpha[2.06], n[1.6])",
+        "RooFormulaVar::sigma2('@0*@1',{fracS[1.57],sigma1})",
+        "CBShape::signal2(mass, mean, sigma2, alpha, n)",
+        "SUM::signal(frac[0.8,0.5,1.]*signal1,signal2)",
+        "Chebychev::backgroundPass(mass, {cPass[0.,-1.1,1.1], cPass2[0.,-0.5,0.5], cPass3[0.,-0.5,0.5]})",
+        "Chebychev::backgroundFail(mass, {cFail[0.,-1.1,1.1], cFail2[0.,-0.5,0.5], cFail3[0.,-0.5,0.5]})",
+        "efficiency[0.9,0,1]",
+        "signalFractionInPassing[0.9]"
+    ),
     cbGausPassFailPol3 = cms.vstring(
         "CBShape::signal1Pass(mass, mean[3.08,3.00,3.3], sigma1Pass[0.03, 0.01, 0.10], alpha[2.05], n[1.53])",
-        "CBShape::signal1Fail(mass, mean, sigma1Fail[0.03, 0.01, 0.10], alpha, n)",
-        "RooFormulaVar::sigma2Pass('@0*@1',{fracS[2.0,1.2,2.4],sigma1Pass})",
+        "CBShape::signal1Fail(mass, mean, sigma1Pass, alpha, n)",
+        "RooFormulaVar::sigma2Pass('@0*@1',{fracS[1.57],sigma1Pass})",
         "Gaussian::signal2Pass(mass, mean, sigma2Pass)",
-        "RooFormulaVar::sigma2Fail('@0*@1',{fracS,sigma1Fail})",
+        "RooFormulaVar::sigma2Fail('@0*@1',{fracS,sigma1Pass})",
         "Gaussian::signal2Fail(mass, mean, sigma2Fail)",
         "SUM::signalPass(frac[0.8,0.5,1.]*signal1Pass,signal2Pass)",
         "SUM::signalFail(frac*signal1Fail,signal2Fail)",
@@ -627,10 +741,10 @@ process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
     ),
     DCBPassFailPol3 = cms.vstring(
         "CBShape::signal1Pass(mass, mean[3.08,3.00,3.3], sigma1Pass[0.03, 0.01, 0.10], alpha[2.05], n[1.53])",
-        "CBShape::signal1Fail(mass, mean, sigma1Fail[0.03, 0.01, 0.10], alpha, n)",
-        "RooFormulaVar::sigma2Pass('@0*@1',{fracS[2.0,1.2,2.4],sigma1Pass})",
+        "CBShape::signal1Fail(mass, mean, sigma1Pass, alpha, n)",
+        "RooFormulaVar::sigma2Pass('@0*@1',{fracS[1.57],sigma1Pass})",
         "CBShape::signal2Pass(mass, mean, sigma2Pass, alpha, n)",
-        "RooFormulaVar::sigma2Fail('@0*@1',{fracS,sigma1Fail})",
+        "RooFormulaVar::sigma2Fail('@0*@1',{fracS,sigma1Pass})",
         "CBShape::signal2Fail(mass, mean, sigma2Fail, alpha, n)",
         "SUM::signalPass(frac[0.8,0.5,1.]*signal1Pass,signal2Pass)",
         "SUM::signalFail(frac*signal1Fail,signal2Fail)",
@@ -641,10 +755,10 @@ process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
     ),
     DCBPassFailPol2 = cms.vstring(
         "CBShape::signal1Pass(mass, mean[3.08,3.00,3.3], sigma1Pass[0.03, 0.01, 0.10], alpha[2.05], n[1.53])",
-        "CBShape::signal1Fail(mass, mean, sigma1Fail[0.03, 0.01, 0.10], alpha, n)",
-        "RooFormulaVar::sigma2Pass('@0*@1',{fracS[2.0,1.2,2.4],sigma1Pass})",
+        "CBShape::signal1Fail(mass, mean, sigma1Pass, alpha, n)",
+        "RooFormulaVar::sigma2Pass('@0*@1',{fracS[1.57],sigma1Pass})",
         "CBShape::signal2Pass(mass, mean, sigma2Pass, alpha, n)",
-        "RooFormulaVar::sigma2Fail('@0*@1',{fracS,sigma1Fail})",
+        "RooFormulaVar::sigma2Fail('@0*@1',{fracS,sigma1Pass})",
         "CBShape::signal2Fail(mass, mean, sigma2Fail, alpha, n)",
         "SUM::signalPass(frac[0.8,0.5,1.]*signal1Pass,signal2Pass)",
         "SUM::signalFail(frac*signal1Fail,signal2Fail)",

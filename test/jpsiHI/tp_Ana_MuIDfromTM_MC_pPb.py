@@ -28,16 +28,16 @@ massHigh = "3.5"
 altmass = ""
 if whichFunc=="0":
    #nominal
-   PDFName = "cbGausPol3"
+   PDFName = "cbGausPassFailPol3"
 elif whichFunc=="1":
    #altbkg
-   PDFName = "cbGausExp3"
+   PDFName = "cbGausPassFailExp3"
 elif whichFunc=="2":
    #altSig
-   PDFName = "DCBPol3"
+   PDFName = "DCBPassFailPol3"
 elif whichFunc=="3":
    #nominal with alt mass range
-   PDFName = "cbGausPol3"
+   PDFName = "cbGausPassFailPol3"
    massLow = "2.6"
    massHigh = "3.6"
    altmass = "altmass"
@@ -47,8 +47,8 @@ print ("in mass range " + massLow + " to " + massHigh)
 VEFFICIENCYSET =cms.VPSet(
 # Order: 0 total, 1 pT, 2-8 pT fits in abseta bins, 9 abseta, 10 eta, 11-12 centrality   NOTE: IS NOT SAME AS SCENARIO
     cms.PSet(#0
-        TrkM_1bin = cms.PSet(
-            EfficiencyCategoryAndState = cms.vstring("TM","true"),
+        MuId_1bin = cms.PSet(
+            EfficiencyCategoryAndState = cms.vstring("SoftID","true"),
             UnbinnedVariables = cms.vstring("mass", "weight"),
             BinnedVariables = cms.PSet(
                 pt = cms.vdouble(0.8, 25.0),
@@ -57,7 +57,7 @@ VEFFICIENCYSET =cms.VPSet(
                 #tag_acceptance = cms.vstring("true"),
                 #probe_acceptance_new = cms.vstring("true"),
                 #isHighPurity = cms.vstring("true"),
-                #TM = cms.vstring("true"),
+                TM = cms.vstring("true"),
                 #isNotMuonSeeded = cms.vstring("true"),
                 #Glb = cms.vstring("true"),
                 #PF = cms.vstring("true"),
@@ -68,8 +68,8 @@ VEFFICIENCYSET =cms.VPSet(
         )
     ),
     cms.PSet(#1
-       TrkM_pt = cms.PSet(
-           EfficiencyCategoryAndState = cms.vstring("TM","true"),
+       MuId_pt = cms.PSet(
+           EfficiencyCategoryAndState = cms.vstring("SoftID","true"),
            UnbinnedVariables = cms.vstring("mass", "weight"),
            BinnedVariables = cms.PSet(
                 pt = cms.vdouble(0.8, 1.7, 2.5, 3.3, 4.5, 5.5, 7.0, 10.5, 16.0, 25.0),
@@ -78,7 +78,7 @@ VEFFICIENCYSET =cms.VPSet(
                 #tag_acceptance = cms.vstring("true"),
                 #probe_acceptance_new = cms.vstring("true"),
                 #isHighPurity = cms.vstring("true"),
-                #TM = cms.vstring("true"),
+                TM = cms.vstring("true"),
                 #isNotMuonSeeded = cms.vstring("true"),
                 #Glb = cms.vstring("true"),
                 #PF = cms.vstring("true"),
@@ -89,8 +89,8 @@ VEFFICIENCYSET =cms.VPSet(
        )
     ),
     cms.PSet(#2         
-         TrkM_abseta00_08 = cms.PSet(
-             EfficiencyCategoryAndState = cms.vstring("TM","true"),
+         MuId_abseta00_08 = cms.PSet(
+             EfficiencyCategoryAndState = cms.vstring("SoftID","true"),
              UnbinnedVariables = cms.vstring("mass", "weight"),
              BinnedVariables = cms.PSet(
                 pt = cms.vdouble(3.3, 4.0, 5.0, 6.5, 8.0, 14.0, 25.0),
@@ -99,7 +99,7 @@ VEFFICIENCYSET =cms.VPSet(
                 #tag_acceptance = cms.vstring("true"),
                 #probe_acceptance_new = cms.vstring("true"),
                 #isHighPurity = cms.vstring("true"),
-                #TM = cms.vstring("true"),
+                TM = cms.vstring("true"),
                 #isNotMuonSeeded = cms.vstring("true"),
                 #Glb = cms.vstring("true"),
                 #PF = cms.vstring("true"),
@@ -110,8 +110,8 @@ VEFFICIENCYSET =cms.VPSet(
         )
     ),
     cms.PSet(#3
-        TrkM_abseta08_11 = cms.PSet(
-            EfficiencyCategoryAndState = cms.vstring("TM","true"),
+        MuId_abseta08_11 = cms.PSet(
+            EfficiencyCategoryAndState = cms.vstring("SoftID","true"),
             UnbinnedVariables = cms.vstring("mass", "weight"),
             BinnedVariables = cms.PSet(
                 pt = cms.vdouble(3.3, 4.0, 5.0, 6.5, 8.0, 14.0, 25.0),
@@ -120,7 +120,7 @@ VEFFICIENCYSET =cms.VPSet(
                 #tag_acceptance = cms.vstring("true"),
                 #probe_acceptance_new = cms.vstring("true"),
                 #isHighPurity = cms.vstring("true"),
-                #TM = cms.vstring("true"),
+                TM = cms.vstring("true"),
                 #isNotMuonSeeded = cms.vstring("true"),
                 #Glb = cms.vstring("true"),
                 #PF = cms.vstring("true"),
@@ -131,8 +131,8 @@ VEFFICIENCYSET =cms.VPSet(
         )
     ), 
     cms.PSet( #4 unused
-        TrkM_abseta09_12 = cms.PSet(
-            EfficiencyCategoryAndState = cms.vstring("TM","true"),
+        MuId_abseta09_12 = cms.PSet(
+            EfficiencyCategoryAndState = cms.vstring("SoftID","true"),
             UnbinnedVariables = cms.vstring("mass", "weight"),
             BinnedVariables = cms.PSet(
                 pt = cms.vdouble(2.5, 3.5, 4.5, 5.5, 6.5, 8.0, 10.5, 14.0, 18.0, 25.0),
@@ -141,7 +141,7 @@ VEFFICIENCYSET =cms.VPSet(
                 #tag_acceptance = cms.vstring("true"),
                 #probe_acceptance_new = cms.vstring("true"),
                 #isHighPurity = cms.vstring("true"),
-                #TM = cms.vstring("true"),
+                TM = cms.vstring("true"),
                 #isNotMuonSeeded = cms.vstring("true"),
                 #Glb = cms.vstring("true"),
                 #PF = cms.vstring("true"),
@@ -152,8 +152,8 @@ VEFFICIENCYSET =cms.VPSet(
         )
     ), 
     cms.PSet( #5 
-        TrkM_abseta11_15 = cms.PSet(
-            EfficiencyCategoryAndState = cms.vstring("TM","true"),
+        MuId_abseta11_15 = cms.PSet(
+            EfficiencyCategoryAndState = cms.vstring("SoftID","true"),
             UnbinnedVariables = cms.vstring("mass", "weight"),
             BinnedVariables = cms.PSet(
                 pt = cms.vdouble(1.2, 1.9, 2.6, 3.3, 4.0, 5.0, 6.5, 8.0, 14.0, 25.0),
@@ -162,7 +162,7 @@ VEFFICIENCYSET =cms.VPSet(
                 #tag_acceptance = cms.vstring("true"),
                 #probe_acceptance_new = cms.vstring("true"),
                 #isHighPurity = cms.vstring("true"),
-                #TM = cms.vstring("true"),
+                TM = cms.vstring("true"),
                 #isNotMuonSeeded = cms.vstring("true"),
                 #Glb = cms.vstring("true"),
                 #PF = cms.vstring("true"),
@@ -173,8 +173,8 @@ VEFFICIENCYSET =cms.VPSet(
         )
     ), 
     cms.PSet(#6
-         TrkM_abseta15_20 = cms.PSet(
-             EfficiencyCategoryAndState = cms.vstring("TM","true"),
+         MuId_abseta15_20 = cms.PSet(
+             EfficiencyCategoryAndState = cms.vstring("SoftID","true"),
              UnbinnedVariables = cms.vstring("mass", "weight"),
              BinnedVariables = cms.PSet(
                 pt = cms.vdouble(0.8, 1.7, 2.5, 3.3, 4.0, 5.0, 6.5, 10.5, 25.0),
@@ -183,7 +183,7 @@ VEFFICIENCYSET =cms.VPSet(
                 #tag_acceptance = cms.vstring("true"),
                 #probe_acceptance_new = cms.vstring("true"),
                 #isHighPurity = cms.vstring("true"),
-                #TM = cms.vstring("true"),
+                TM = cms.vstring("true"),
                 #isNotMuonSeeded = cms.vstring("true"),
                 #Glb = cms.vstring("true"),
                 #PF = cms.vstring("true"),
@@ -194,8 +194,8 @@ VEFFICIENCYSET =cms.VPSet(
         )
     ), 
     cms.PSet(#7 unused
-         TrkM_abseta08_21 = cms.PSet(
-             EfficiencyCategoryAndState = cms.vstring("TM","true"),
+         MuId_abseta08_21 = cms.PSet(
+             EfficiencyCategoryAndState = cms.vstring("SoftID","true"),
              UnbinnedVariables = cms.vstring("mass", "weight"),
              BinnedVariables = cms.PSet(
                 pt = cms.vdouble(0.8, 2.0, 3.5, 4.5, 6.5, 10.0, 14.0, 25.0),
@@ -204,7 +204,7 @@ VEFFICIENCYSET =cms.VPSet(
                 #tag_acceptance = cms.vstring("true"),
                 #probe_acceptance_new = cms.vstring("true"),
                 #isHighPurity = cms.vstring("true"),
-                #TM = cms.vstring("true"),
+                TM = cms.vstring("true"),
                 #isNotMuonSeeded = cms.vstring("true"),
                 #Glb = cms.vstring("true"),
                 #PF = cms.vstring("true"),
@@ -215,8 +215,8 @@ VEFFICIENCYSET =cms.VPSet(
         )
     ),  
     cms.PSet(#8
-        TrkM_abseta20_24 = cms.PSet(
-            EfficiencyCategoryAndState = cms.vstring("TM","true"),
+        MuId_abseta20_24 = cms.PSet(
+            EfficiencyCategoryAndState = cms.vstring("SoftID","true"),
             UnbinnedVariables = cms.vstring("mass", "weight"),
             BinnedVariables = cms.PSet(
                 pt = cms.vdouble(0.8, 1.7, 2.5, 3.3, 4.0, 5.0, 6.5, 10.5, 25.0),
@@ -225,7 +225,7 @@ VEFFICIENCYSET =cms.VPSet(
                 #tag_acceptance = cms.vstring("true"),
                 #probe_acceptance_new = cms.vstring("true"),
                 #isHighPurity = cms.vstring("true"),
-                #TM = cms.vstring("true"),
+                TM = cms.vstring("true"),
                 #isNotMuonSeeded = cms.vstring("true"),
                 #Glb = cms.vstring("true"),
                 #PF = cms.vstring("true"),
@@ -236,8 +236,8 @@ VEFFICIENCYSET =cms.VPSet(
         )
     ), 
     cms.PSet(#9
-        TrkM_absetadep = cms.PSet(
-            EfficiencyCategoryAndState = cms.vstring("TM","true"),
+        MuId_absetadep = cms.PSet(
+            EfficiencyCategoryAndState = cms.vstring("SoftID","true"),
             UnbinnedVariables = cms.vstring("mass", "weight"),
             BinnedVariables = cms.PSet(
                 pt = cms.vdouble(0.8, 25.0),
@@ -246,7 +246,7 @@ VEFFICIENCYSET =cms.VPSet(
                 #tag_acceptance = cms.vstring("true"),
                 #probe_acceptance_new = cms.vstring("true"),
                 #isHighPurity = cms.vstring("true"),
-                #TM = cms.vstring("true"),
+                TM = cms.vstring("true"),
                 #isNotMuonSeeded = cms.vstring("true"),
                 #Glb = cms.vstring("true"),
                 #PF = cms.vstring("true"),
@@ -257,8 +257,8 @@ VEFFICIENCYSET =cms.VPSet(
         )
     ), 
     cms.PSet(#10
-        TrkM_etadep = cms.PSet(
-            EfficiencyCategoryAndState = cms.vstring("TM","true"),
+        MuId_etadep = cms.PSet(
+            EfficiencyCategoryAndState = cms.vstring("SoftID","true"),
             UnbinnedVariables = cms.vstring("mass", "weight"),
             BinnedVariables = cms.PSet(
                 pt = cms.vdouble(0.8, 25.0),
@@ -267,7 +267,7 @@ VEFFICIENCYSET =cms.VPSet(
                 #tag_acceptance = cms.vstring("true"),
                 #probe_acceptance_new = cms.vstring("true"),
                 #isHighPurity = cms.vstring("true"),
-                #TM = cms.vstring("true"),
+                TM = cms.vstring("true"),
                 #isNotMuonSeeded = cms.vstring("true"),
                 #Glb = cms.vstring("true"),
                 #PF = cms.vstring("true"),
@@ -278,8 +278,8 @@ VEFFICIENCYSET =cms.VPSet(
         )
     ), 
     cms.PSet(#11
-        TrkM_centdep = cms.PSet(
-            EfficiencyCategoryAndState = cms.vstring("TM","true"),
+        MuId_centdep = cms.PSet(
+            EfficiencyCategoryAndState = cms.vstring("SoftID","true"),
             UnbinnedVariables = cms.vstring("mass", "weight"),
             BinnedVariables = cms.PSet(
                 pt = cms.vdouble(0.8, 25.0),
@@ -289,7 +289,7 @@ VEFFICIENCYSET =cms.VPSet(
                 #tag_acceptance = cms.vstring("true"),
                 #probe_acceptance_new = cms.vstring("true"),
                 #isHighPurity = cms.vstring("true"),
-                #TM = cms.vstring("true"),
+                TM = cms.vstring("true"),
                 #isNotMuonSeeded = cms.vstring("true"),
                 #Glb = cms.vstring("true"),
                 #PF = cms.vstring("true"),
@@ -300,8 +300,8 @@ VEFFICIENCYSET =cms.VPSet(
         )
     ), 
     cms.PSet(#12 unused
-        TrkM_centdepHF = cms.PSet(
-            EfficiencyCategoryAndState = cms.vstring("TM","true"),
+        MuId_centdepHF = cms.PSet(
+            EfficiencyCategoryAndState = cms.vstring("SoftID","true"),
             UnbinnedVariables = cms.vstring("mass", "weight"),
             BinnedVariables = cms.PSet(
                 pt = cms.vdouble(0.0 ,25.0),
@@ -311,7 +311,7 @@ VEFFICIENCYSET =cms.VPSet(
                 #tag_acceptance = cms.vstring("true"),
                 #probe_acceptance_new = cms.vstring("true"),
                 #isHighPurity = cms.vstring("true"),
-                #TM = cms.vstring("true"),
+                TM = cms.vstring("true"),
                 #isNotMuonSeeded = cms.vstring("true"),
                 #Glb = cms.vstring("true"),
                 #PF = cms.vstring("true"),
@@ -351,7 +351,7 @@ process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
 
     InputDirectoryName = cms.string("tpTree"),
     InputTreeName = cms.string("fitter_tree"),
-    OutputFileName = cms.string("tnp_Ana_MC_TrkM_pPb_%s%s_%s.root" % (PDFName,altmass,scenario)),
+    OutputFileName = cms.string("tnp_Ana_MC_MuIdfromTM_pPb_%s%s_%s.root" % (PDFName,altmass,scenario)),
     #number of CPUs to use for fitting
     NumCPU = cms.uint32(8),
     # specifies whether to save the RooWorkspace containing the data for each bin and
@@ -542,7 +542,7 @@ process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
         "signalFractionInPassing[0.9]"
     ),
     cbGausPassFailPol3 = cms.vstring(
-        "CBShape::signal1Pass(mass, mean[3.08,3.00,3.3], sigma1Pass[0.03, 0.01, 0.10], alpha[1.85, 0.1, 50], n[1.53])",
+        "CBShape::signal1Pass(mass, mean[3.08,3.00,3.3], sigma1Pass[0.03, 0.01, 0.10], alpha[1.84, 0.3, 50], n[2.15])",
         "CBShape::signal1Fail(mass, mean, sigma1Fail[0.03, 0.01, 0.10], alpha, n)",
         "RooFormulaVar::sigma2Pass('@0*@1',{fracS[2.0,1.2,2.4],sigma1Pass})",
         "Gaussian::signal2Pass(mass, mean, sigma2Pass)",
@@ -555,8 +555,22 @@ process.TagProbeFitTreeAnalyzer = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
         "efficiency[0.9,0,1]",
         "signalFractionInPassing[0.9]"
     ),
+    cbGausPassFailExp3 = cms.vstring(
+        "CBShape::signal1Pass(mass, mean[3.08,3.00,3.3], sigma1Pass[0.03, 0.01, 0.10], alpha[1.84, 0.3, 50], n[2.15])",
+        "CBShape::signal1Fail(mass, mean, sigma1Fail[0.03, 0.01, 0.10], alpha, n)",
+        "RooFormulaVar::sigma2Pass('@0*@1',{fracS[2.0,1.2,2.4],sigma1Pass})",
+        "Gaussian::signal2Pass(mass, mean, sigma2Pass)",
+        "RooFormulaVar::sigma2Fail('@0*@1',{fracS,sigma1Fail})",
+        "Gaussian::signal2Fail(mass, mean, sigma2Fail)",
+        "SUM::signalPass(frac[0.8,0.5,1.]*signal1Pass,signal2Pass)",
+        "SUM::signalFail(frac*signal1Fail,signal2Fail)",
+        "Exponential::backgroundPass(RooFormulaVar::mass3p('@1*@0 + @2*@0*@0 + @2*@0*@0*@0',{mass, lp1[0,-20,20], lp2[0,-20,20], lp3[0,-20,20]}), One[1.0])",
+        "Exponential::backgroundFail(RooFormulaVar::mass3f('@1*@0 + @2*@0*@0 + @2*@0*@0*@0',{mass, lf1[0,-20,20], lf2[0,-20,20], lf3[0,-20,20]}), One[1.0])",
+        "efficiency[0.9,0,1]",
+        "signalFractionInPassing[0.9]"
+    ),
     DCBPassFailPol3 = cms.vstring(
-        "CBShape::signal1Pass(mass, mean[3.08,3.00,3.3], sigma1Pass[0.03, 0.01, 0.10], alpha[1.85, 0.1, 50], n[1.53])",
+        "CBShape::signal1Pass(mass, mean[3.08,3.00,3.3], sigma1Pass[0.03, 0.01, 0.10], alpha[1.85, 0.1, 50], n[1.6])",
         "CBShape::signal1Fail(mass, mean, sigma1Fail[0.03, 0.01, 0.10], alpha, n)",
         "RooFormulaVar::sigma2Pass('@0*@1',{fracS[2.0,1.2,2.4],sigma1Pass})",
         "CBShape::signal2Pass(mass, mean, sigma2Pass, alpha, n)",

@@ -137,25 +137,29 @@ RooDataSet* mergeDataSets(list<RooDataSet*>dsetList) {
     double variance = (eyh*eyh + eyl*eyl)/2 - pow(eyh-eyl,2)/(2*3.14159);
     double varWeight = 1/variance;
     double numProbes = 1;
-    cout << "eff" << k << " = " << effy << " + " << eyh << " - " << eyl << "   numProbes = " << numProbes << "; ";
+    cout << "eff" << k+1 << " = " << effy << " + " << eyh << " - " << eyl << "   numProbes = " << numProbes << "; ";
     if (abs(effy-effavg[0])>outlierCutoff*effstd[0]) {
       cout << "outlier!" << endl;
       //continue;
     }
-    if ((eyl+eyh)*10<effstd[0]) {
+    else if ((eyl+eyh)*10<effstd[0]) {
       cout << "bad fit!" << endl;
       //continue;
     }
     else cout << endl;
-    effTot = effTot + varWeight*effy;
-    eylTot = eylTot + pow(varWeight*eyl,2);
-    eyhTot = eyhTot + pow(varWeight*eyh,2);
+    double equalWeight = 1.0/nFiles;
+    effTot = effTot + equalWeight*effy;
+    //effTot = effTot + varWeight*effy;
+    eylTot = eylTot + pow(equalWeight*eyl,2);
+    eyhTot = eyhTot + pow(equalWeight*eyh,2);
     numProbesTot = numProbesTot + numProbes;
     varWeightTot = varWeightTot + varWeight;
   }
-  effTot = effTot/varWeightTot;
-  eylTot = -sqrt(eylTot)/varWeightTot;
-  eyhTot = sqrt(eyhTot)/varWeightTot;
+  //effTot = effTot/varWeightTot;
+  eylTot = -sqrt(eylTot);
+  eyhTot = sqrt(eyhTot);
+  //eylTot = -sqrt(eylTot)/varWeightTot;
+  //eyhTot = sqrt(eyhTot)/varWeightTot;
   eff->setVal((double)effTot);
   eff->setAsymError((double)eylTot,(double)eyhTot);
   cout << "eff = " << effTot << " + " << eyhTot << " - " << eylTot << "   numProbesTot = " << numProbesTot << endl;
@@ -216,25 +220,29 @@ RooDataSet* mergeDataSets(list<RooDataSet*>dsetList) {
       //double varWeight = pow(0.5*(eyh*eyh + eyl*eyl),-1);
       double variance = (eyh*eyh + eyl*eyl)/2 - pow(eyh-eyl,2)/(2*3.14159);
       double varWeight = 1/variance;
-      cout << "eff" << k << " = " << effy << " + " << eyh << " - " << eyl << "   numProbes = " << numProbes << "; ";
+      cout << "eff" << k+1 << " = " << effy << " + " << eyh << " - " << eyl << "   numProbes = " << numProbes << "; ";
       if (abs(effy-effavg[i])>outlierCutoff*effstd[i] && effstd[i]>0) {
         cout << "outlier!" << endl;
         //continue;
       }
-      if ((eyl+eyh)*10<effstd[i]) {
+      else if ((eyl+eyh)*10<effstd[i]) {
         cout << "bad fit!" << endl;
         //continue;
       }
       else cout << endl;
-      effTot = effTot + varWeight*effy;
-      eylTot = eylTot + pow(varWeight*eyl,2);
-      eyhTot = eyhTot + pow(varWeight*eyh,2);
+      double equalWeight = 1.0/nFiles;
+      effTot = effTot + equalWeight*effy;
+      //effTot = effTot + varWeight*effy;
+      eylTot = eylTot + pow(equalWeight*eyl,2);
+      eyhTot = eyhTot + pow(equalWeight*eyh,2);
       numProbesTot = numProbesTot + numProbes;
       varWeightTot = varWeightTot + varWeight;
     }
-    effTot = effTot/varWeightTot;
-    eylTot = -sqrt(eylTot)/varWeightTot;
-    eyhTot = sqrt(eyhTot)/varWeightTot;
+    //effTot = effTot/varWeightTot;
+    eylTot = -sqrt(eylTot);
+    eyhTot = sqrt(eyhTot);
+    //eylTot = -sqrt(eylTot)/varWeightTot;
+    //eyhTot = sqrt(eyhTot)/varWeightTot;
     eff->setVal((double)effTot);
     eff->setAsymError((double)eylTot,(double)eyhTot);
     cout << "eff = " << eff->getVal() << " + " << eyhTot << " - " << eylTot << "   numProbesTot = " << numProbesTot << endl;
@@ -279,21 +287,21 @@ RooDataSet* mergeDataSets(list<RooDataSet*>dsetList) {
 
 
 // ********************** MAIN ****************************** //
-void mergeChunks(TString inDirectory="Fits_to_merge", TString outDirectory="Fits_merged", TString whichFunc="DCBPassFailPol3", TString todaysDate="2020_02_22"){
+void mergeChunks(TString inDirectory="Fits_to_merge", TString outDirectory="Fits_merged", TString splitting="MuId", TString whichFunc="cbGausPol3", TString todaysDate="2021_03_26", TString extraLabel=""){
 
   cout << "Initializing" << endl;
 
   //Define all the names of the trees and branches.
-  TString etaTag("TrkM_etadep");
-  TString absetaTag("TrkM_absetadep");
-  TString centTag("TrkM_centdep");
-  const int nAbsEtaBins = 5;
-  TString ptTag[nAbsEtaBins] = {"TrkM_abseta00_10", "TrkM_abseta10_15", "TrkM_abseta15_20", "TrkM_abseta20_24", "TrkM_pt"};
-  TString allTag("TrkM_1bin");
+  TString etaTag(Form("%s_etadep",splitting.Data()));
+  TString absetaTag(Form("%s_absetadep",splitting.Data()));
+  TString centTag(Form("%s_centdep",splitting.Data()));
+  const int nAbsEtaBins = 6;
+  TString ptTag[nAbsEtaBins] = {Form("%s_abseta00_08",splitting.Data()), Form("%s_abseta08_11",splitting.Data()), Form("%s_abseta11_15",splitting.Data()), Form("%s_abseta15_20",splitting.Data()), Form("%s_abseta20_24",splitting.Data()), Form("%s_pt",splitting.Data())};
+  TString allTag(Form("%s_1bin",splitting.Data()));
   TString treeTag("tpTree");
 
   //Set up the output tree.
-  TString outFileName = Form("tnp_Ana_RD_TrkM_pPb_%s_%s_merged.root",whichFunc.Data(),todaysDate.Data());
+  TString outFileName = Form("tnp_Ana_RD_%s_pPb_%s_%s_merged%s.root",splitting.Data(),whichFunc.Data(),todaysDate.Data(),extraLabel.Data());
   TFile* outFile = new TFile(Form("%s/%s",outDirectory.Data(),outFileName.Data()),"recreate");
   TDirectory *tpTreedir = outFile->mkdir("tpTree");
   tpTreedir->cd();    // make the "tpTree" directory the current directory
@@ -311,7 +319,7 @@ void mergeChunks(TString inDirectory="Fits_to_merge", TString outDirectory="Fits
   TString fDataName[4];
   cout << "INPUT FILES:" << endl;
   for (int i=0; i<nFiles; i++) {
-    fDataName[i] = Form("tnp_Ana_RD_TrkM_pPb-quarter%i_%s_%s.root",i+1,whichFunc.Data(),todaysDate.Data());
+    fDataName[i] = Form("tnp_Ana_RD_%s_pPb-quarter%i_%s_%s.root",splitting.Data(),i+1,whichFunc.Data(),todaysDate.Data());
     cout << fDataName[i] << endl;
   }
   cout << endl << "OUTPUT FILE:" << endl;
