@@ -1,0 +1,30 @@
+executable            = condorExec.sh
+arguments             = MC TrkM 1 whichFunc whichChunk 
+output                = outputTrkMMC/condor.$(ClusterId).$(ProcId).out
+error                 = errorTrkMMC/condor.$(ClusterId).$(ProcId).err
+log                   = logTrkMMC/condor.$(ClusterId).log
+request_cpus          = 8
+request_memory        = 20
++JobFlavour           = "tomorrow"
+queue
+
+arguments = MC TrkM 2 whichFunc whichChunk
+queue
+
+arguments = MC TrkM 3 whichFunc whichChunk
+queue
+
+arguments = MC TrkM 4 whichFunc whichChunk
+queue
+
+arguments = MC TrkM 5 whichFunc whichChunk
+queue
+
+arguments = MC TrkM 6 whichFunc whichChunk
+queue
+
+arguments = MC TrkM 7 whichFunc whichChunk
+queue
+
+arguments = MC TrkM 8 whichFunc whichChunk
+queue
